@@ -37399,7 +37399,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/macbook/Documents/boolbnb-gruppo-4-master/resources/js/user.js */"./resources/js/user.js");
+module.exports = __webpack_require__(/*! C:\Users\adalp\BOOLBNB-GRUPPO4\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
 
 
 /***/ })
