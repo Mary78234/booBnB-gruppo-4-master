@@ -1,0 +1,22 @@
+footer {
+  ::before {
+    position: relative;
+  }
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  .footer-top {
+    margin-top: 20px;
+    ul {
+      padding-left: 0;
+      li {
+      list-style: none;
+      }
+    }
+  }
+  border-top: 1px solid #DDDDDD;
+  .footer-bottom {
+    padding: 20px 0;
+    border-top: 1px solid #DDDDDD;
+  }
+}
