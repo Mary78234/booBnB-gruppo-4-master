@@ -5,157 +5,88 @@
     <div class="footer-top row">
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <h3>ABOUT</h3>
+        <h3>CITIES</h3>
         <ul>
           <li>
-            How Airbnb works
+            Milano
           </li>
           <li>
-            Newsroom
+            Roma
           </li>
           <li>
-            Airbnb 2021
+            Venezia
           </li>
           <li>
-            Investors
+            Bologna
           </li>
           <li>
-            Airbnb Plus
+            Palermo
           </li>
           <li>
-            Airbnb Luxe
-          </li>
-          <li>
-            HotelTonight
-          </li>
-          <li>
-            Airbnb for Work
-          </li>
-          <li>
-            Made possible by Hosts
-          </li>
-          <li>
-            Careers
-          </li>
-          <li>
-            Founders' Letter
+            Napoli
           </li>
         </ul>
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <h3>ABOUT</h3>
+        <h3>MARE</h3>
         <ul>
           <li>
-            How Airbnb works
+            Cattolica
           </li>
           <li>
-            Newsroom
+            Lignano Sabbiadoro
           </li>
           <li>
-            Airbnb 2021
+            Ostia
           </li>
           <li>
-            Investors
+            Pescara
           </li>
           <li>
-            Airbnb Plus
-          </li>
-          <li>
-            Airbnb Luxe
-          </li>
-          <li>
-            HotelTonight
-          </li>
-          <li>
-            Airbnb for Work
-          </li>
-          <li>
-            Made possible by Hosts
-          </li>
-          <li>
-            Careers
-          </li>
-          <li>
-            Founders' Letter
+            Tropea
           </li>
         </ul>
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <h3>ABOUT</h3>
+        <h3>ESTERO</h3>
         <ul>
           <li>
-            How Airbnb works
+            Berlino
           </li>
           <li>
-            Newsroom
+            Londra
           </li>
           <li>
-            Airbnb 2021
+            Parigi
           </li>
           <li>
-            Investors
+            Barcellona
           </li>
           <li>
-            Airbnb Plus
-          </li>
-          <li>
-            Airbnb Luxe
-          </li>
-          <li>
-            HotelTonight
-          </li>
-          <li>
-            Airbnb for Work
-          </li>
-          <li>
-            Made possible by Hosts
-          </li>
-          <li>
-            Careers
-          </li>
-          <li>
-            Founders' Letter
+            Praga
           </li>
         </ul>
       </div>
 
       <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <h3>ABOUT</h3>
+        <h3>CONTATTI</h3>
         <ul>
           <li>
-            How Airbnb works
+            Alessandro
           </li>
           <li>
-            Newsroom
+            Alessandro
           </li>
           <li>
-            Airbnb 2021
+            Alejandro
           </li>
           <li>
-            Investors
+            Mary
           </li>
           <li>
-            Airbnb Plus
-          </li>
-          <li>
-            Airbnb Luxe
-          </li>
-          <li>
-            HotelTonight
-          </li>
-          <li>
-            Airbnb for Work
-          </li>
-          <li>
-            Made possible by Hosts
-          </li>
-          <li>
-            Careers
-          </li>
-          <li>
-            Founders' Letter
+            Nicola
           </li>
         </ul>
       </div>

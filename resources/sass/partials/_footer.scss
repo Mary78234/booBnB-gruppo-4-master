@@ -1,21 +1,29 @@
 footer {
-  ::before {
+  /* ::before {
     position: relative;
   }
   position: absolute;
-  bottom: 0;
+  bottom: 0; */
   width: 100%;
+  background-color: #EEEEEE;
+  color: $boolblue;
   .footer-top {
     margin-top: 20px;
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+    }
     ul {
       padding-left: 0;
       li {
-      list-style: none;
+        font-size: 12px;
+        list-style: none;
       }
     }
   }
   border-top: 1px solid #DDDDDD;
   .footer-bottom {
+    font-size: 12px;
     padding: 20px 0;
     border-top: 1px solid #DDDDDD;
   }
