@@ -17,10 +17,10 @@ class CreateHousesTable extends Migration
             $table->id();
             $table->string('title', 255);
             $table->string('slug', 255);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->tinyInteger('beds');
             $table->tinyInteger('bathrooms');
-            $table->integer('square_metre');
+            $table->integer('square_metre')->nullable();
             $table->string('country', 120);
             $table->string('city', 120);
             $table->string('address', 255);
