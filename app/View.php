@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class View extends Model
 {
-    protected $fillable = [
+    /* protected $fillable = [
         'house_id'
-    ];
+    ]; */
 }

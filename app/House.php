@@ -23,11 +23,24 @@ class House extends Model
         'user_id'
     ];
 
-    public function Messages(){
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
+
+    public function messages(){
         return $this->hasMany('App\Message');
     }
 
-    public function Views(){
+    public function views(){
         return $this->hasMany('App\View');
     }
+
+    public function features(){
+        return $this->belongsToMany('App\Feature');
+    }
+
+    public function sponsors(){
+        return $this->belongsToMany('App\Sponsor');
+    }
+
 }

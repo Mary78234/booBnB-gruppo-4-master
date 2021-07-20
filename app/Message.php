@@ -12,4 +12,7 @@ class Message extends Model
         'mail',
         'house_id'
     ];
+    public function house(){
+        return $this->belongsTo('App\House');
+    }
 }
