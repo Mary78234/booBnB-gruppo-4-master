@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -11,6 +12,15 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        for ($i=0; $i < 10 ; $i++) { 
+            
+            $new_user = new User();
+            $new_user->name = 'Utente ' . ($i+1);
+            $new_user->surname = 'Cognome ' . ($i+1);
+            $new_user->date_of_birth = rand(1950, 2002) . "-" . rand(1, 12) . "-" . rand(1, 31);
+            $new_user->email = 'utente' . ($i+1) . '@email' . ($i+1) . '.com';
+            $new_user->password = '12341234';
+            $new_user->save();
+        }
     }
 }
