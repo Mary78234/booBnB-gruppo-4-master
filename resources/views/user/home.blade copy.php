@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><a class="dashboard" href="#">{{ __('Dashboard') }}</a></div>
+                <div class="card-header"><a href="#">{{ __('Dashboard') }}</a></div>
                     
                 <div class="card-body">
                     @if (session('status'))
@@ -14,9 +14,7 @@
                         </div>
                     @endif
 
-                    
-                    <span class="login-animation">{{ __('You are logged in!') }}</span>
-                    <span class="welcome-animation">Welcome to BoolBnB </span>
+                    {{ __('You are logged in!') }}
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -25,19 +23,19 @@
                         </div>
                     @endif
 
-                    <div class="user-options">
+                    <div>
                         <ul>
-                            <li>
-                                <a href="{{ route('user.house.create') }}">Inserisci Casa</a>
+                            <li class="mb-2">
+                                <a class="btn btn-dark" href="{{ route('user.house.create') }}">Inserisci una nuova casa</a>
                             </li>
-                            <li>
-                                <a  href="{{ route('user.house.index') }}">Visualizza Case</a>
+                            <li class="mb-2">
+                                <a class="btn btn-dark" href="{{ route('user.house.index') }}">Visualizza le tue case</a>
                             </li>
-                            <li>
-                                <a href="{{ route('user.message.index') }}">Vedi Messaggi</a>
+                            <li class="mb-2">
+                                <a class="btn btn-dark" href="{{ route('user.message.index') }}">Vedi messaggi</a>
                             </li>
-                            <li>
-                                <a href="{{ route('user.sponsor') }}">Sponsor</a>
+                            <li class="mb-2">
+                                <a class="btn btn-dark" href="{{ route('user.sponsor') }}">Sponsor</a>
                             </li>
                             
                         </ul>

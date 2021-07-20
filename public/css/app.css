@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap);@charset "UTF-8";
 /* @import url('../font/airbnb-cereal/style.css'); */
 /*!
  * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
@@ -16132,25 +16132,187 @@ h3 {
     border-color: #dee2e6;
   }
 }
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid #DDDDDD;
+.bigbar {
+  width: 100vw;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  box-shadow: 2px 2px 5px rgba(208, 208, 208, 0.898);
+  color: #04459e;
+  font-weight: bold;
 }
-footer ::before {
+.bigbar a {
+  text-decoration: none;
+  color: #04459e;
+}
+.bigbar ul {
+  padding-top: 4px;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  list-style: none;
+  flex-wrap: wrap;
+  margin: 0;
+}
+.bigbar ul li {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 12.5px;
+}
+.bigbar ul li a {
+  padding: 13px;
+}
+.bigbar ul li a:hover {
+  border-radius: 50px;
+  background-color: rgba(235, 233, 233, 0.981);
+}
+
+@media (min-width: 200px) and (max-width: 549px) {
+  .bigbar ul {
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  .bigbar ul li {
+    margin: 0;
+    text-align: right;
+    width: 100%;
+    float: left;
+  }
+}
+.main-content {
+  height: calc(100vh - 60px);
+  background-image: url("https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg");
+  background-size: cover;
+  background-position-y: center;
+  background-position-x: center;
+}
+
+.card {
+  margin-top: 50px;
+  box-shadow: 0px 0px 10px rgba(155, 155, 155, 0.898);
+  border: none;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.card .card-header {
+  background-color: #04459e;
+  color: white;
+  /* @keyframes welcome {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+
+    }
+  } */
+}
+.card .card-header a {
+  color: white;
+  text-decoration: none;
+}
+.card .card-header .welcome-animation {
+  color: white;
+  float: right;
+  /* animation-name: welcome;
+  animation-fill-mode: forwards;
+  animation-duration: 5s; */
+}
+.card .card-body {
+  height: 36;
   position: relative;
+  padding-top: 8px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+.card .card-body .login-animation {
+  color: #04459e;
+  line-height: 50px;
+  -webkit-animation-duration: 3s;
+          animation-duration: 3s;
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  -webkit-animation-name: disappear;
+          animation-name: disappear;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+@-webkit-keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+@keyframes disappear {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+.card .card-body .user-options {
+  margin-bottom: 30px;
+}
+.card .card-body .user-options ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.card .card-body .user-options ul li {
+  width: 120px;
+  margin-bottom: 20px;
+  background-color: #ededed;
+  border-radius: 30px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0px 0px 5px rgba(208, 208, 208, 0.898);
+}
+.card .card-body .user-options ul li a {
+  width: 100%;
+  text-decoration: none;
+  color: #04459e;
+  font-size: 12px;
+}
+.card .card-body .user-options ul li:hover {
+  background-color: #04459e;
+}
+.card .card-body .user-options ul li:hover a {
+  color: white;
+}
+
+footer {
+  /* ::before {
+    position: relative;
+  }
+  position: absolute;
+  bottom: 0; */
+  width: 100%;
+  background-color: #EEEEEE;
+  color: #04459e;
+  border-top: 1px solid #DDDDDD;
 }
 footer .footer-top {
   margin-top: 20px;
+}
+footer .footer-top h3 {
+  font-size: 16px;
+  font-weight: bold;
 }
 footer .footer-top ul {
   padding-left: 0;
 }
 footer .footer-top ul li {
+  font-size: 12px;
   list-style: none;
 }
 footer .footer-bottom {
+  font-size: 12px;
   padding: 20px 0;
   border-top: 1px solid #DDDDDD;
 }
