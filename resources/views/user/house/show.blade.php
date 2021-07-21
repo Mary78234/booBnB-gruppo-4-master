@@ -25,12 +25,15 @@
     <div>
         <a class="btn btn-dark" href="{{ route('user.house.edit', $house) }}">Modifica</a>
     </div>
-    
+    {{-- SEZIONE MESSAGGI DA TERMINARE --}}
     <h1>Lista Messaggi:</h1>
     <ul>
-        <li>Messaggio1
-            <a href=" {{ route("user.message.show", $house) }} ">Visualizza messaggio</a>
-        </li>
+        @foreach ($messages as $message)
+            <li>
+                <h5>{{ $message->title }}</h5>
+                <p>{{ $message->content }}</p>
+            </li>
+        @endforeach
     </ul>
     <h1>STATISTICHE</h1>
     

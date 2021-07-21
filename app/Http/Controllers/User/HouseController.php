@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HouseRequest;
+use App\Message;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,10 +72,11 @@ class HouseController extends Controller
     public function show($id)
     {
         $house = House::find($id);
+        $messages = Message::where('house_id', $id)->get();
         if(!$house){
             abort(404);
         }
-        return view('user.house.show', compact('house'));
+        return view('user.house.show', compact('house', 'messages'));
     }
 
     /**
