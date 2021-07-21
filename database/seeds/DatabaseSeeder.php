@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             UpdateHousesSeeder::class,
             UpdateMessagesSeeder::class,
             UpdateViewsSeeder::class,
-            ViewsTableSeeder::class
+            ViewsTableSeeder::class,
+            HousesFeaturesSeeder::class,
+            //HousesSponsorsSeeder::class
         ]);
     }
 }
