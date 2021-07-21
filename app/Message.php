@@ -9,6 +9,10 @@ class Message extends Model
     protected $fillable = [
         'title',
         'content',
-        'mail'
+        'mail',
+        'house_id'
     ];
+    public function house(){
+        return $this->belongsTo('App\House');
+    }
 }
