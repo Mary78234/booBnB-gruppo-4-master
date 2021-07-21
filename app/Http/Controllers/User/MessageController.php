@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use App\House;
 use App\Http\Controllers\Controller;
+use App\Message;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -12,9 +15,17 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('user.message.index');
+        $houses = House::where('user_id', Auth::id())->get();
+        $my_house = [];
+
+        foreach ($houses as $house) {
+        array_push($my_house, $house['id']);
+    }
+    $messages = Message::whereIn('house_id', $my_house)->get();
+    return view("user.message.index", compact("houses", "messages"));
+        
     }
 
     /**

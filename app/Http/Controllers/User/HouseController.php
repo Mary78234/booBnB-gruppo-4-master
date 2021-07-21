@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
+use App\House;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class HouseController extends Controller
 {
@@ -14,7 +18,9 @@ class HouseController extends Controller
      */
     public function index()
     {
-        return view('user.house.index');
+        $user_id = Auth::id();
+        $houses = House::where("user_id", $user_id)->get();
+        return view("user.house.index", compact("houses"));
     }
 
     /**
@@ -24,6 +30,7 @@ class HouseController extends Controller
      */
     public function create()
     {
+
         return view('user.house.create');
     }
 
@@ -35,7 +42,11 @@ class HouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
+        $new_house = new House();
+        $new_house->fill($data);
+        dd($new_house);
     }
 
     /**
@@ -46,7 +57,11 @@ class HouseController extends Controller
      */
     public function show($id)
     {
-        return view('user.house.show');
+        $house = House::find($id);
+        if(!$house){
+            abort(404);
+        }
+        return view('user.house.show', compact('house'));
     }
 
     /**
@@ -56,8 +71,12 @@ class HouseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        return view('user.house.edit');
+    {   
+        $house = House::find($id);
+        if(!$house){
+            abort(404);
+        }
+        return view('user.house.edit', compact('house'));
     }
 
     /**
@@ -67,9 +86,12 @@ class HouseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, House $house)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($house->title, '-');
+        $house->update($data);
+        return redirect()->route('user.house.show', $house);
     }
 
     /**
