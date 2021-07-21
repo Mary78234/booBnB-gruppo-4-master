@@ -5,7 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><a href="#">{{ __('Dashboard') }}</a></div>
+                <div class="card-header">
+                    <a class="dashboard" href="#">{{ __('Dashboard') }}</a>
+                    <span class="welcome-animation">Welcome to BoolBnB </span>
+                </div>
                     
                 <div class="card-body">
                     @if (session('status'))
@@ -14,7 +17,8 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    
+                    <span class="login-animation">{{ __('You are logged in!') }}</span>
                 </div>
                 <div class="card-body">
                     @if (session('status'))
@@ -23,19 +27,19 @@
                         </div>
                     @endif
 
-                    <div>
-                        <ul>
-                            <li class="mb-2">
-                                <a class="btn btn-dark" href="{{ route('user.house.create') }}">Inserisci una nuova casa</a>
+                    <div class="user-options">
+                        <ul class="row">
+                            <li class="offset-md-2 col-md-3 offset-md-2 offset-4 col-4 offset-4">
+                                <a href="{{ route('user.house.create') }}">Inserisci Casa</a>
                             </li>
-                            <li class="mb-2">
-                                <a class="btn btn-dark" href="{{ route('user.house.index') }}">Visualizza le tue case</a>
+                            <li class="col-md-3 offset-md-2 offset-4 col-4 offset-4">
+                                <a  href="{{ route('user.house.index') }}">Visualizza Case</a>
                             </li>
-                            <li class="mb-2">
-                                <a class="btn btn-dark" href="{{ route('user.message.index') }}">Vedi messaggi</a>
+                            <li class="offset-md-2 col-md-3 offset-md-2 offset-4 col-4 offset-4">
+                                <a href="{{ route('user.message.index') }}">Vedi Messaggi</a>
                             </li>
-                            <li class="mb-2">
-                                <a class="btn btn-dark" href="{{ route('user.sponsor') }}">Sponsor</a>
+                            <li class="col-md-3 offset-md-2 offset-4 col-4 offset-4">
+                                <a href="{{ route('user.sponsor') }}">Sponsor</a>
                             </li>
                             
                         </ul>
