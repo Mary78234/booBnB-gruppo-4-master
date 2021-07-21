@@ -18,7 +18,7 @@
             <a href="{{ route('user.sponsor') }}">sponsorizza</a>
         </li>
     </ul> --}}
-    <table class="table">
+    <table class="table bg-light">
     <thead>
         <tr>
             <th>ID</th>
@@ -32,7 +32,7 @@
     <tbody>
         @foreach ($houses as $house)
             <tr>
-                <td>ID CASA: {{ $house->id }}</td>
+                <td>id:{{ $house->id }}</td>
                 <th>{{ $house->title }}</th>
                 <th>{{ $house->description }}</th>
                 <th>{{ $house->country }}</th>

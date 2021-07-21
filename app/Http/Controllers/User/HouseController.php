@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\House;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HouseRequest;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,14 +41,22 @@ class HouseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HouseRequest $request)
     {
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
+
+        $slug_exist = House::where('slug', $data['slug'])->first();
+        $counter = 0;
+        while($slug_exist){
+            $title= $data['title'] . '-' . $counter;
+            $data['slug'] = Str::slug($title, '-');
+            $slug_exist = House::where('slug', $data['slug'])->first();
+            $counter++;
+        }
         $new_house = new House();
         $new_house->fill($data);
         $new_house->user_id = Auth::user()->id;
-       /*  dd($new_house); */
         $new_house->save();
         return redirect()->route('user.house.show', $new_house);
     }
@@ -90,10 +99,22 @@ class HouseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, House $house)
+    public function update(HouseRequest $request, House $house)
     {
         $data = $request->all();
+        if($house->title !== $data['title']){
         $data['slug'] = Str::slug($house->title, '-');
+        $slug_exist = House::where('slug', $data['slug'])->first();
+        $counter = 0;
+        while($slug_exist){
+            $title= $data['title'] . '-' . $counter;
+            $data['slug'] = Str::slug($title, '-');
+            $slug_exist = House::where('slug', $data['slug'])->first();
+            $counter++;
+        }
+        }else{
+        $data['slug'] = $house->slug;
+        }
         $house->update($data);
         return redirect()->route('user.house.show', $house);
     }
