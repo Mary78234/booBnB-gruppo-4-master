@@ -15,6 +15,11 @@
             <label class="label-control" for="title">TITOLO</label>
             <input type="text" id="title" name="title" class="form-control">
         </div>
+        {{-- poi da sostituire --}}
+        <div class="mt-2">
+            <label class="label-control" for="image">INSERISCI IMMAGINE(momentaneo)</label>
+            <input type="text" id="image" name="image" class="form-control">
+        </div>
 
         <div class="mt-2">
             <label class="label-control" for="title">Descrizione</label>

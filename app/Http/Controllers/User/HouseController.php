@@ -46,8 +46,12 @@ class HouseController extends Controller
         $data['slug'] = Str::slug($data['title'], '-');
         $new_house = new House();
         $new_house->fill($data);
-        dd($new_house);
+        $new_house->user_id = Auth::user()->id;
+       /*  dd($new_house); */
+        $new_house->save();
+        return redirect()->route('user.house.show', $new_house);
     }
+    
 
     /**
      * Display the specified resource.
@@ -100,8 +104,9 @@ class HouseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(House $house)
     {
-        //
+        $house->delete();
+        return redirect()->route('user.house.index')->with('deleted', $house->title);
     }
 }

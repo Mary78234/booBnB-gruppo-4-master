@@ -19,13 +19,13 @@ class MessageController extends Controller
     {
         $houses = House::where('user_id', Auth::id())->get();
         $my_house = [];
-
+        
         foreach ($houses as $house) {
         array_push($my_house, $house['id']);
-    }
-    $messages = Message::whereIn('house_id', $my_house)->get();
-    return view("user.message.index", compact("houses", "messages"));
-        
+        };
+
+        $messages = Message::whereIn('house_id', $my_house)->get();
+        return view("user.message.index", compact("houses", "messages"));
     }
 
     /**

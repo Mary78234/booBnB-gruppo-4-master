@@ -78,6 +78,11 @@
     <a class="mt-2" href="http://localhost:8000/house">Visualizza risultato finale</a><br>
     
     <a class="mt-2 btn btn-dark" href="{{route('user.house.show', $house)}}">Ritorna</a>
- 
+    
+    <form action="{{ route('user.house.destroy', $house) }}" method="POST">
+         @csrf
+         @method('DELETE')
+         <button type="submit" class="btn btn-danger">ELIMINA</button>
+    </form>
 </div>  
 @endsection

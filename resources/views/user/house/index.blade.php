@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="container">
-    
+
+    @if (@session('deleted'))
+        <strong><h4 style="color: red">L'elemento è stato eliminato correttamente</h4></strong>
+    @endif
+
     <H1>Ecco tutte le tue case:</H1>
     
     {{-- <ul>
