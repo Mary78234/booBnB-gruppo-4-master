@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class House extends Model
 {
+
+
     protected $fillable = [
         'title',
         'slug',
@@ -22,6 +24,9 @@ class House extends Model
         'visibility',
         'user_id'
     ];
+
+    
+
 
     public function user(){
         return $this->belongsTo('App\User');
