@@ -24,8 +24,8 @@ class CreateHousesTable extends Migration
             $table->string('country', 120);
             $table->string('city', 120);
             $table->string('address', 255);
-            $table->float('long', 11, 8);
-            $table->float('lat', 11, 8);
+            $table->float('long', 11, 8)->nullable();
+            $table->float('lat', 11, 8)->nullable();
             $table->string('image', 255);
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ class House extends Model
         'description',
         'beds',
         'bathrooms',
-        'squares_metre',
+        'square_metre',
         'country',
         'city',
         'address',

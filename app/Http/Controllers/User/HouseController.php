@@ -2,8 +2,15 @@
 
 namespace App\Http\Controllers\User;
 
+use App\House;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HouseRequest;
+use App\Message;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class HouseController extends Controller
 {
@@ -14,7 +21,9 @@ class HouseController extends Controller
      */
     public function index()
     {
-        return view('user.house.index');
+        $user_id = Auth::id();
+        $houses = House::where("user_id", $user_id)->get();
+        return view("user.house.index", compact("houses"));
     }
 
     /**
@@ -24,6 +33,7 @@ class HouseController extends Controller
      */
     public function create()
     {
+
         return view('user.house.create');
     }
 
@@ -33,10 +43,30 @@ class HouseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(HouseRequest $request)
     {
-        //
+        $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
+
+        $slug_exist = House::where('slug', $data['slug'])->first();
+        $counter = 0;
+        while($slug_exist){
+            $title= $data['title'] . '-' . $counter;
+            $data['slug'] = Str::slug($title, '-');
+            $slug_exist = House::where('slug', $data['slug'])->first();
+            $counter++;
+        }
+        $new_house = new House();
+        $new_house->fill($data);
+        $new_house->user_id = Auth::user()->id;
+        
+        
+      /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf');
+        dd($response); */
+        $new_house->save();
+        return redirect()->route('user.house.show', $new_house);
     }
+    
 
     /**
      * Display the specified resource.
@@ -45,8 +75,14 @@ class HouseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        return view('user.house.show');
+    {   
+        
+        $house = House::where('user_id', Auth::id())->findOrFail($id);
+        $messages = Message::where('house_id', $id)->get();
+        if(!$house){
+            abort(404);
+        }
+        return view('user.house.show', compact('house', 'messages'));
     }
 
     /**
@@ -56,8 +92,12 @@ class HouseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        return view('user.house.edit');
+    {   
+        $house = House::where('user_id', Auth::id())->findOrFail($id);
+        if(!$house){
+            abort(404);
+        }
+        return view('user.house.edit', compact('house'));
     }
 
     /**
@@ -67,9 +107,24 @@ class HouseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HouseRequest $request, House $house)
     {
-        //
+        $data = $request->all();
+        if($house->title !== $data['title']){
+        $data['slug'] = Str::slug($house->title, '-');
+        $slug_exist = House::where('slug', $data['slug'])->first();
+        $counter = 0;
+        while($slug_exist){
+            $title= $data['title'] . '-' . $counter;
+            $data['slug'] = Str::slug($title, '-');
+            $slug_exist = House::where('slug', $data['slug'])->first();
+            $counter++;
+        }
+        }else{
+        $data['slug'] = $house->slug;
+        }
+        $house->update($data);
+        return redirect()->route('user.house.show', $house);
     }
 
     /**
@@ -78,8 +133,9 @@ class HouseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(House $house)
     {
-        //
+        $house->delete();
+        return redirect()->route('user.house.index')->with('deleted', $house->title);
     }
 }
