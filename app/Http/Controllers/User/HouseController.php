@@ -61,7 +61,7 @@ class HouseController extends Controller
         $new_house->user_id = Auth::user()->id;
         
         
-      /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf');
+        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf');
         dd($response); */
         $new_house->save();
         return redirect()->route('user.house.show', $new_house);
