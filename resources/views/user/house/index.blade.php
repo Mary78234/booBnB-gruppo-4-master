@@ -18,7 +18,7 @@
             <a href="{{ route('user.sponsor') }}">sponsorizza</a>
         </li>
     </ul> --}}
-    <table class="table bg-light">
+    <table class="table">
     <thead>
         <tr>
             <th>ID</th>

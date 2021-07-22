@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class HouseController extends Controller
 {
@@ -58,6 +59,10 @@ class HouseController extends Controller
         $new_house = new House();
         $new_house->fill($data);
         $new_house->user_id = Auth::user()->id;
+        
+        
+      /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf');
+        dd($response); */
         $new_house->save();
         return redirect()->route('user.house.show', $new_house);
     }
@@ -70,8 +75,9 @@ class HouseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $house = House::find($id);
+    {   
+        
+        $house = House::where('user_id', Auth::id())->findOrFail($id);
         $messages = Message::where('house_id', $id)->get();
         if(!$house){
             abort(404);
@@ -87,7 +93,7 @@ class HouseController extends Controller
      */
     public function edit($id)
     {   
-        $house = House::find($id);
+        $house = House::where('user_id', Auth::id())->findOrFail($id);
         if(!$house){
             abort(404);
         }

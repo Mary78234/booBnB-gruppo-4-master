@@ -16,7 +16,7 @@
         </div>
     @endif
     
-    <form class="bg-light" action="{{route('user.house.store')}}" method="POST">
+    <form action="{{route('user.house.store')}}" method="POST">
         @csrf
         @method('POST')
 

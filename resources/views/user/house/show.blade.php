@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container bg-light">
+<div class="container">
     
     <h1>DETTAGLI CASA: {{ $house->title }}</h1>
     

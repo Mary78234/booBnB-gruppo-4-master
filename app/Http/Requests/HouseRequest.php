@@ -38,7 +38,7 @@ class HouseRequest extends FormRequest
     {
         return [
             'title.required' => 'Il titolo è un campo obbligato',
-            'title.required' => 'Sono consentiti al massimo :max caratteri',
+            'title.max' => 'Sono consentiti al massimo :max caratteri',
             'title.beds' => 'Devi specificare il numero di posti letto',
             'title.bathrooms' => 'Devi specificare il numero di bagni',
             'title.country' => 'Devi inserire il paese',
