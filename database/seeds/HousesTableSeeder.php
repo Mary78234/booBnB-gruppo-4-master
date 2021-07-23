@@ -15,6 +15,8 @@ class HousesTableSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
+
+
         for ($i=0; $i < 10; $i++) { 
             $new_house = new House();
             $new_house->title = "Casa " . ($i + 1);
@@ -26,8 +28,6 @@ class HousesTableSeeder extends Seeder
             $new_house->country = "Country " . ($i + 1);
             $new_house->city = "City " . ($i + 1);
             $new_house->address = "Address " . ($i + 1);
-            $new_house->long = rand(400000001, 419999999)/10000000;
-            $new_house->lat = rand(140000001, 149999999)/10000000;
             $new_house->image = "Immagine" . ($i + 1);
             $new_house->save();
         }
