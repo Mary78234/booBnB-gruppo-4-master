@@ -1,8 +1,18 @@
 <template>
   <section class="loader">
-    <div class="container text-center">
-      
-      <h1>Loading ...</h1>
+    <div class="loader-container">
+      <h1 class="text-center">Loader</h1>
+      <!-- <div class="infinity">
+        <div>
+            <span></span>
+        </div>
+        <div>
+            <span></span>
+        </div>
+        <div>
+            <span></span>
+        </div>
+      </div> -->
 
       
     </div>
@@ -16,9 +26,139 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 section.loader{
-  background-color: rosybrown;
-  min-height: 50px;
+  background-color: rgb(255, 255, 255);
+  /* height: 100vh;
+  width: 100vw;
+  display:flex;
+  justify-content: center;
+  align-items: center; */
 }
+
+
+/* 
+.infinity {
+    width: 120px;
+    height: 60px;
+    position: relative;
+    div,
+    span {
+        position: absolute;
+    }
+    div {
+        top: 0;
+        left: 50%;
+        width: 60px;
+        height: 60px;
+        animation: rotate 6.9s linear infinite;
+        span {
+            left: -8px;
+            top: 50%;
+            margin: -8px 0 0 0;
+            width: 16px;
+            height: 16px;
+            display: block;
+            background: blue;
+            box-shadow: 2px 2px 8px rgba(blue, .09);
+            border-radius: 50%;
+            transform: rotate(90deg);
+            animation: move 6.9s linear infinite;
+            &:before,
+            &:after {
+                content: '';
+                position: absolute;
+                display: block;
+                border-radius: 50%;
+                width: 14px;
+                height: 14px;
+                background: inherit;
+                top: 50%;
+                left: 50%;
+                margin: -7px 0 0 -7px;
+                box-shadow: inherit;
+            }
+            &:before {
+                animation: drop1 .8s linear infinite;
+            }
+            &:after {
+                animation: drop2 .8s linear infinite .4s;
+            }
+        }
+        &:nth-child(2) {
+            animation-delay: -2.3s;
+            span {
+                animation-delay: -2.3s;
+            }
+        }
+        &:nth-child(3) {
+            animation-delay: -4.6s;
+            span {
+                animation-delay: -4.6s;
+            }
+        }
+    }
+}
+
+
+
+@keyframes moveSvg {
+    0% {
+        offset-distance: 0%;
+    }
+    25% {
+        background: blue;
+    }
+    75% {
+        background: blue;
+    }
+    100% {
+        offset-distance: 100%;
+    }
+}
+
+@keyframes rotate {
+    50% {
+        transform: rotate(360deg);
+        margin-left: 0;
+    }
+    50.0001%,
+    100% {
+        margin-left: -60px;
+    }
+}
+
+@keyframes move {
+    0%,50% {
+        left: -8px;
+    }
+    25% {
+        background: blue;
+    }
+    75% {
+        background: blue;
+    }
+    50.0001%,
+    100% {
+        left: auto;
+        right: -8px;
+    }
+}
+
+@keyframes drop1 {
+    100% {
+        transform: translate(32px, 8px) scale(0);
+    }
+}
+
+@keyframes drop2 {
+    0% {
+        transform: translate(0, 0) scale(.9);
+    }
+    100% {
+        transform: translate(32px, -8px) scale(0);
+    }
+}
+ */
   
 </style>
