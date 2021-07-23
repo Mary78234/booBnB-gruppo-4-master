@@ -3,6 +3,8 @@
 use App\House;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Faker\Generator as Faker;
+
 
 class HousesTableSeeder extends Seeder
 {
@@ -11,7 +13,7 @@ class HousesTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
         for ($i=0; $i < 10; $i++) { 
             $new_house = new House();
