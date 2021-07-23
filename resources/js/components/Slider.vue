@@ -2,30 +2,39 @@
   <section>
 
     <Loader />
+     <h1 class="text-center">Slider</h1>
 
-    <div class="container text-center">
-      <h1>Questo è lo slider</h1>
+   
 
-      
-    </div>
   </section>
 </template>
 
 <script>
 import Loader from './Loader.vue';
 
+
+
+
+
+
 export default {
   name: 'Slider',
   components: {
-    Loader
+    Loader,
+   
+  },
+
   }
-}
+
 </script>
 
 <style lang="scss" scoped>
+
 section{
-  background-color: bisque;
+  background-color: rgb(255, 255, 255);
   min-height: 200px;
 }
+
+
   
 </style>
