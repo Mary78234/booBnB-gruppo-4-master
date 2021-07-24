@@ -16,7 +16,7 @@
         </div>
     @endif
     
-    <form action="{{route('user.house.store')}}" method="POST">
+    <form class="bg-light" action="{{route('user.house.store')}}" method="POST">
         @csrf
         @method('POST')
 
@@ -43,7 +43,7 @@
 
         <div class="mt-2">
             <label class="label-control" for="beds">LETTI:</label>
-            <input type="number" id="beds" name="beds" class="form-control @error('beds') is-invalid @enderror" value="{{ old('beds') }}">
+            <input type="number" onKeyPress="if(this.value.length==3) return false;" id="beds" name="beds" class="form-control @error('beds') is-invalid @enderror" value="{{ old('beds') }}">
             @error('beds')
             <div class="text-danger">{{ $message }}</div>
            @enderror
@@ -51,7 +51,7 @@
 
         <div class="mt-2">
             <label class="label-control" for="bathrooms">BAGNI:</label>
-            <input type="number" id="bathrooms" name="bathrooms" class="form-control @error('bathrooms') is-invalid @enderror" value="{{ old('bathrooms') }}">
+            <input type="number" onKeyPress="if(this.value.length==3) return false;" id="bathrooms" name="bathrooms" class="form-control @error('bathrooms') is-invalid @enderror" value="{{ old('bathrooms') }}">
             @error('bathrooms')
             <div class="text-danger">{{ $message }}</div>
              @enderror
@@ -59,13 +59,21 @@
 
         <div class="mt-2">
             <label class="label-control" for="square_metre">METRI QUADRI:</label>
-            <input type="number" id="square_metre" name="square_metre" class="form-control" value="{{ old('square_metre') }}">
+            <input type="number" onKeyPress="if(this.value.length==4) return false;" id="square_metre" name="square_metre" class="form-control" value="{{ old('square_metre') }}">
         </div>
 
         <div class="mt-2">
-            <label class="label-control" for="country">PAESE:</label>
+            <label class="label-control" for="country">STATO:</label>
             <input type="text" id="country" name="country" class="form-control @error('country') is-invalid @enderror" value="{{ old('country') }}">
             @error('country')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mt-2">
+            <label class="label-control" for="region">REGIONE:</label>
+            <input type="text" id="region" name="region" class="form-control @error('region') is-invalid @enderror" value="{{ old('region') }}">
+            @error('region')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -80,26 +88,50 @@
 
         <div class="mt-2">
             <label class="label-control" for="address">INDIRIZZO:</label>
-            <input type="text" id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
+            <input type="text" onKeyPress="if(this.value.length==4) return false;"  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
             @error('address')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-        {{-- LAT E LONG sono da RIMUOVERE --}}
+
         <div class="mt-2">
-            <label class="label-control" for="lat">LATITUDINE:</label>
-            <input type="number" id="lat" name="lat" class="form-control">
+            <label class="label-control" for="house_number">NUMERO CIVICO:</label>
+            <input type="number" onKeyPress="if(this.value.length==4) return false;" id="house_number" name="house_number" class="form-control @error('house_number') is-invalid @enderror" value="{{ old('house_number') }}">
+            @error('house_number')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="mt-2">
+            <label class="label-control" max="99999" for="postal_code">CODICE POSTALE:</label>
+            <input type="number" onKeyPress="if(this.value.length==4) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
+            @error('postal_code')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
         <div class="mt-2">
-            <label class="label-control" for="long">LONGITUDINE:</label>
-            <input type="number" id="long" name="long" class="form-control">
+            <H3>Altri Servizi:</H3>
+            @foreach ($features as $feature)
+                <span>
+
+                    <input type="checkbox" name="features[]" id="feature{{ $loop->iteration }} 
+                    value={{ $feature->id }}"
+                    @if (in_array($feature->id,old('features',[])))
+                    checked
+                    @endif>
+                    <label for="feature{{ $loop->iteration }}">{{ $feature->name }}</label>
+
+                </span>
+            @endforeach
         </div>
+
 
         <div class="mt-2">
             <button class="btn btn-primary" type="submit">INSERISCI</button>
             <button class="btn btn-danger" type="reset">RESET</button>
         </div>
+
 
     </form>
 
