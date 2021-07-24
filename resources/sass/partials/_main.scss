@@ -1,5 +1,5 @@
 .main-content{
-  height: calc(100vh - 60px);
+  /* height: calc(100vh - 60px); */
   background-image: url("https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg");
   background-size: cover;
   background-position-y: center;
@@ -7,28 +7,29 @@
 }
 
 .card{
-  box-shadow: 0px 0px 5px rgba(208, 208, 208, 0.898);
+
+  margin-top: 50px;
+
+  box-shadow: 0px 0px 10px rgba(155, 155, 155, 0.898);
+  border: none;
+
+  background-color: rgba(255, 255, 255, 0.9);
+  
   .card-header{
+    background-color: $boolblue;
+    color: white;
     a{
-      color: $boolblue;
+      color: white;
       text-decoration: none;
     }
-
-    background-color: white;
-  }
-  .card-body{
-    height: 36;
-    position: relative;
-    padding-top: 8px;
-    padding-bottom: 5px;
     .welcome-animation{
-      color: $boolblue;
-      float: left;
-      animation-name: welcome;
+      color: white;
+      float: right;
+      /* animation-name: welcome;
       animation-fill-mode: forwards;
-      animation-duration: 3s;
+      animation-duration: 5s; */
     }
-      @keyframes welcome {
+      /* @keyframes welcome {
         0% {
           opacity: 0;
         }
@@ -37,12 +38,19 @@
           opacity: 1;
           
         }
-      }
+      } */
+  }
+  .card-body{
+    height: 36;
+    position: relative;
+    padding-top: 8px;
+    padding-bottom: 5px;
+    text-align: center;
     .login-animation{
       color: $boolblue;
-      float: right;
+      line-height: 50px;
       animation-duration: 3s;
-      animation-delay: 2s;
+      animation-delay: 1s;
       animation-name: disappear;
       animation-fill-mode: forwards;
     }
@@ -57,12 +65,10 @@
         }
       }
     .user-options{
+      margin-bottom: 30px;
       ul{
         margin: 0;
         padding: 0;
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
         list-style: none;
         li{
           width: 120px;
@@ -71,6 +77,7 @@
           border-radius: 30px;
           padding: 10px;
           text-align: center;
+          box-shadow: 0px 0px 5px rgba(208, 208, 208, 0.898);
           a{
             width:100%;
             text-decoration: none;
@@ -79,7 +86,11 @@
           }
         }
         li:hover{
-          background-color: rgb(218, 218, 218);
+          background-color: $boolblue;
+          a {
+            color: white;
+
+          }
         }
       }
     }
