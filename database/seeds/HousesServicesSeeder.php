@@ -1,11 +1,12 @@
 <?php
 
-use App\Feature;
+
 use App\House;
+use App\Service;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class HousesFeaturesSeeder extends Seeder
+class HousesServicesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,9 +18,9 @@ class HousesFeaturesSeeder extends Seeder
       
         for($i=1; $i <= 10; $i++) {
 
-            DB::table('house_feature')->insert([
+            DB::table('house_service')->insert([
                 'house_id' => House::inRandomOrder()->first()->id,
-                'feature_id' => Feature::inRandomOrder()->first()->id
+                'service_id' => Service::inRandomOrder()->first()->id
             ]);
 
         }

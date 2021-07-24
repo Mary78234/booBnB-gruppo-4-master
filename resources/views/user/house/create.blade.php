@@ -110,28 +110,22 @@
             @enderror
         </div>
 
-        <div class="mt-2">
-            <H3>Altri Servizi:</H3>
+        <div class="row mt-5 mb-5">
+            <h2>Servizi:</h2>
             <div class="form-check">
-                @foreach ($features as $feature)
-        
-                <label
-                  for="{{ $feature->id }}"
-                  class="form-check-label search__checkbox--label mr-3"
-                >
-                  <input
-                    name="features[]"
-                    type="checkbox"
-                    id="{{ $feature->id }}"
-                    value="{{ $feature->id }}"
-                    class="search__checkbox--quad"
-                    {{ ( in_array($feature->id, old('features', array())) ) ? 'checked ' : '' }}
-                  >
-                  {{ $feature->name }}
-                </label>
-                @endforeach
-        </div>
-
+              @foreach ($services as $service)
+                <span class="d-inline-block mr-3">
+                    <input type="checkbox" name="services[]" id="service{{ $loop->iteration }}"
+                    value="{{ $service->id }}"
+                    @if (in_array($service->id,old('services',[])))
+                    checked
+                    @endif>
+                    <label for="service{{ $loop->iteration }}"> {{ $service->name }} </label>
+                </span>
+              
+    
+              @endforeach
+            </div>
 
         <div class="mt-2">
             <button class="btn btn-primary" type="submit">INSERISCI</button>

@@ -42,8 +42,8 @@ class House extends Model
         return $this->hasMany('App\View');
     }
 
-    public function features(){
-        return $this->belongsToMany('App\Feature');
+    public function services(){
+        return $this->belongsToMany('App\Service');
     }
 
     public function sponsors(){

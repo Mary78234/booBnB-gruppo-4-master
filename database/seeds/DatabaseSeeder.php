@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,10 +19,10 @@ class DatabaseSeeder extends Seeder
             HousesTableSeeder::class,
             UpdateHousesSeeder::class,
             UpdateMessagesSeeder::class,
-            FeaturesTableSeeder::class,
             ViewsTableSeeder::class,
             UpdateViewsSeeder::class,
-            HousesFeaturesSeeder::class,
+            ServicesTableSeeder::class,
+            HousesServicesSeeder::class
             //HousesSponsorsSeeder::class
         ]);
     }
