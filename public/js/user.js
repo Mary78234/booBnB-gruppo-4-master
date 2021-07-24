@@ -37399,7 +37399,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 module.exports = __webpack_require__(/*! C:\Users\adalp\BOOLBNB-GRUPPO4\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
+=======
+module.exports = __webpack_require__(/*! C:\Progetto Finale\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
+>>>>>>> origin/nicoladisante
 
 
 /***/ })
