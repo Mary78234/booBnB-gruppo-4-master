@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Feature;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HouseRequest;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 
 class HouseController extends Controller
 {
@@ -21,6 +23,8 @@ class HouseController extends Controller
      */
     public function index()
     {
+        /* phpinfo();
+        die(); */
         $user_id = Auth::id();
         $houses = House::where("user_id", $user_id)->get();
         return view("user.house.index", compact("houses"));
@@ -33,8 +37,8 @@ class HouseController extends Controller
      */
     public function create()
     {
-
-        return view('user.house.create');
+        $features = Feature::all();
+        return view('user.house.create', compact('features'));
     }
 
     /**
@@ -47,7 +51,6 @@ class HouseController extends Controller
     {
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
-
         $slug_exist = House::where('slug', $data['slug'])->first();
         $counter = 0;
         while($slug_exist){
@@ -60,10 +63,24 @@ class HouseController extends Controller
         $new_house->fill($data);
         $new_house->user_id = Auth::user()->id;
         
+       /*  $new_house->country = $data['country'];
+        $new_house->region = $data['region'];
+        $new_house->city = $data['city'];
+        $new_house->address = $data['address'];
+        $new_house->postal_code = $data['postal_code'];
+        $new_house->house_number = $data['house_number']; */
+
+        $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
+        $urlEncode = rawurlencode($url);
+        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json(); */
+        $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
         
-        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf');
-        dd($response); */
-        $new_house->save();
+        
+        $lat= $response['results']['0']['position']['lat'];
+        $long= $response['results']['0']['position']['lon'];
+        $new_house->lat = $lat;
+        $new_house->long = $long;
+    
         return redirect()->route('user.house.show', $new_house);
     }
     
@@ -123,6 +140,16 @@ class HouseController extends Controller
         }else{
         $data['slug'] = $house->slug;
         }
+        $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
+        $urlEncode = rawurlencode($url);
+        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json(); */
+        $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
+        
+        $lat= $response['results']['0']['position']['lat'];
+        $long= $response['results']['0']['position']['lon'];
+        $house->lat = $lat;
+        $house->long = $long;
+
         $house->update($data);
         return redirect()->route('user.house.show', $house);
     }

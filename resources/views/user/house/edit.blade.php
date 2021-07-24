@@ -46,15 +46,15 @@
     
         <div class="mt-2">
             <label class="label-control" for="beds">LETTI:</label>
-            <input type="number" id="beds" name="beds" value="{{ old('beds', $house->beds) }}" class="form-control @error('beds') is-invalid @enderror">
+            <input type="number" max="99" id="beds" name="beds" value="{{ old('beds', $house->beds) }}" class="form-control @error('beds') is-invalid @enderror">
             @error('beds')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
 
         <div class="mt-2">
-            <label class="label-control" for="bathrooms">BAGNI:</label>
-            <input type="number" id="bathrooms" name="bathrooms" value="{{ old('bathrooms', $house->bathrooms) }}" class="form-control @error('bathrooms') is-invalid @enderror">
+            <label class="label-control"  for="bathrooms">BAGNI:</label>
+            <input type="number" max="99" id="bathrooms" name="bathrooms" value="{{ old('bathrooms', $house->bathrooms) }}" class="form-control @error('bathrooms') is-invalid @enderror">
             @error('bathrooms')
             <div class="text-danger">{{ $message }}</div>
              @enderror
@@ -62,13 +62,21 @@
 
         <div class="mt-2">
             <label class="label-control" for="square_metre">METRI QUADRI:</label>
-            <input type="number" id="square_metre" name="square_metre" value="{{ old('square_metre', $house->square_metre) }}" class="form-control">
+            <input type="number" max="9999" id="square_metre" name="square_metre" value="{{ old('square_metre', $house->square_metre) }}" class="form-control">
         </div>
 
         <div class="mt-2">
-            <label class="label-control" for="country">PAESE:</label>
+            <label class="label-control" for="country">STATO:</label>
             <input type="text" id="country" name="country" value="{{ old('country', $house->country) }}" class="form-control @error('country') is-invalid @enderror">
             @error('country')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mt-2">
+            <label class="label-control" for="region">REGIONE:</label>
+            <input type="text" id="region" name="region" value="{{ old('region', $house->region) }}" class="form-control @error('region') is-invalid @enderror">
+            @error('region')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -90,14 +98,21 @@
         </div>
 
         <div class="mt-2">
-            <label class="label-control" for="lat">LATITUDINE:</label>
-            <input type="number" id="lat" name="lat" value="{{ $house->lat }}" class="form-control">
+            <label class="label-control" for="house_number">NUMERO CIVICO:</label>
+            <input type="number" max="999" id="house_number" name="house_number" class="form-control @error('house_number') is-invalid @enderror" value="{{ old('house_number', $house->house_number) }}">
+            @error('house_number')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+        </div>
+        
+        <div class="mt-2">
+            <label class="label-control" for="postal_code">CODICE POSTALE:</label>
+            <input type="number" max="99999" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code', $house->postal_code) }}">
+            @error('postal_code')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="mt-2">
-            <label class="label-control" for="long">LONGITUDINE:</label>
-            <input type="number" id="long" name="long" value="{{ $house->long }}" class="form-control">
-        </div>
 
         <div class="mt-2">
             <button class="btn btn-primary" type="submit">Aggiorna</button>
