@@ -12,6 +12,8 @@
     <!-- Scripts -->
     <script src="{{ asset('js/user.js') }}" defer></script>
     
+    <!-- TomTom -->
+  
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">

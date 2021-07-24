@@ -35,6 +35,9 @@
         @endforeach
     </ul>
 
+
+
+
     <div>
         <a class="btn btn-dark" href="{{ route('user.house.edit', $house) }}">Modifica</a>
     </div>

@@ -107,7 +107,8 @@
 
         <div class="mt-2">
             <label class="label-control" for="image">CAMBIA IMMAGINE</label>
-            <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror">
+            <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror"
+            onchange="previewFile()">
             @error('image')
             <div class="text-danger">{{ $message }}</div>
              @enderror
@@ -157,4 +158,26 @@
          <button type="submit" class="btn btn-danger m-2">ELIMINA</button>
     </form>
 </div>  
+
+<script>
+
+    function previewFile() {
+        
+        var preview = document.querySelector('img');
+        var file = document.querySelector('input[type=file]').files[0];
+        var reader = new FileReader
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        }
+
+        if(file) {
+            reader.readAsDataURL(file);
+        }else{
+            preview.src = "";
+        }
+
+    }
+
+</script>
 @endsection
