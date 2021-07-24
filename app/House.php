@@ -16,8 +16,11 @@ class House extends Model
         'bathrooms',
         'square_metre',
         'country',
+        'region',
         'city',
         'address',
+        'postal_code',
+        'house_number',
         'lat',
         'long',
         'image',
@@ -25,7 +28,6 @@ class House extends Model
         'user_id'
     ];
 
-    
 
 
     public function user(){
