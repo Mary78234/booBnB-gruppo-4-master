@@ -12,8 +12,8 @@
         
         @endif        
     </div>
-    
-    <p>{{ $house->description }}</p>
+    <h2 class="mt-4">Descrizione</h2>
+    <p class="mt-2">{{ $house->description }}</p>
 
     <h2>Caratteristiche:</h2>
     <ul>
@@ -23,7 +23,7 @@
         <li>Nazione: {{ $house->country }}</li>
         <li>Regione: {{ $house->region }}</li>
         <li>Città: {{ $house->city }}</li>
-        <li>Indirizzo: {{ $house->address }}</li>
+        <li>Indirizzo: {{ $house->address }} {{ $house->house_number }}</li>
         <li>Codice Postale: {{ $house->postal_code }}</li>
         <li>Latitudine: {{ $house->lat }}</li>
         <li>Longitudine: {{ $house->long }}</li>
@@ -34,7 +34,10 @@
             <li>{{ $service->name }}</li>
         @endforeach
     </ul>
-
+    <div>
+        <h2>MAPPA</h2>
+        
+    </div>
 
 
 
@@ -53,6 +56,8 @@
     </ul>
   
 </div>
+
+
 @endsection
 
 
