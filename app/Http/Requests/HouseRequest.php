@@ -33,7 +33,8 @@ class HouseRequest extends FormRequest
             'address' => 'required',
             'postal_code' => 'required|numeric',
             'house_number' => 'required|numeric',
-            'image' => 'required'
+            'image' => 'nullable|image|max:32000',
+            'service' => 'nullable|exists:service,id'
         ];
     }
 
@@ -52,6 +53,9 @@ class HouseRequest extends FormRequest
             'postal_code.required' => 'Devi inserire il codice postale',
             'house_number.requiredr' => 'Devi inserire un numero civico',
             'image.required' => 'Bisogna inserire un\'immagine',
+            'service.exists' => 'Il servizio scelto non è presente',
+            'image.image' => 'Il file caricato non è un\'immagine',
+            'image.max' => 'L\'immagine è troppo pesante! Sono consentiti al massimo :max kb'
         ];
     }
 }

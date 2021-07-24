@@ -16,7 +16,7 @@
         </div>
     @endif
     
-    <form class="bg-light" action="{{route('user.house.store')}}" method="POST">
+    <form class="bg-light" action="{{route('user.house.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
 
@@ -29,8 +29,8 @@
         </div>
         {{-- poi da sostituire --}}
         <div class="mt-2">
-            <label class="label-control" for="image">INSERISCI IMMAGINE(momentaneo)</label>
-            <input type="text" id="image" name="image" class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}">
+            <label class="label-control" for="image">INSERISCI IMMAGINE</label>
+            <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror">
             @error('image')
             <div class="text-danger">{{ $message }}</div>
              @enderror
@@ -104,7 +104,7 @@
         
         <div class="mt-2">
             <label class="label-control" max="99999" for="postal_code">CODICE POSTALE:</label>
-            <input type="number" onKeyPress="if(this.value.length==4) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
+            <input type="number" onKeyPress="if(this.value.length==5) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
             @error('postal_code')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -122,9 +122,10 @@
                     @endif>
                     <label for="service{{ $loop->iteration }}"> {{ $service->name }} </label>
                 </span>
-              
-    
               @endforeach
+              @error('services')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
             </div>
 
         <div class="mt-2">

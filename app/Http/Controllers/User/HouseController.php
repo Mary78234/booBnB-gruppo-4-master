@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class HouseController extends Controller
@@ -58,21 +59,21 @@ class HouseController extends Controller
             $data['slug'] = Str::slug($title, '-');
             $slug_exist = House::where('slug', $data['slug'])->first();
             $counter++;
+        };
+
+        if(array_key_exists('image', $data)){
+            $data['image_original_name'] = $request->file('image')->getClientOriginalName();
+            $image_path = Storage::put('uploads', $data['image']);
+            $data['image'] = $image_path;
         }
+
+
         $new_house = new House();
         $new_house->fill($data);
         $new_house->user_id = Auth::user()->id;
-        
-       /*  $new_house->country = $data['country'];
-        $new_house->region = $data['region'];
-        $new_house->city = $data['city'];
-        $new_house->address = $data['address'];
-        $new_house->postal_code = $data['postal_code'];
-        $new_house->house_number = $data['house_number']; */
 
         $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
         $urlEncode = rawurlencode($url);
-        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json(); */
         $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
         
         
@@ -119,10 +120,11 @@ class HouseController extends Controller
     public function edit($id)
     {   
         $house = House::where('user_id', Auth::id())->findOrFail($id);
+        $services = Service::all();
         if(!$house){
             abort(404);
         }
-        return view('user.house.edit', compact('house'));
+        return view('user.house.edit', compact('house','services'));
     }
 
     /**
@@ -150,7 +152,6 @@ class HouseController extends Controller
         }
         $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
         $urlEncode = rawurlencode($url);
-        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json(); */
         $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
         
         $lat= $response['results']['0']['position']['lat'];
@@ -158,7 +159,24 @@ class HouseController extends Controller
         $house->lat = $lat;
         $house->long = $long;
 
+        if(array_key_exists('image', $data)){
+            if($house->image){
+                Storage::delete($house->image);
+            }
+            $data['image_original_name'] = $request->file('image')->getClientOriginalName();
+            $image_path = Storage::put('uploads', $data['image']);
+            $data['image'] = $image_path;
+        }
+
         $house->update($data);
+
+        if(array_key_exists('services', $data)){
+      
+            $house->services()->sync($data['services']);
+        }else{
+            $house->services()->detach();
+        }
+
         return redirect()->route('user.house.show', $house);
     }
 
@@ -170,6 +188,9 @@ class HouseController extends Controller
      */
     public function destroy(House $house)
     {
+        if($house->image){
+            Storage::delete($house->image);
+        }
         $house->delete();
         return redirect()->route('user.house.index')->with('deleted', $house->title);
     }

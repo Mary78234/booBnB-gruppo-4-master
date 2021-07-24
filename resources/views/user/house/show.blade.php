@@ -1,11 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container bg-light">
     
     <h1>DETTAGLI CASA: {{ $house->title }}</h1>
     
-    <p>qui inseriamo l'immagine? {{ $house->image }}</p>
+    <div>
+        @if ($house->image)
+
+            <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
+        
+        @endif        
+    </div>
     
     <p>{{ $house->description }}</p>
 
@@ -14,13 +20,20 @@
         <li>Numero letti: {{ $house->beds }}</li>
         <li>Bagni: {{ $house->bathrooms }}</li>
         <li>Dimensione: {{ $house->square_metre }} metri quadri</li>
-        <li>Paese: {{ $house->country }}</li>
+        <li>Nazione: {{ $house->country }}</li>
+        <li>Regione: {{ $house->region }}</li>
         <li>Città: {{ $house->city }}</li>
         <li>Indirizzo: {{ $house->address }}</li>
+        <li>Codice Postale: {{ $house->postal_code }}</li>
         <li>Latitudine: {{ $house->lat }}</li>
         <li>Longitudine: {{ $house->long }}</li>
     </ul>
-    
+    <h3>Servizi:</h3>
+    <ul>
+        @foreach ($house->services as $service)
+            <li>{{ $service->name }}</li>
+        @endforeach
+    </ul>
 
     <div>
         <a class="btn btn-dark" href="{{ route('user.house.edit', $house) }}">Modifica</a>
@@ -35,8 +48,7 @@
             </li>
         @endforeach
     </ul>
-    <h1>STATISTICHE</h1>
-    
+  
 </div>
 @endsection
 

@@ -25,7 +25,8 @@ class House extends Model
         'long',
         'image',
         'visibility',
-        'user_id'
+        'user_id',
+        'image_original_name'
     ];
 
 

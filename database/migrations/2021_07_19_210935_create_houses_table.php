@@ -29,7 +29,8 @@ class CreateHousesTable extends Migration
             $table->tinyInteger('house_number')->nullable();
             $table->float('long', 11, 8)->nullable();
             $table->float('lat', 11, 8)->nullable();
-            $table->string('image', 255);
+            $table->string('image', 255)->nullable();
+            $table->string('image_original_name')->nullable();
             $table->timestamps();
         });
     }
