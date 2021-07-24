@@ -14,3 +14,4 @@ composer.lock
 composer.json
 public/js/app.js
 public/js/user.js
+public/css/app.css
