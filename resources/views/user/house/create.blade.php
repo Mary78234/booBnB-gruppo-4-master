@@ -112,18 +112,24 @@
 
         <div class="mt-2">
             <H3>Altri Servizi:</H3>
-            @foreach ($features as $feature)
-                <span>
-
-                    <input type="checkbox" name="features[]" id="feature{{ $loop->iteration }} 
-                    value={{ $feature->id }}"
-                    @if (in_array($feature->id,old('features',[])))
-                    checked
-                    @endif>
-                    <label for="feature{{ $loop->iteration }}">{{ $feature->name }}</label>
-
-                </span>
-            @endforeach
+            <div class="form-check">
+                @foreach ($features as $feature)
+        
+                <label
+                  for="{{ $feature->id }}"
+                  class="form-check-label search__checkbox--label mr-3"
+                >
+                  <input
+                    name="features[]"
+                    type="checkbox"
+                    id="{{ $feature->id }}"
+                    value="{{ $feature->id }}"
+                    class="search__checkbox--quad"
+                    {{ ( in_array($feature->id, old('features', array())) ) ? 'checked ' : '' }}
+                  >
+                  {{ $feature->name }}
+                </label>
+                @endforeach
         </div>
 
 

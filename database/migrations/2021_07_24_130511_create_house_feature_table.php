@@ -13,8 +13,8 @@ class CreateHouseFeatureTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('house_feature');
         Schema::create('house_feature', function (Blueprint $table) {
-            
 
             $table->unsignedBigInteger('house_id');
             $table->foreign('house_id')

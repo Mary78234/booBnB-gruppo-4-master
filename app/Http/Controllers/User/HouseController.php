@@ -50,6 +50,7 @@ class HouseController extends Controller
     public function store(HouseRequest $request)
     {
         $data = $request->all();
+        dd($data);
         $data['slug'] = Str::slug($data['title'], '-');
         $slug_exist = House::where('slug', $data['slug'])->first();
         $counter = 0;
@@ -80,8 +81,17 @@ class HouseController extends Controller
         $long= $response['results']['0']['position']['lon'];
         $new_house->lat = $lat;
         $new_house->long = $long;
-    
-        return redirect()->route('user.house.show', $new_house);
+        $new_house->save();
+        
+        // se esiste la chiave features dentro $data ed esiste solo se ho checkato qualcosa
+        if(array_key_exists('features', $data)){
+            //se esiste allora popolo la tabella pivot con le chiavi di houses e le chiavi di features
+            $new_house->features()->attach($data['features']);
+        }
+
+        
+
+        return redirect()->route('user.house.show');
     }
     
 
