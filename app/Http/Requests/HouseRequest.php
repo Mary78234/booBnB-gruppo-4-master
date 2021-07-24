@@ -25,26 +25,33 @@ class HouseRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
-            'beds' => 'required',
-            'bathrooms' => 'required',
+            'beds' => 'required|numeric',
+            'bathrooms' => "required|numeric",
             'country' => 'required',
+            'region' => 'required',
             'city' => 'required',
             'address' => 'required',
+            'postal_code' => 'required|numeric',
+            'house_number' => 'required|numeric',
             'image' => 'required'
         ];
     }
 
+
     public function messages()
     {
         return [
-            'title.required' => 'Il titolo è un campo obbligato',
+            'title.required' => 'Il titolo è un campo obbligatorop',
             'title.max' => 'Sono consentiti al massimo :max caratteri',
-            'title.beds' => 'Devi specificare il numero di posti letto',
-            'title.bathrooms' => 'Devi specificare il numero di bagni',
-            'title.country' => 'Devi inserire il paese',
-            'title.city' => 'Devi inserire la città',
-            'title.address' => 'Devi inserire l\'indirizzo',
-            'title.image' => 'Bisogna inserire un\'immagine',
+            'beds.required' => 'Devi specificare il numero di posti letto',
+            'bathrooms.required' => 'Devi specificare il numero di bagni',
+            'country.required' => 'Devi inserire il paese',
+            'region.required' => 'Devi inserire una regione',
+            'city.required' => 'Devi inserire la città',
+            'address.required' => 'Devi inserire l\'indirizzo',
+            'postal_code.required' => 'Devi inserire il codice postale',
+            'house_number.requiredr' => 'Devi inserire un numero civico',
+            'image.required' => 'Bisogna inserire un\'immagine',
         ];
     }
 }
