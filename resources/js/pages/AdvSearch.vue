@@ -83,7 +83,7 @@
                   </li>
                   <li>
                     <input type="checkbox" id="animali domestici ammesi" name="animali domestici ammesi" value="animali domestici ammesi">
-                    <label for="animali domestici ammesi">Animali Domestici Ammesi</label><br>
+                    <label for="animali domestici ammesi">Animali Ammesi</label><br>
                   </li>
                   <li>
                     <input type="checkbox" id="cucina" name="cucina" value="cucina">
@@ -104,6 +104,7 @@
         </div>
         
         <router-link class="nav-link" :to="{name: 'house'}">House</router-link>
+        <a href="http://127.0.0.1:8000/results">search</a>
       </div>
 
     </section>
@@ -188,8 +189,6 @@ export default {
         margin-top: 30px;
         text-align: center;
       }
-
     }
-    
   }
 </style>
