@@ -16,12 +16,27 @@
             </ul>
         </div>
     @endif
+
     
     <p>Cambia immagine? {{ $house->image }}</p>
     
     <form class="bg-light" action="{{route('user.house.update', $house)}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
+
+
+        <div>
+            <p>Visibile</p>
+            <input type="radio" id="visibility" name="visibility" value="1" @if ($house->visibility == 1))
+            checked
+            @endif>
+                      
+            <label for="visibility">Si</label>
+            <input type="radio" id="visibility" name="visibility" value="0" @if ($house->visibility == 0))
+            checked
+            @endif>
+            <label for="visibility">No</label>   
+            </div>
 
         <div class="mt-2">
             <label class="label-control" for="title">TITOLO</label>  
@@ -35,7 +50,15 @@
             <label class="label-control" for="title">Descrizione</label>
             <textarea type="text" id="description" name="description" class="form-control" rows="3">{{ old('description', $house->description) }}</textarea>
         </div>
-    
+
+        <div class="mt-2">
+            <label class="label-control" for="rooms_number">NUMERO DI STANZE:</label>
+            <input type="number" onKeyPress="if(this.value.length==3) return false;" id="rooms_number" name="rooms_number" class="form-control @error('rooms_number') is-invalid @enderror" value="{{ old('rooms_number', $house->rooms_number) }}">
+            @error('rooms_number')
+            <div class="text-danger">{{ $message }}</div>
+           @enderror
+        </div>
+
         <div class="mt-2">
             <label class="label-control" for="beds">LETTI:</label>
             <input type="number" onKeyPress="if(this.value.length==3) return false;" max="99" id="beds" name="beds" value="{{ old('beds', $house->beds) }}" class="form-control @error('beds') is-invalid @enderror">

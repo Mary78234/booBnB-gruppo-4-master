@@ -16,9 +16,29 @@
         </div>
     @endif
     
+
     <form class="bg-light" action="{{route('user.house.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
+
+        {{-- <div class="mb-4">
+            <label for="visibility">Visibile</label>
+            <select class="form-control @error('visibility') is-invalid @enderror" name="visibility" id="visibility">
+    
+                <option value="1">Si</option>
+                
+                <option value="0">no</option>
+    
+            </select>
+        </div> --}}
+        
+        <div>
+        <p>Visibile</p>
+        <input type="radio" id="visibility" name="visibility" value="1" checked>
+        <label for="visibility">Si</label>
+        <input type="radio" id="visibility" name="visibility" value="0")>
+        <label for="visibility">No</label>   
+        </div>
 
         <div class="mt-2">
             <label class="label-control" for="title">TITOLO</label>
@@ -39,6 +59,14 @@
         <div class="mt-2">
             <label class="label-control" for="title">Descrizione</label>
             <textarea type="text" id="description" name="description" class="form-control" rows="3">{{old('description')}}</textarea>
+        </div>
+
+        <div class="mt-2">
+            <label class="label-control" for="rooms_number">NUMERO DI STANZE:</label>
+            <input type="number" onKeyPress="if(this.value.length==3) return false;" id="rooms_number" name="rooms_number" class="form-control @error('rooms_number') is-invalid @enderror" value="{{ old('rooms_number') }}">
+            @error('rooms_number')
+            <div class="text-danger">{{ $message }}</div>
+           @enderror
         </div>
 
         <div class="mt-2">
@@ -88,7 +116,7 @@
 
         <div class="mt-2">
             <label class="label-control" for="address">INDIRIZZO:</label>
-            <input type="text"  return false;"  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
+            <input type="text"  return false;  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
             @error('address')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -127,6 +155,7 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
             </div>
+
 
         <div class="mt-2">
             <button class="btn btn-primary" type="submit">INSERISCI</button>

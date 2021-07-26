@@ -17,6 +17,7 @@
 
     <h2>Caratteristiche:</h2>
     <ul>
+        <li>Numero di stanze: {{ $house->rooms_number }}</li>
         <li>Numero letti: {{ $house->beds }}</li>
         <li>Bagni: {{ $house->bathrooms }}</li>
         <li>Dimensione: {{ $house->square_metre }} metri quadri</li>
@@ -27,6 +28,12 @@
         <li>Codice Postale: {{ $house->postal_code }}</li>
         <li>Latitudine: {{ $house->lat }}</li>
         <li>Longitudine: {{ $house->long }}</li>
+        @if ($house->visibility)
+        <li>Visibile: SI</li>
+        @else
+        <li>Visibile: NO</li>  
+        @endif
+
     </ul>
     <h3>Servizi:</h3>
     <ul>

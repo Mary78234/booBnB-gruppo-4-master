@@ -14,6 +14,8 @@ class House extends Model
         'description',
         'beds',
         'bathrooms',
+        'rooms_number',
+        'visibility',
         'square_metre',
         'country',
         'region',

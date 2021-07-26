@@ -81,7 +81,6 @@ class HouseController extends Controller
         $long= $response['results']['0']['position']['lon'];
         $new_house->lat = $lat;
         $new_house->long = $long;
-       
         $new_house->save();
         
 
