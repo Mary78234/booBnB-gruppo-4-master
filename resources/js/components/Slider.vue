@@ -9,7 +9,7 @@
     <div class="bottom-slider">
       <div class="box-house text-center">
         <div class="img-area mb-4">
-          <img src="https://archello.s3.eu-central-1.amazonaws.com/images/2019/04/10/modern-house-in-moscow-1.1554930809.2534.jpg" alt="">
+          <img src="https://archello.s3.eu-central-1.amazonaws.com/images/2019/04/10/modern-house-in-moscow-1.1554930809.2534.jpg" alt="Appartamento Uno">
         </div>
         <div class="text-area">
           <h3>Villa Stile Liberty</h3>
@@ -19,7 +19,7 @@
       </div>
       <div class="box-house text-center">
         <div class="img-area mb-4">
-          <img src="https://cdn.vox-cdn.com/thumbor/6itLJS9BZ-B5gXPjM1AB_z-ZKVI=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/65890203/iStock_1067331614.7.jpg" alt="">
+          <img src="https://cdn.vox-cdn.com/thumbor/6itLJS9BZ-B5gXPjM1AB_z-ZKVI=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/65890203/iStock_1067331614.7.jpg" alt="Appartamento Due">
         </div>
         <div class="text-area">
           <h3>Appartamento di lusso</h3>
@@ -30,7 +30,7 @@
       
       <div class="box-house text-center">
         <div class="img-area mb-4">
-          <img src="https://static.dezeen.com/uploads/2020/02/house-in-the-landscape-niko-arcjitect-architecture-residential-russia-houses-khurtin_dezeen_2364_hero.jpg" alt="">
+          <img src="https://static.dezeen.com/uploads/2020/02/house-in-the-landscape-niko-arcjitect-architecture-residential-russia-houses-khurtin_dezeen_2364_hero.jpg" alt="Appartamento Tre">
         </div>
         <div class="text-area">
           <h3>Castello incantato</h3>
@@ -40,17 +40,17 @@
       </div>
 
     </div>
+    <Message-form />
     
   
-  
+
   </section>
 
  
 </template>
 
 <script>
-
-
+import MessageForm from './MessageForm.vue';
 
 
 
@@ -61,6 +61,7 @@
 export default {
   name: 'Slider',
   components: {
+    MessageForm,
     
 
 
@@ -90,7 +91,7 @@ section{
         img{
           width: 100%;
           height: 100%;
-          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.438);
+          box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.438);
         }
       }
       .text-area{
@@ -103,7 +104,6 @@ section{
           padding: 10px 20px;    
         }
         a:hover{
-            color: rgb(255, 255, 255);
             background-color: rgb(50, 52, 151);
 
           }
