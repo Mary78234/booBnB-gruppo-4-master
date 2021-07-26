@@ -37389,6 +37389,18 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+/*  tt.services.fuzzySearch({
+ key: API_KEY,
+ query: 'Golden Gate Bridge'
+ })
+ .then(function(response) {
+     map = tt.map({
+         key: API_KEY,
+         container: 'map-div',
+         center: response.results[0].position,
+         zoom: 8
+     });
+ }); */
 
 /***/ }),
 

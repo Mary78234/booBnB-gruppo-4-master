@@ -1913,7 +1913,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("section", { staticClass: "loader" }, [
       _c("div", { staticClass: "container text-center" }, [
-        _c("h1", [_vm._v("Loading ...")])
+        _c("h1", [_vm._v("ciao a tutti")])
       ])
     ])
   }
@@ -17712,6 +17712,17 @@ var app = new Vue({
   render: function render(h) {
     return h(_App_vue__WEBPACK_IMPORTED_MODULE_0__["default"]);
   }
+});
+var APIKEY = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+var GOLDEN_GATE_BRIDGE = {
+  lng: -122.47483,
+  lat: 37.80776
+};
+var map = tt.map({
+  key: APIKEY,
+  container: 'map',
+  center: GOLDEN_GATE_BRIDGE,
+  zoom: 12
 });
 
 /***/ }),

@@ -2,7 +2,7 @@
   <section class="loader">
     <div class="container text-center">
       
-      <h1>Loading ...</h1>
+      <h1>ciao a tutti</h1>
 
       
     </div>

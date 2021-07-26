@@ -88,7 +88,7 @@
 
         <div class="mt-2">
             <label class="label-control" for="address">INDIRIZZO:</label>
-            <input type="text" onKeyPress="if(this.value.length==4) return false;"  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
+            <input type="text"  return false;"  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
             @error('address')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -104,7 +104,7 @@
         
         <div class="mt-2">
             <label class="label-control" max="99999" for="postal_code">CODICE POSTALE:</label>
-            <input type="number" onKeyPress="if(this.value.length==5) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
+            <input  type="number" onKeyPress="if(this.value.length==5) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
             @error('postal_code')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -137,4 +137,12 @@
     </form>
 
 </div>
+<script>
+
+
+
+
+</script>
+
+
 @endsection

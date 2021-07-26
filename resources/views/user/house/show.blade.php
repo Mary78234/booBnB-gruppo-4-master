@@ -34,10 +34,9 @@
             <li>{{ $service->name }}</li>
         @endforeach
     </ul>
-    <div>
-        <h2>MAPPA</h2>
-        
-    </div>
+    <h3>MAPPA</h3>
+
+    <div style="width:75%; height: 75vh; margin: 0 auto;" id='map-div'></div>
 
 
 
@@ -57,11 +56,40 @@
   
 </div>
 
+<script>
+    const API_KEY = 'D0clxQHiIegbNyytBXsP3gAAyepp7VkR';
+        const APPLICATION_NAME = 'My Application';
+        const APPLICATION_VERSION = '1.0';
+
+        const geometry = [
+                <?php echo $house->long ?>,
+                <?php echo $house->lat ?>
+            ]
+        
+        
+        tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+
+        const myposition = {lng: <?php echo $house->long ?>, lat: <?php echo $house->lat ?>};
+
+        var map = tt.map({
+        key: API_KEY,
+        container: 'map-div',
+        center: myposition,
+        zoom: 16
+        });
+
+         const houseNumber = '<?php echo $house->house_number ?>';
+         const title = '<?php echo $house->title ?>';
+         const city = '<?php echo $house->city ?>';
+         console.log(city)
+         const address = '<?php echo $house->address ?>';
+         const pos = geometry;
+         let cityStoresList = document.getElementById(city);
+         const marker = new tt.Marker().setLngLat(pos).setPopup(new tt.Popup({offset: 35}).setHTML(title + '<br>' + city + ' ' + address + ' ' + houseNumber)).addTo(map);
+
+
+</script> 
+
 
 @endsection
 
-
-{{-- <a href="http://localhost:8000/house">Visualizza risultato finale</a><br>
-    <a href="{{ route('user.house.edit', $id ='0') }}">Modifica casa</a><br>
-    <a href="{{ route('user.message.show', $id ='0') }}">messaggi casa</a><br>
-    <a href="{{ route('user.sponsor') }}">sponsorizza</a> --}}
