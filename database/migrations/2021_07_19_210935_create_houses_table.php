@@ -22,8 +22,11 @@ class CreateHousesTable extends Migration
             $table->tinyInteger('bathrooms');
             $table->integer('square_metre')->nullable();
             $table->string('country', 120);
+            $table->string('region', 120)->nullable();
             $table->string('city', 120);
             $table->string('address', 255);
+            $table->integer('postal_code')->nullable();
+            $table->tinyInteger('house_number')->nullable();
             $table->float('long', 11, 8)->nullable();
             $table->float('lat', 11, 8)->nullable();
             $table->string('image', 255);
