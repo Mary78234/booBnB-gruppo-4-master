@@ -1,8 +1,5 @@
 <template>
   <main>
-
-    <Loader />
-
     <section>
       <div class="contenedor-risultati">
         <div class="content-house-resultati row ">
