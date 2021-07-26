@@ -40,7 +40,6 @@
       </div>
 
     </div>
-    <Message-form />
     
   
 
@@ -50,7 +49,6 @@
 </template>
 
 <script>
-import MessageForm from './MessageForm.vue';
 
 
 
@@ -61,10 +59,7 @@ import MessageForm from './MessageForm.vue';
 export default {
   name: 'Slider',
   components: {
-    MessageForm,
     
-
-
    
   }
 

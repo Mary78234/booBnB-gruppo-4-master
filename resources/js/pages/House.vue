@@ -1,28 +1,27 @@
 <template>
   <main>
     
-    <section>
+    <section class="container-fluid">
       
-      <h1 class="text-center">TITOLO CASA</h1>
+      <h1>TITOLO CASA</h1>
 
-      <div class="image-detalis">
-        <div class="image-left float-left">
+      <div class="image-details row">
+        <div class="image-left col-md-6 col-sm-12">
           
         </div>
-        <div class="detalis-right float-left">
+        <div class="details-right col-md-6 col-sm-12">
           <h3>Caratteristiche</h3>
           <ul>
             <li>
-              3 Stanze
+              Numero di stanze: <strong>3</strong>
             </li>
             <li>
-              7 letti
+              Numero di letti: <strong>8</strong>
+            <li>
+              Numero di bagni: <strong>2</strong>
             </li>
             <li>
-              2 bagni
-            </li>
-            <li>
-              190 mq
+              Superficie totale: <strong>190mq</strong>
             </li>
           </ul>
         </div>
@@ -48,28 +47,17 @@
         </ul>
       </div>
 
-      <div class="address-map">
-        <div class="address-left float-left">
+      <div class="address-map row">
+        <div class="address-left col-md-6 col-sm-12">
           <h3>Indirizzo</h3>
-          <ul>
-            <li>
-              Via tal dei tali, 4
-            </li>
-            <li>
-              Milano
-            </li>
-            <li>
-              Italia
-            </li>
-            <li>
-              CAP
-            </li>
-          </ul>
+          <p>Viale Tal dei Tali, 47, Milano (MI), Italia</p>
         </div>
-        <div class="map-right float-left">
+        <div class="map-right col-md-6 col-sm-12">
           
         </div>
       </div>
+
+      <MessageForm />
       
     </section>
     
@@ -79,11 +67,13 @@
 <script>
 
 import Loader from '../components/Loader.vue';
+import MessageForm from '../components/MessageForm.vue';
 
 export default {
   name: 'House',
   components: {
-    Loader
+    Loader,
+    MessageForm
   }
 }
 
@@ -96,22 +86,32 @@ $boolgreen: #00E165;
 
 h1 {
   margin: 50px 0;
+  text-align: center;
 }
 
-.image-detalis {
-  width: 100%;
-  .image-left, .detalis-right {
+ul {
+    list-style-type: none;
+}
+
+.image-details {
+  .image-left, .details-right {
     height: 400px;
-    width: 50%;
   }
   .image-left {
     background-image: url('https://d3rn6ixv8qant7.cloudfront.net/wp-content/uploads/2018/05/luxury-contemporary-villas-in-guadalmina-baja-1-7980e48d732b6fc85c14b43b94d2aa54.jpg');
     background-size: cover;
   }
-  .detalis-right {
+  .details-right {
     background-color: black;
     color: white;
-    text-align: center;
+    padding: 50px;
+    ul li {
+      margin-bottom: 10px;
+    }
+    h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
   }
 }
 
@@ -128,19 +128,20 @@ h1 {
 }
 
 .address-map {
-  margin-top: 400px;
-  width: 100%;
+  margin-bottom: 50px;
   .address-left, .map-right {
     height: 400px;
   }
   .address-left {
-    width: 35%;
     background-color: $boolblue;
     color: white;
     text-align: center;
+    padding: 50px;
+    h3 {
+      margin-bottom: 20px;
+    }
   }
   .map-right {
-    width: 65%;
     background-image: url('https://images.wired.it/wp-content/uploads/2019/05/13123414/milano.jpg');
     background-size: cover;
   }
