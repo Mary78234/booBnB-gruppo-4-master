@@ -13,7 +13,7 @@
 
     <header>
         <nav class="navbar-container">
-            <div class="navbar row">
+            <div class="navbar">
                 <div class="logo col-12">
                     <h1>
                         <router-link :to="{name: 'home'}">
