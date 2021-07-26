@@ -42,9 +42,9 @@
         @endforeach
     </ul>
     <h3>MAPPA</h3>
-
+    {{-------------------------MAPPA----------------------}}
     <div style="width:75%; height: 75vh; margin: 0 auto;" id='map-div'></div>
-
+    {{-------------------------MAPPA----------------------}}
 
 
     <div>
@@ -62,7 +62,7 @@
     </ul>
   
 </div>
-
+{{-------------------------MAPPA----------------------}}
 <script>
     const API_KEY = 'D0clxQHiIegbNyytBXsP3gAAyepp7VkR';
         const APPLICATION_NAME = 'My Application';

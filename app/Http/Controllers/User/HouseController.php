@@ -28,6 +28,7 @@ class HouseController extends Controller
         die(); */
         $user_id = Auth::id();
         $houses = House::where("user_id", $user_id)->get();
+        
         return view("user.house.index", compact("houses"));
     }
 
