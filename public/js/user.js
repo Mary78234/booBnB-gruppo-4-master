@@ -37399,7 +37399,11 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 module.exports = __webpack_require__(/*! C:\Users\Alejandro Malesani\Documents\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
+=======
+module.exports = __webpack_require__(/*! D:\aleco\OneDrive\Documents\Boolean\Progetto Finale\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
+>>>>>>> e4ac44a7937911f287919c67276743ef2d84cfc0
 
 
 /***/ })
