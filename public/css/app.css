@@ -1,7 +1,5 @@
-@import url(https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap);@charset "UTF-8";
-/* @import url('../font/airbnb-cereal/style.css'); 
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700;800;900&display=swap'); */
+@import url(https://fonts.googleapis.com/css?family=Nunito);@import url(https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap);@charset "UTF-8";
+/* @import url('../font/airbnb-cereal/style.css'); */
 /*!
  * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -6164,7 +6162,7 @@ readers do not read off random characters that represent icons */
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Poppins", sans-serif;
+  --font-family-sans-serif: "Nunito", sans-serif;
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -6187,7 +6185,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "Nunito", sans-serif;
   font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.6;
@@ -11716,7 +11714,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: "Nunito", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -11818,7 +11816,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Poppins", sans-serif;
+  font-family: "Nunito", sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.6;
@@ -16134,90 +16132,52 @@ h3 {
     border-color: #dee2e6;
   }
 }
-.navbar-container {
+.bigbar {
+  width: 100vw;
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: white;
-  box-shadow: 2px 2px 5px rgba(200, 200, 200, 0.9);
+  box-shadow: 2px 2px 5px rgba(208, 208, 208, 0.898);
   color: #04459e;
-  font-weight: 700;
+  font-weight: bold;
 }
-.navbar-container .logo {
-  text-align: center;
-}
-.navbar-container .logo h1 a {
-  color: black;
-}
-.navbar-container .logo:hover h1 a {
-  color: #04459e;
-}
-.navbar-container .menu {
-  text-align: center;
-}
-.navbar-container .menu-search {
-  text-align: center;
-}
-.navbar-container a {
+.bigbar a {
   text-decoration: none;
   color: #04459e;
 }
-.navbar-container ul {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+.bigbar ul {
   padding-top: 4px;
+  align-items: center;
   width: 100%;
+  display: flex;
   list-style: none;
+  flex-wrap: wrap;
   margin: 0;
 }
-.navbar-container ul li a:hover {
+.bigbar ul li {
+  margin-left: 15px;
+  margin-right: 15px;
+  font-size: 12.5px;
+}
+.bigbar ul li a {
+  padding: 13px;
+}
+.bigbar ul li a:hover {
   border-radius: 50px;
-  background-color: rgba(235, 233, 233, 0.9);
-}
-.navbar-container input {
-  border: none;
-  border-bottom: 2px solid #04459e;
-  width: 100%;
-  outline: none;
-  color: #04459e;
-}
-.navbar-container .dropdown-menu {
-  position: relative;
-  text-align: center;
-  display: inline-block;
-  border: none;
-  width: 100%;
-}
-.navbar-container .dropdown-menu button {
-  border: none;
-  background-color: white;
-  font-weight: 700;
-  color: #04459e;
-  height: 100%;
-  width: 100%;
-}
-.navbar-container .dropdown-menu .dropdown-content {
-  position: absolute;
-  left: 50%;
-  display: none;
-  z-index: 1;
-  text-align: center;
-  background-color: white;
-}
-.navbar-container .dropdown-menu:active .dropdown-content,
-.navbar-container .dropdown-menu:hover .dropdown-content {
-  display: block;
+  background-color: rgba(235, 233, 233, 0.981);
 }
 
-@media (max-width: 767px) {
-  .menu {
-    display: none;
+@media (min-width: 200px) and (max-width: 549px) {
+  .bigbar ul {
+    padding: 0;
+    display: flex;
+    align-items: center;
   }
-}
-@media (min-width: 768px) {
-  .dropdown-menu.row.responsive, .menu-search {
-    display: none;
+  .bigbar ul li {
+    margin: 0;
+    text-align: right;
+    width: 100%;
+    float: left;
   }
 }
 .main-content {
@@ -16327,6 +16287,11 @@ h3 {
 }
 
 footer {
+  /* ::before {
+    position: relative;
+  }
+  position: absolute;
+  bottom: 0; */
   width: 100%;
   background-color: #EEEEEE;
   color: #04459e;

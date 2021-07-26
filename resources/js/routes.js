@@ -48,7 +48,6 @@ const router = new VueRouter({
     ]
 });
 
-<<<<<<< HEAD
 export default router;
 
 //prova
@@ -57,7 +56,4 @@ export default router;
 
 //terza prova
 
-//quarta prova ale colonna
-=======
-export default router;
->>>>>>> de9ead03d9c6a447ee59fe4f3809321a8522d931
+//voglio esistere

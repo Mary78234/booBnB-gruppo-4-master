@@ -11,7 +11,7 @@
                 <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
 
                 <router-link class="nav-link" :to="{name: 'advsearch'}">
-                    <span>Ricerca Avanzata</span>
+                   <span>Ricerca Avanzata</span>
                 </router-link>
                 
             </div>
@@ -55,14 +55,17 @@ section.jumbotron{
     align-items: center;
     .nav-link span{
         background-color: white;
-        padding: 10px;
-        border-radius: 10px;    
+        padding: 10px 50px;
+        border-radius: 10px;   
+        transition:0.5s; 
     }
     .nav-link span:hover{
-            background-color: rgba(0, 0, 0, 0.212); 
+            box-shadow: 0px 0px 15px rgba(204, 204, 204, 0.884);
+            color: rgb(31, 31, 255);
     }
-
 }
+
+
 
 
 
