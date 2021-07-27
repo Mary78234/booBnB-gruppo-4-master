@@ -1,9 +1,10 @@
 <?php
 
-use App\Feature;
+
+use App\Service;
 use Illuminate\Database\Seeder;
 
-class FeaturesTableSeeder extends Seeder
+class ServicesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +13,7 @@ class FeaturesTableSeeder extends Seeder
      */
     public function run()
     {
-        $array_features = [
+        $array_services = [
             'WiFi',
             'Posto macchina',
             'Piscina',
@@ -21,15 +22,15 @@ class FeaturesTableSeeder extends Seeder
             'Sauna',
             'Vista mare',
             'Aria condizionata',
-            'Animali domestici ammessi',
+            'Animali ammessi',
             'Cucina',
             'Bagno Privato'
         ];
 
-        foreach ($array_features as $feature){
-            $new_feature = new Feature();
-            $new_feature->name = $feature;
-            $new_feature->save();
+        foreach ($array_services as $service){
+            $new_service = new Service();
+            $new_service->name = $service;
+            $new_service->save();
         }
     }
 }
