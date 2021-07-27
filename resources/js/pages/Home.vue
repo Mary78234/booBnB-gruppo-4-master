@@ -1,7 +1,7 @@
 <template>
     <main>
 
-        
+        <Loader />
 
         <section class="jumbotron">
 
@@ -26,11 +26,13 @@
 
 <script>
 import Slider from '../components/Slider.vue';
+import Loader from '../components/Loader.vue';
 
 export default {
     name: 'Home',
     components: {
-        Slider
+        Slider,
+        Loader
     }
 }
 </script>

@@ -41,6 +41,7 @@
 
     </div>
     
+    
   
 
   </section>
@@ -56,10 +57,14 @@
 
 
 
+
 export default {
   name: 'Slider',
   components: {
     
+    
+
+
    
   }
 
