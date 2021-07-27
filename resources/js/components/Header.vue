@@ -66,6 +66,7 @@ $boolgreen: #00E165;
     box-shadow: 2px 2px 5px rgba(200, 200, 200, 0.9);
     color: $boolblue;
     font-weight: 700;
+    
     .logo {
         text-align: center;
         h1 {
