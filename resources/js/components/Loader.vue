@@ -1,8 +1,8 @@
 <template>
   <section class="loader">
     <div class="loader-container">
-      <h1 class="text-center">Loader</h1>
-      <!-- <div class="infinity">
+      <!-- <h1 class="text-center">Loader</h1> -->
+      <div class="infinity">
         <div>
             <span></span>
         </div>
@@ -12,7 +12,7 @@
         <div>
             <span></span>
         </div>
-      </div> -->
+      </div>
 
       
     </div>
@@ -29,15 +29,15 @@ export default {
 
 section.loader{
   background-color: rgb(255, 255, 255);
-  /* height: 100vh;
+  height: 100vh;
   width: 100vw;
   display:flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center; 
 }
 
 
-/* 
+
 .infinity {
     width: 120px;
     height: 60px;
@@ -159,6 +159,6 @@ section.loader{
         transform: translate(32px, -8px) scale(0);
     }
 }
- */
+
   
 </style>
