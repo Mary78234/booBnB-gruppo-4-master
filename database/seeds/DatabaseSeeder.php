@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsersTableSeeder::class,
-            FeaturesTableSeeder::class,
             MessagesTableSeeder::class,
             SponsorsTableSeeder::class,
             HousesTableSeeder::class,
@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             UpdateMessagesSeeder::class,
             ViewsTableSeeder::class,
             UpdateViewsSeeder::class,
-            HousesFeaturesSeeder::class,
+            ServicesTableSeeder::class,
+            HousesServicesSeeder::class
             //HousesSponsorsSeeder::class
         ]);
     }

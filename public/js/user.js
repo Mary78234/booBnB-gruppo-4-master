@@ -37447,10 +37447,14 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 /***/ (function(module, exports, __webpack_require__) {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 module.exports = __webpack_require__(/*! C:\Users\Alejandro Malesani\Documents\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
 =======
 module.exports = __webpack_require__(/*! C:\Progetto Finale\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
 >>>>>>> 1b5a30ceb348fa6c13fbd7dce3d02e892b28517e
+=======
+module.exports = __webpack_require__(/*! C:\Progetto Finale\booBnB-gruppo-4-master\resources\js\user.js */"./resources/js/user.js");
+>>>>>>> master
 
 
 /***/ })
