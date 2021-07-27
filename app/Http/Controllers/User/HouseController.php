@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Feature;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HouseRequest;
 use App\Message;
+use App\Service;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 
 class HouseController extends Controller
@@ -27,6 +28,7 @@ class HouseController extends Controller
         die(); */
         $user_id = Auth::id();
         $houses = House::where("user_id", $user_id)->get();
+        
         return view("user.house.index", compact("houses"));
     }
 
@@ -37,8 +39,8 @@ class HouseController extends Controller
      */
     public function create()
     {
-        $features = Feature::all();
-        return view('user.house.create', compact('features'));
+        $services = Service::all();
+        return view('user.house.create', compact('services'));
     }
 
     /**
@@ -58,21 +60,21 @@ class HouseController extends Controller
             $data['slug'] = Str::slug($title, '-');
             $slug_exist = House::where('slug', $data['slug'])->first();
             $counter++;
+        };
+
+        if(array_key_exists('image', $data)){
+            $data['image_original_name'] = $request->file('image')->getClientOriginalName();
+            $image_path = Storage::put('uploads', $data['image']);
+            $data['image'] = $image_path;
         }
+
+
         $new_house = new House();
         $new_house->fill($data);
         $new_house->user_id = Auth::user()->id;
-        
-       /*  $new_house->country = $data['country'];
-        $new_house->region = $data['region'];
-        $new_house->city = $data['city'];
-        $new_house->address = $data['address'];
-        $new_house->postal_code = $data['postal_code'];
-        $new_house->house_number = $data['house_number']; */
 
         $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
         $urlEncode = rawurlencode($url);
-        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json(); */
         $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
         
         
@@ -80,7 +82,15 @@ class HouseController extends Controller
         $long= $response['results']['0']['position']['lon'];
         $new_house->lat = $lat;
         $new_house->long = $long;
-    
+        $new_house->save();
+        
+
+        // se esiste la chiave features dentro $data ed esiste solo se ho checkato qualcosa
+        if(array_key_exists('services', $data)){
+            //se esiste allora popolo la tabella pivot con le chiavi di houses e le chiavi di features
+            $new_house->services()->attach($data['services']);
+        }
+
         return redirect()->route('user.house.show', $new_house);
     }
     
@@ -111,10 +121,11 @@ class HouseController extends Controller
     public function edit($id)
     {   
         $house = House::where('user_id', Auth::id())->findOrFail($id);
+        $services = Service::all();
         if(!$house){
             abort(404);
         }
-        return view('user.house.edit', compact('house'));
+        return view('user.house.edit', compact('house','services'));
     }
 
     /**
@@ -142,7 +153,6 @@ class HouseController extends Controller
         }
         $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
         $urlEncode = rawurlencode($url);
-        /* $response = Http::get('https://api.tomtom.com/search/2/geocode/via%20dante%20alighieri%20marostica.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json(); */
         $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
         
         $lat= $response['results']['0']['position']['lat'];
@@ -150,7 +160,24 @@ class HouseController extends Controller
         $house->lat = $lat;
         $house->long = $long;
 
+        if(array_key_exists('image', $data)){
+            if($house->image){
+                Storage::delete($house->image);
+            }
+            $data['image_original_name'] = $request->file('image')->getClientOriginalName();
+            $image_path = Storage::put('uploads', $data['image']);
+            $data['image'] = $image_path;
+        }
+
         $house->update($data);
+
+        if(array_key_exists('services', $data)){
+      
+            $house->services()->sync($data['services']);
+        }else{
+            $house->services()->detach();
+        }
+
         return redirect()->route('user.house.show', $house);
     }
 
@@ -162,6 +189,9 @@ class HouseController extends Controller
      */
     public function destroy(House $house)
     {
+        if($house->image){
+            Storage::delete($house->image);
+        }
         $house->delete();
         return redirect()->route('user.house.index')->with('deleted', $house->title);
     }

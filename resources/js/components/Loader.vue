@@ -12,8 +12,8 @@
         <div>
             <span></span>
         </div>
-      </div> -->
-
+      </div>
+ -->
       
     </div>
   </section>
@@ -29,15 +29,15 @@ export default {
 
 section.loader{
   background-color: rgb(255, 255, 255);
-  /* height: 100vh;
+  height: 100vh;
   width: 100vw;
   display:flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center; 
 }
 
 
-/* 
+
 .infinity {
     width: 120px;
     height: 60px;
@@ -158,7 +158,7 @@ section.loader{
     100% {
         transform: translate(32px, -8px) scale(0);
     }
-}
- */
+} 
+
   
 </style>

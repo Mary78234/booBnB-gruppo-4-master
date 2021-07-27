@@ -14,6 +14,8 @@ class House extends Model
         'description',
         'beds',
         'bathrooms',
+        'rooms_number',
+        'visibility',
         'square_metre',
         'country',
         'region',
@@ -21,11 +23,11 @@ class House extends Model
         'address',
         'postal_code',
         'house_number',
-        'lat',
-        'long',
+        'position',
         'image',
         'visibility',
-        'user_id'
+        'user_id',
+        'image_original_name'
     ];
 
 
@@ -42,8 +44,8 @@ class House extends Model
         return $this->hasMany('App\View');
     }
 
-    public function features(){
-        return $this->belongsToMany('App\Feature');
+    public function services(){
+        return $this->belongsToMany('App\Service');
     }
 
     public function sponsors(){

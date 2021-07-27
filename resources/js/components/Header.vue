@@ -21,15 +21,15 @@
                         </router-link>
                     </h1>
                 </div>
-                <div class="menu col-12">
+                <div class="menu container col-12">
                     <ul class="row">
-                        <li class="col-offset-3 col-1">
+                        <li class="col-offset-2 col-2">
                             <router-link :to="{name: 'home'}">Home</router-link>
                         </li>
                         <li class="col-4">
                             <input type="text" placeholder="Cerca...">
                         </li>
-                        <li class="col-1 col-offset-3">
+                        <li class="col-2 col-offset-2">
                             <div class="dropdown-menu">
                                 <button class="dropdown-btn">
                                     Account
@@ -114,36 +114,56 @@ $boolgreen: #00E165;
         list-style: none;
         margin: 0;
         li {
+            line-height: 50px;
+            height: 50px;
             a:hover {
                 border-radius: 50px;
                 background-color: rgba(235, 233, 233, 0.9);
             }
         }
     }
+    ul.row {
+        margin: 0;
+        padding: 0;
+    }
     input {
         border: none;
         border-bottom: 2px solid $boolblue;
-        width: 100%;
+        width: 90%;
         outline: none;
         color: $boolblue;
+        margin: 0 5%;
+    }
+    .menu-search {
+        line-height: 50px;
+        margin-bottom: 20px;
     }
     .dropdown-menu {
         position: relative;
-        text-align: center;
         display: inline-block;
         border: none;
+        height: 50px;
+        min-width: 0;
+        top: 0;
+        padding: 0;
+        margin: 0;
         width: 100%;
-        button {
+        text-align: center;
+        button.dropdown-btn {
             border: none;
             background-color: white;
             font-weight: 700;
+            height: 50px;
             color: $boolblue;
-            height: 100%;
+            text-align: center;
             width: 100%;
+            padding: 0;
+            margin: 0;
         }
         .dropdown-content {
             position: absolute;
             left: 50%;
+            transform: translateX(-50%);
             display: none;
             z-index: 1;
             text-align: center;
@@ -157,7 +177,7 @@ $boolgreen: #00E165;
 }
 
 @media (max-width: 767px) {
-    .menu {
+    .menu.container {
         display: none;
     }
 }
