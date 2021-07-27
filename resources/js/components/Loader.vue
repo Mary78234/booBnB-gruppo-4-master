@@ -1,8 +1,8 @@
 <template>
   <section class="loader">
     <div class="loader-container">
-      <!-- <h1 class="text-center">Loader</h1> -->
-      <div class="infinity">
+      <h1 class="text-center">Loader</h1>
+      <!-- <div class="infinity">
         <div>
             <span></span>
         </div>
@@ -13,7 +13,7 @@
             <span></span>
         </div>
       </div>
-
+ -->
       
     </div>
   </section>
@@ -158,7 +158,7 @@ section.loader{
     100% {
         transform: translate(32px, -8px) scale(0);
     }
-}
+} 
 
   
 </style>
