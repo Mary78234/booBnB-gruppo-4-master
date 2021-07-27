@@ -16,9 +16,29 @@
         </div>
     @endif
     
-    <form class="bg-light" action="{{route('user.house.store')}}" method="POST">
+
+    <form class="bg-light" action="{{route('user.house.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('POST')
+
+        {{-- <div class="mb-4">
+            <label for="visibility">Visibile</label>
+            <select class="form-control @error('visibility') is-invalid @enderror" name="visibility" id="visibility">
+    
+                <option value="1">Si</option>
+                
+                <option value="0">no</option>
+    
+            </select>
+        </div> --}}
+        
+        <div>
+        <p>Visibile</p>
+        <input type="radio" id="visibility" name="visibility" value="1" checked>
+        <label for="visibility">Si</label>
+        <input type="radio" id="visibility" name="visibility" value="0")>
+        <label for="visibility">No</label>   
+        </div>
 
         <div class="mt-2">
             <label class="label-control" for="title">TITOLO</label>
@@ -29,8 +49,8 @@
         </div>
         {{-- poi da sostituire --}}
         <div class="mt-2">
-            <label class="label-control" for="image">INSERISCI IMMAGINE(momentaneo)</label>
-            <input type="text" id="image" name="image" class="form-control @error('image') is-invalid @enderror" value="{{ old('image') }}">
+            <label class="label-control" for="image">INSERISCI IMMAGINE</label>
+            <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror">
             @error('image')
             <div class="text-danger">{{ $message }}</div>
              @enderror
@@ -39,6 +59,14 @@
         <div class="mt-2">
             <label class="label-control" for="title">Descrizione</label>
             <textarea type="text" id="description" name="description" class="form-control" rows="3">{{old('description')}}</textarea>
+        </div>
+
+        <div class="mt-2">
+            <label class="label-control" for="rooms_number">NUMERO DI STANZE:</label>
+            <input type="number" onKeyPress="if(this.value.length==3) return false;" id="rooms_number" name="rooms_number" class="form-control @error('rooms_number') is-invalid @enderror" value="{{ old('rooms_number') }}">
+            @error('rooms_number')
+            <div class="text-danger">{{ $message }}</div>
+           @enderror
         </div>
 
         <div class="mt-2">
@@ -88,7 +116,7 @@
 
         <div class="mt-2">
             <label class="label-control" for="address">INDIRIZZO:</label>
-            <input type="text" onKeyPress="if(this.value.length==4) return false;"  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
+            <input type="text"  return false;  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
             @error('address')
             <div class="text-danger">{{ $message }}</div>
             @enderror
@@ -104,27 +132,29 @@
         
         <div class="mt-2">
             <label class="label-control" max="99999" for="postal_code">CODICE POSTALE:</label>
-            <input type="number" onKeyPress="if(this.value.length==4) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
+            <input  type="number" onKeyPress="if(this.value.length==5) return false;" id="postal_code" name="postal_code" class="form-control @error('postal_code') is-invalid @enderror" value="{{ old('postal_code') }}">
             @error('postal_code')
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
 
-        <div class="mt-2">
-            <H3>Altri Servizi:</H3>
-            @foreach ($features as $feature)
-                <span>
-
-                    <input type="checkbox" name="features[]" id="feature{{ $loop->iteration }} 
-                    value={{ $feature->id }}"
-                    @if (in_array($feature->id,old('features',[])))
+        <div class="row mt-5 mb-5">
+            <h2>Servizi:</h2>
+            <div class="form-check">
+              @foreach ($services as $service)
+                <span class="d-inline-block mr-3">
+                    <input type="checkbox" name="services[]" id="service{{ $loop->iteration }}"
+                    value="{{ $service->id }}"
+                    @if (in_array($service->id,old('services',[])))
                     checked
                     @endif>
-                    <label for="feature{{ $loop->iteration }}">{{ $feature->name }}</label>
-
+                    <label for="service{{ $loop->iteration }}"> {{ $service->name }} </label>
                 </span>
-            @endforeach
-        </div>
+              @endforeach
+              @error('services')
+            <div class="text-danger">{{ $message }}</div>
+            @enderror
+            </div>
 
 
         <div class="mt-2">
@@ -136,4 +166,12 @@
     </form>
 
 </div>
+<script>
+
+
+
+
+</script>
+
+
 @endsection

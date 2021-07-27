@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHouseFeatureTable extends Migration
+class CreateHouseServiceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,17 @@ class CreateHouseFeatureTable extends Migration
      */
     public function up()
     {
-        Schema::create('house_feature', function (Blueprint $table) {
-            
-
+        Schema::create('house_service', function (Blueprint $table) {
             $table->unsignedBigInteger('house_id');
             $table->foreign('house_id')
                   ->references('id')
                   ->on('houses')
                   ->onDelete('cascade');
 
-            $table->unsignedBigInteger('feature_id');
-            $table->foreign('feature_id')
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')
                   ->references('id')
-                  ->on('features')
+                  ->on('services')
                   ->onDelete('cascade');      
         });
     }
@@ -37,6 +35,6 @@ class CreateHouseFeatureTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('house_feature');
+        Schema::dropIfExists('house_service');
     }
 }

@@ -27,13 +27,15 @@ class HouseRequest extends FormRequest
             'title' => 'required|max:255',
             'beds' => 'required|numeric',
             'bathrooms' => "required|numeric",
+            'rooms_number' => "required|numeric",
             'country' => 'required',
             'region' => 'required',
             'city' => 'required',
             'address' => 'required',
             'postal_code' => 'required|numeric',
             'house_number' => 'required|numeric',
-            'image' => 'required'
+            'image' => 'nullable|image|max:32000',
+            'service' => 'nullable|exists:service,id',
         ];
     }
 
@@ -45,6 +47,7 @@ class HouseRequest extends FormRequest
             'title.max' => 'Sono consentiti al massimo :max caratteri',
             'beds.required' => 'Devi specificare il numero di posti letto',
             'bathrooms.required' => 'Devi specificare il numero di bagni',
+            'rooms_number.required' => 'Devi specificare il numero di stanze',
             'country.required' => 'Devi inserire il paese',
             'region.required' => 'Devi inserire una regione',
             'city.required' => 'Devi inserire la città',
@@ -52,6 +55,9 @@ class HouseRequest extends FormRequest
             'postal_code.required' => 'Devi inserire il codice postale',
             'house_number.requiredr' => 'Devi inserire un numero civico',
             'image.required' => 'Bisogna inserire un\'immagine',
+            'service.exists' => 'Il servizio scelto non è presente',
+            'image.image' => 'Il file caricato non è un\'immagine',
+            'image.max' => 'L\'immagine è troppo pesante! Sono consentiti al massimo :max kb'
         ];
     }
 }

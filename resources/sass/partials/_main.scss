@@ -2,6 +2,12 @@
   background-color: white;
   min-height: calc(100vh - 355px);
 }
+.map-div{
+  width: 400px;
+  height: 400px;
+}
+
+
 
 .card{
 
@@ -62,6 +68,7 @@
         }
       }
     .user-options{
+      
       margin-bottom: 30px;
       ul{
         margin: 0;
