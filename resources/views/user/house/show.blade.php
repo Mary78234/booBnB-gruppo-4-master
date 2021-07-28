@@ -5,21 +5,18 @@
     
     <h1 class="text-center mb-4">Dettagli: {{ $house->title }}</h1>
     <div class="offset-xs-4 col-xs-4">
-        @if ($house->image)
-            <div class="img-area text-center mb-5" style="width:80%; margin:0 auto; height: 65vh;">
-                <img style="width: 100%;  height: 100%" src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
+        @if ($house->image === null)
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Immagine non caricata.</h2>  
+            </div> 
+        @else
+
+            <div class="img-area text-center mb-5" style="width:80%; margin:0 auto; ">
+                <img style="width: 100%;" src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
             </div>
             
-        
         @endif   
     </div>
-
-    
-       
-            
-        
-    
-    
     
     <div class="row mb-5">
         <div class="col-xs-12 offset-lg-1 col-lg-5">
@@ -43,30 +40,34 @@
 
         <div class="col-xs-12 offset-lg-1 col-lg-5">
             <h2>Indirizzo:</h2>
-        <ul style="list-style-type: none; padding: 0;">
-            <li>{{ $house->address }} {{ $house->house_number }}</li>
-            <li>{{ $house->postal_code }}</li>
-            <li>{{ $house->city }}</li>
-            <li>{{ $house->region }}</li>
-            <li>{{ $house->country }}</li>
-            
-            
-            
-            
-        </ul>
+            <ul style="list-style-type: none; padding: 0;">
+                <li>{{ $house->address }} {{ $house->house_number }}</li>
+                <li>{{ $house->postal_code }}</li>
+                <li>{{ $house->city }}</li>
+                <li>{{ $house->region }}</li>
+                <li>{{ $house->country }}</li>
+                
+            </ul>
         </div>
     
         
     </div>
     
+    {{-- conta se ci sono servizi  --}}
+    @if (count($house->services) === 0)
     <div class="col-xs-12 text-center mb-5">
-        <h2>Servizi:</h2>
-    <ul style="list-style-type: none; padding: 0;">
-        @foreach ($house->services as $service)
-            <li class="mr-3" style=" display: inline;">{{ $service->name }}</li>
-        @endforeach
-    </ul>
-    </div>
+        <h2>Non ci sono servizi</h2>  
+    </div> 
+    @else
+        <div class="col-xs-12 text-center mb-5">
+            <h2>Servizi:</h2>
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach ($house->services as $service)
+                    <li class="mr-3" style=" display: inline;">{{ $service->name }}</li>
+                @endforeach
+            </ul>
+        </div> 
+    @endif
     
     
     <h2 class="text-center mb-3">Posizione:</h2>
@@ -78,18 +79,33 @@
     <div class="text-center mb-5">
         <a class="btn btn-primary" href="{{ route('user.house.edit', $house) }}">Modifica</a>
         <a class="btn btn-info">Visualizza</a>
-        <a class="btn btn-success"">Sponsorizza</a>
+        <a class="btn btn-success">Sponsorizza</a>
     </div>
+
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}
-    <h1 class="text-center">Lista Messaggi:</h1>
-    <ul style="list-style-type: none; padding: 0;">
-        @foreach ($messages as $message)
-            <li>
-                <h5 class="text-center">{{ $message->title }}</h5>
-                <p>{{ $message->content }}</p>
-            </li>
-        @endforeach
-    </ul>
+    <div class="mb-5">
+        @if (count($messages) === 0)
+        <div class="col-xs-12 text-center mb-5">
+            <h2>Non ci sono messaggi.</h2>  
+        </div> 
+        @else
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Messaggi:</h2>
+                <ul style="list-style-type: none; padding: 0;">
+                    @foreach ($messages as $message)
+                        <li>
+                            <h5 class="text-center">{{ $message->title }}</h5>
+                            <p>{{ $message->content }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div> 
+        @endif
+
+    </div>
+    {{-- /SEZIONE MESSAGGI DA TERMINARE --}}
+
+        
   
 </div>
 {{-------------------------MAPPA----------------------}}
