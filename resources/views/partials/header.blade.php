@@ -11,7 +11,7 @@
             <div id="navbarSupportedContent" class="menu col-12">
                 <ul>
                     <li>
-                        <a href="{{ route('home') }}">{{ __('Home') }}</a>
+                        <a href="{{ url('/') }}">{{ __('Home') }}</a>
                     </li>
                     <li>
                         <input type="text" placeholder="Cerca...">

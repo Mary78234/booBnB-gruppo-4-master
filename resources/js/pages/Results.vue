@@ -10,11 +10,12 @@
             <div class="risultati">
               <ul>
                 <li class="row"
-                v-for="house in houses" :key="house.id">
-                  <img class="col-sm-12 col-md-6 col-lg-4" :src="house.image" alt="">
+                   v-for="house in houses" :key="house.id">
+                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
                     <h3>{{ house.title }}</h3>
                     <p class="description">{{house.description}}</p>
+                    
                   </div>
                 </li>
 
@@ -48,6 +49,12 @@ export default {
     }
   },
   methods:{
+
+    resetResult(){
+      this.houses = []
+    },
+
+    
      findLocation(obj){
        const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
        const APPLICATION_NAME = 'BoolBnB';
@@ -81,6 +88,7 @@ export default {
 
      },
      getLocations(obj){
+       this.resetResult()
        axios.get('http://localhost:8000/api/houses?city=' + obj)
             .then(res=>{
               this.firstData = res.data.houses;

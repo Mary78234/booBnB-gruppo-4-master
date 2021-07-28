@@ -4,7 +4,7 @@
            v-model="textToSearch"
            placeholder="Cerca...">
           <button
-           @click="$emit('textToSearch',{text:textToSearch})"
+           @click="$emit('textToSearch',{text:textToSearch}), resetText()"
           >Cerca</button>
 
     </div>
@@ -17,6 +17,13 @@ export default {
         return{
             textToSearch: ''
         }
+    },
+    methods:{
+        resetText(){
+         let reset = '';
+         this.textToSearch = reset;
+         return this.textToSearch 
+  }
     }
 }
 </script>

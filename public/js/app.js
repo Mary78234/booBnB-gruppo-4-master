@@ -2228,6 +2228,13 @@ __webpack_require__.r(__webpack_exports__);
     return {
       textToSearch: ''
     };
+  },
+  methods: {
+    resetText: function resetText() {
+      var reset = '';
+      this.textToSearch = reset;
+      return this.textToSearch;
+    }
   }
 });
 
@@ -2593,6 +2600,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2609,6 +2617,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    resetResult: function resetResult() {
+      this.houses = [];
+    },
     findLocation: function findLocation(obj) {
       var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
       var APPLICATION_NAME = 'BoolBnB';
@@ -2641,6 +2652,7 @@ __webpack_require__.r(__webpack_exports__);
     getLocations: function getLocations(obj) {
       var _this = this;
 
+      this.resetResult();
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses?city=' + obj).then(function (res) {
         _this.firstData = res.data.houses;
         /* console.log(this.firstData), */
@@ -4510,7 +4522,8 @@ var render = function() {
       {
         on: {
           click: function($event) {
-            return _vm.$emit("textToSearch", { text: _vm.textToSearch })
+            _vm.$emit("textToSearch", { text: _vm.textToSearch }),
+              _vm.resetText()
           }
         }
       },
@@ -5072,7 +5085,10 @@ var render = function() {
                       return _c("li", { key: house.id, staticClass: "row" }, [
                         _c("img", {
                           staticClass: "col-sm-12 col-md-6 col-lg-4",
-                          attrs: { src: house.image, alt: "" }
+                          attrs: {
+                            src: "http://localhost:8000/storage/" + house.image,
+                            alt: ""
+                          }
                         }),
                         _vm._v(" "),
                         _c(
