@@ -1,3 +1,4 @@
+import axios from '../../../public/js/user';
 <template>
     <!-- <header>
         <div class="container text-center">
@@ -26,9 +27,16 @@
                         <li class="col-offset-3 col-1">
                             <router-link :to="{name: 'home'}">Home</router-link>
                         </li>
-                        <li class="col-4">
-                            <input type="text" placeholder="Cerca...">
-                        </li>
+                        <!-- <li class="col-4">
+
+                            <input type="text" 
+                            v-model="textToSearch"
+                            placeholder="Cerca...">
+                            <button
+                            @click="$emit('textToSearch',{text:textToSearch})"
+                            >Cerca</button>
+
+                        </li> -->
                         <li class="col-1 col-offset-3">
                             <div class="dropdown-menu">
                                 <button class="dropdown-btn">
@@ -61,9 +69,25 @@
 </template>
 
 <script>
+
+
 export default {
-    name: 'Header'
+    name: 'Header',
+    components: {
+
+    },
+    data(){
+        return{
+            
+        }
+    },
+    methods:{
+       
+    },
+    created(){
+    }
 }
+
 </script>
 
 <style lang="scss" scoped>

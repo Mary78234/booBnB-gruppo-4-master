@@ -77,7 +77,6 @@ class HouseController extends Controller
         $urlEncode = rawurlencode($url);
         $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
         
-        
         $lat= $response['results']['0']['position']['lat'];
         $long= $response['results']['0']['position']['lon'];
         $new_house->lat = $lat;

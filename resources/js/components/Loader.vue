@@ -1,10 +1,5 @@
 <template>
   <section class="loader">
-<<<<<<< HEAD
-    <div class="container text-center">
-      
-      <h1>ciao a tutti</h1>
-=======
     <div class="loader-container">
       <h1 class="text-center">Loader</h1>
       <!-- <div class="infinity">
@@ -18,7 +13,6 @@
             <span></span>
         </div>
       </div> -->
->>>>>>> 5079499965d7f4c906b0cb0a04fbd3d437d57daf
 
       
     </div>
@@ -43,7 +37,7 @@ section.loader{
 }
 
 
-/* 
+
 .infinity {
     width: 120px;
     height: 60px;
@@ -165,6 +159,6 @@ section.loader{
         transform: translate(32px, -8px) scale(0);
     }
 }
- */
+
   
 </style>
