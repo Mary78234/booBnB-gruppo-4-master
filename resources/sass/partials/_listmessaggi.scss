@@ -1,0 +1,22 @@
+.list-messagi{
+  h4,h5{
+    margin-bottom: 30px;
+    color: #04459E;
+  }
+}
+.info{
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  li{
+    color: #5597DC;
+    a{
+      padding: 5px 20px;
+      border: 1px solid lightblue;
+      text-decoration: none;
+      border-radius: 25px;
+      text-align: center;
+    }
+  }
+}

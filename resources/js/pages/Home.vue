@@ -20,6 +20,9 @@
 
         <!-- slider con le sponsorizzazioni -->
         <Slider />
+        <Error404 />
+        <MessageConfirmation />
+        
 
     </main>
 </template>
@@ -27,12 +30,16 @@
 <script>
 import Slider from '../components/Slider.vue';
 import Loader from '../components/Loader.vue';
+import Error404 from './Error404.vue';
+import MessageConfirmation from '../components/MessageConfirmation.vue';
 
 export default {
     name: 'Home',
     components: {
         Slider,
-        Loader
+        Loader,
+        Error404,
+        MessageConfirmation
     }
 }
 </script>
