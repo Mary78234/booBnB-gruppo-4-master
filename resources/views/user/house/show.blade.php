@@ -5,12 +5,16 @@
     
     <h1 class="text-center mb-4">Dettagli: {{ $house->title }}</h1>
     <div class="offset-xs-4 col-xs-4">
-        @if ($house->image)
+        @if ($house->image === null)
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Immagine non caricata.</h2>  
+            </div> 
+        @else
+
             <div class="img-area text-center mb-5" style="width:80%; margin:0 auto; ">
                 <img style="width: 100%;" src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
             </div>
             
-        
         @endif   
     </div>
     
@@ -49,9 +53,12 @@
         
     </div>
     
-   {{--  @if ($house->services === '')
-        <div>Non ci sono servizi</div>
-    @else --}}
+    {{-- conta se ci sono servizi  --}}
+    @if (count($house->services) === 0)
+    <div class="col-xs-12 text-center mb-5">
+        <h2>Non ci sono servizi</h2>  
+    </div> 
+    @else
         <div class="col-xs-12 text-center mb-5">
             <h2>Servizi:</h2>
             <ul style="list-style-type: none; padding: 0;">
@@ -60,7 +67,7 @@
                 @endforeach
             </ul>
         </div> 
-   {{--  @endif --}}
+    @endif
     
     
     <h2 class="text-center mb-3">Posizione:</h2>
@@ -74,16 +81,31 @@
         <a class="btn btn-info">Visualizza</a>
         <a class="btn btn-success">Sponsorizza</a>
     </div>
+
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}
-    <h1 class="text-center">Lista Messaggi:</h1>
-    <ul style="list-style-type: none; padding: 0;">
-        @foreach ($messages as $message)
-            <li>
-                <h5 class="text-center">{{ $message->title }}</h5>
-                <p>{{ $message->content }}</p>
-            </li>
-        @endforeach
-    </ul>
+    <div class="mb-5">
+        @if (count($messages) === 0)
+        <div class="col-xs-12 text-center mb-5">
+            <h2>Non ci sono messaggi.</h2>  
+        </div> 
+        @else
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Messaggi:</h2>
+                <ul style="list-style-type: none; padding: 0;">
+                    @foreach ($messages as $message)
+                        <li>
+                            <h5 class="text-center">{{ $message->title }}</h5>
+                            <p>{{ $message->content }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div> 
+        @endif
+
+    </div>
+    {{-- /SEZIONE MESSAGGI DA TERMINARE --}}
+
+        
   
 </div>
 {{-------------------------MAPPA----------------------}}

@@ -19,27 +19,27 @@
         </section>
 
         <!-- slider con le sponsorizzazioni -->
-        <Slider />
+        <!-- <Slider />
         <Error404 />
-        <MessageConfirmation />
+        <MessageConfirmation /> -->
         
 
     </main>
 </template>
 
 <script>
-import Slider from '../components/Slider.vue';
+/* import Slider from '../components/Slider.vue';
 import Loader from '../components/Loader.vue';
 import Error404 from './Error404.vue';
-import MessageConfirmation from '../components/MessageConfirmation.vue';
+import MessageConfirmation from '../components/MessageConfirmation.vue'; */
 
 export default {
     name: 'Home',
     components: {
-        Slider,
+        /* Slider,
         Loader,
         Error404,
-        MessageConfirmation
+        MessageConfirmation */
     }
 }
 </script>

@@ -2,7 +2,7 @@
         {{-- DASHBOARD - MAIN --}}
 @section('content')
 
-<section class="jumbotron">
+{{-- <section class="jumbotron">
     <div class="container text-center">
         <h1>Qui inizia la tua avventura!</h1>
         <h5>Esperienze uniche in luoghi magnifici.</h5>
@@ -11,7 +11,7 @@
             <span>Ricerca Avanzata</span>
         </router-link>
     </div>
-</section>
+</section> --}}
 
 <div class="login-animation">
     {{ __('Benvenuto! Questa è la dashboard.') }}
