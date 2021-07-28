@@ -45,7 +45,8 @@ export default {
   data(){
     return{
         firstData:[],
-        houses : []
+        houses : [],
+        
     }
   },
   methods:{
@@ -61,39 +62,40 @@ export default {
        const APPLICATION_VERSION = '1.0';
         
        tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-
+        this.getLocations(obj.text);
        tt.services.fuzzySearch({
          key: apiKey,
          query: obj.text
        })
+
+
        .then(function(response) {
-                let map = tt.map({
+                let mymap = tt.map({
                 key: apiKey,
                 container: 'map',
                 center: response.results[0].position,
                 zoom: 15
               });
-       });
-       
-        this.getLocations(obj.text);
+              console.log(this.houses);
+              this.houses.forEach(function (child) {
+                new tt.Marker().setLngLat(child.geometry).addTo(mymap);
+            });
+                
+       })
+        
      },
-      markerLocation() {
-          this.houses.forEach(house=>{
-              const city = house.city;
-              const address = house.address;
-              const location = house.geometry;
-              let cityStoresList = document.getElementById(city);
-              const marker = new tt.Marker().setLngLat(location).setPopup(new tt.Popup({offset: 35}).setHTML(address)).addTo(map);
-          })
-
-     },
+    
      getLocations(obj){
        this.resetResult()
-       axios.get('http://localhost:8000/api/houses?city=' + obj)
+       axios.get('http://localhost:8000/api/houses?',{
+         params:{
+           city : obj
+         }
+       })
             .then(res=>{
               this.firstData = res.data.houses;
               /* console.log(this.firstData), */
-                  console.log(this.firstData)
+                  /* console.log(this.firstData) */
               this.firstData.forEach(house => {
 
                     this.houses.push(
@@ -106,15 +108,15 @@ export default {
                         city: house.city,
                         address: house.address,
                         postal_code: house.address,
-                        geometry: {
+                        geometry: [{
                             lat: house.lat,
                             lng: house.long
-                        },
+                        }],
                         image : house.image
                       }
                     )
             },
-            console.log(this.houses)
+            /* console.log(this.houses) */
             );  
             })
             .catch(err=>{
@@ -124,14 +126,11 @@ export default {
      
   },
   mounted(){
-    this.markerLocation();
+   
     this.findLocation(this.place);
     
   },
-  computed:{
-    
-
-  }
+  
 }
 </script>
 
