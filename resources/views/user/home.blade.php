@@ -13,18 +13,30 @@
     </div>
 </section>
 
+<div class="login-animation">
+    {{ __('Benvenuto! Questa è la dashboard.') }}
+</div>
+
 <section class="dashboard container">
     <div class="dashboard-item new-house">
-        Aggiungi casa
+        <a href="{{ route('user.house.create') }}">
+            Aggiungi casa
+        </a>
     </div>
     <div class="dashboard-item see-houses">
-        Vedi case
+        <a href="{{ route('user.house.index') }}">
+            Vedi case
+        </a>
     </div>
     <div class="dashboard-item messages">
-        Messaggi
+        <a href="{{ route('user.message.index') }}">
+            Messaggi
+        </a>
     </div>
     <div class="dashboard-item sponsor">
-        Sponsorizza
+        <a href="{{ route('user.sponsor') }}">
+            Sponsorizza
+        </a>
     </div>
 </section>
 
