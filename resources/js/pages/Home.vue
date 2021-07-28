@@ -1,7 +1,7 @@
 <template>
     <main>
 
-        <Loader />
+        <!-- <Loader /> -->
 
         <section class="jumbotron">
 
