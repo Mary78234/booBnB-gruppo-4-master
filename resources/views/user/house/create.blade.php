@@ -154,7 +154,7 @@
               @error('services')
             <div class="text-danger">{{ $message }}</div>
             @enderror
-            </div>
+        </div>
 
 
         <div class="mt-2">
@@ -167,6 +167,7 @@
 
 </div>
 <script>
+
 
 
 
