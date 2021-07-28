@@ -12,8 +12,8 @@
         <div>
             <span></span>
         </div>
-      </div>
- -->
+      </div> -->
+
       
     </div>
   </section>
@@ -157,7 +157,7 @@ section.loader{
     100% {
         transform: translate(32px, -8px) scale(0);
     }
-} 
+}
 
   
 </style>

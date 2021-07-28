@@ -1,52 +1,29 @@
 <template>
   <main>
     <section>
+      <Search 
+      @textToSearch = 'findLocation'
+      />
       <div class="contenedor-risultati">
         <div class="content-house-resultati row ">
           <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
             <div class="risultati">
               <ul>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
+                <li class="row"
+                   v-for="house in houses" :key="house.id">
+                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
+                    <h3>{{ house.title }}</h3>
+                    <p class="description">{{house.description}}</p>
+                    
                   </div>
                 </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
+
               </ul>
             </div>
           </div>
 
-          <div class="right col-sm-12 col-md-12 col-lg-6">
-            <img class="img-fluid" src="https://via.placeholder.com/600x400" alt="">
+          <div id="map" style="width: 400px; height: 400px;" class="right col-sm-12 col-md-12 col-lg-6">
           </div>
         </div>
       </div>
@@ -57,14 +34,106 @@
 
 <script>
 import Loader from '../components/Loader.vue';
-
+import Search from '../components/Search.vue';
+import axios from 'axios';
 export default {
   name: 'Results',
   components: {
-    Loader
-  }
+    Loader,
+    Search
+  },
+  data(){
+    return{
+        firstData:[],
+        houses : [],
+        
+    }
+  },
+  methods:{
+
+    resetResult(){
+      this.houses = []
+    },
+
+    
+     findLocation(obj){
+       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+       const APPLICATION_NAME = 'BoolBnB';
+       const APPLICATION_VERSION = '1.0';
+        
+       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+        this.getLocations(obj.text);
+       tt.services.fuzzySearch({
+         key: apiKey,
+         query: obj.text
+       })
+
+
+       .then(function(response) {
+                let mymap = tt.map({
+                key: apiKey,
+                container: 'map',
+                center: response.results[0].position,
+                zoom: 15
+              });
+              console.log(this.houses);
+              this.houses.forEach(function (child) {
+                new tt.Marker().setLngLat(child.geometry).addTo(mymap);
+            });
+                
+       })
+        
+     },
+    
+     getLocations(obj){
+       this.resetResult()
+       axios.get('http://localhost:8000/api/houses?',{
+         params:{
+           city : obj
+         }
+       })
+            .then(res=>{
+              this.firstData = res.data.houses;
+              /* console.log(this.firstData), */
+                  /* console.log(this.firstData) */
+              this.firstData.forEach(house => {
+
+                    this.houses.push(
+                      {
+                        id: house.id,
+                        title: house.title,
+                        description: house.description,
+                        country: house.country,
+                        region: house.region,
+                        city: house.city,
+                        address: house.address,
+                        postal_code: house.address,
+                        geometry: [{
+                            lat: house.lat,
+                            lng: house.long
+                        }],
+                        image : house.image
+                      }
+                    )
+            },
+            /* console.log(this.houses) */
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+     },
+     
+  },
+  mounted(){
+   
+    this.findLocation(this.place);
+    
+  },
+  
 }
 </script>
+
 
 <style lang="scss" scoped>
  .contenedor-risultati{

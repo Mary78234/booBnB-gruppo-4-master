@@ -149,7 +149,10 @@
               @error('services')
             <div class="text-danger">{{ $message }}</div>
             @enderror
+<<<<<<< HEAD
             
+=======
+>>>>>>> ale-dalponte
         </div>
 
         <div class="mb-4">
