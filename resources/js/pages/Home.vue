@@ -1,7 +1,6 @@
 <template>
     <main>
 
-        <!-- <Loader /> -->
 
         <section class="jumbotron">
         
@@ -57,17 +56,11 @@
 </template>
 
 <script>
-/* import Slider from '../components/Slider.vue';
-import Loader from '../components/Loader.vue';
-import Error404 from './Error404.vue';
-import MessageConfirmation from '../components/MessageConfirmation.vue'; */
 
 import Search from '../components/Search.vue';
 import axios from 'axios';
 export default {
     components: {
-        Slider,
-        Loader,
         Search
     },
      data(){

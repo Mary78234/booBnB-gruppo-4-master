@@ -32,13 +32,11 @@
 </template>
 
 <script>
-import Loader from '../components/Loader.vue';
 import Search from '../components/Search.vue';
 import axios from 'axios';
 export default {
   name: 'Results',
   components: {
-    Loader,
     Search
   },
   data(){

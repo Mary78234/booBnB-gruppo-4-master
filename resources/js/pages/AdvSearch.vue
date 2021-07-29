@@ -1,6 +1,6 @@
 <template>
   <main>
-    <!-- <Loader /> -->
+    
 
     <section>
       <div class="contenedor-search-av">
@@ -138,12 +138,10 @@
 </template>
 
 <script>
-import Loader from '../components/Loader.vue';
 import Search from '../components/Search.vue';
 export default {
   name: 'AdvSearch',
   components: {
-    Loader,
     Search
   },
   data(){

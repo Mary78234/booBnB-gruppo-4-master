@@ -1,7 +1,7 @@
 <template>
   <main>
     
-    <Loader />
+    
 
     <section>
       <div class="container text-center">
@@ -13,12 +13,10 @@
 </template>
 
 <script>
-import Loader from '../components/Loader.vue';
 
 export default {
   name: 'Message',
   components: {
-    Loader
   }
 }
 </script>

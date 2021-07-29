@@ -65,14 +65,11 @@
 </template>
 
 <script>
-
-import Loader from '../components/Loader.vue';
 import MessageForm from '../components/MessageForm.vue';
 
 export default {
   name: 'House',
   components: {
-    Loader,
     MessageForm
   }
 }
