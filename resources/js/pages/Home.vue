@@ -59,22 +59,12 @@
 <script>
 /* import Slider from '../components/Slider.vue';
 import Loader from '../components/Loader.vue';
-<<<<<<< HEAD
 import Error404 from './Error404.vue';
 import MessageConfirmation from '../components/MessageConfirmation.vue'; */
 
-export default {
-    name: 'Home',
-    components: {
-        /* Slider,
-        Loader,
-        Error404,
-        MessageConfirmation */
-=======
 import Search from '../components/Search.vue';
 import axios from 'axios';
 export default {
-    name: 'Home',
     components: {
         Slider,
         Loader,
@@ -85,7 +75,6 @@ export default {
         firstData:[],
         houseLocation : [],
         allData: []
->>>>>>> ale-dalponte
     }
   },
   methods:{
