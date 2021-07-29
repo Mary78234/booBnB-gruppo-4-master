@@ -9,7 +9,7 @@
             <div class="container text-center">
                 <Search @textToSearch = 'findLocation'/>
                 
-                 <div class="contenedor-risultati">
+                 <!-- <div class="contenedor-risultati">
                  <div class="content-house-resultati row ">
                  <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
                  <div class="risultati">
@@ -28,16 +28,12 @@
                  <div id="map-div" style="width: 400px; height: 400px;" class="right col-sm-12 col-md-12 col-lg-6">
           </div>
         </div>
-      </div>
+      </div> -->
                 <div>
 
-                    <h1>Qui inizia la tua avventura!</h1>
+                <h1>Qui inizia la tua avventura!</h1>
                 <h5>Esperienze uniche in luoghi magnifici.</h5>
                 <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
-
-                <router-link class="nav-link" :to="{name: 'advsearch'}">
-                   <span>Ricerca Avanzata</span>
-                </router-link>
 
                 </div>
 
@@ -186,20 +182,10 @@ section.jumbotron{
     display:flex;
     justify-content: center;
     align-items: center;
-    .nav-link span{
-        background-color: white;
-        padding: 10px 50px;
-        border-radius: 10px;   
-        transition:0.5s; 
+    h1 {
+      margin-top: 100px;
     }
-    .nav-link span:hover{
-            box-shadow: 0px 0px 15px rgba(204, 204, 204, 0.884);
-            color: rgb(31, 31, 255);
-    }
+
 }
-
-
-
-
 
 </style>
