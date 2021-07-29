@@ -11,8 +11,8 @@
               <ul>
                 <li class="row"
                    v-for="house in houses" :key="house.id">
-                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
+                  <img class="img-fluid col-sm-12 col-md-6 col-lg-4" :src="'storage/' + house.image" alt="">
+                  <div class="col-sm-12 col-md-6 col-lg-8 description">
                     <h3>{{ house.title }}</h3>
                     <p class="description">{{house.description}}</p>
                     
