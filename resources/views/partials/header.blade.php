@@ -8,15 +8,32 @@
                     </a>
                 </h1>
             </div>
-            <div class="menu container col-12">
-                <ul class="row">
-                    <li class="col-offset-2 col-2">
+            <div class="menu col-12">
+                <ul>
+                    <li>
                         <a href="{{ url('/') }}">{{ __('Home') }}</a>
                     </li>
-                    <li class="col-4">
-                        <input type="text" placeholder="Cerca...">
+                    <li>
+                        <a href="{{ route('user.house.create') }}">
+                            Aggiungi casa
+                        </a>
                     </li>
-                    <li class="col-2 col-offset-2">
+                    <li>
+                        <a href="{{ route('user.house.index') }}">
+                            Vedi case
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.message.index') }}">
+                            Messaggi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.sponsor') }}">
+                            Sponsorizza
+                        </a>
+                    </li>
+                    <li>
                         <div class="dropdown-menu">
                             <button class="dropdown-btn">
                                 Account
@@ -28,8 +45,6 @@
                                     <a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 @endif
                                 @else
-                                <a class="dropdown-item" href="{{ route('user.home') }}">Dashboard</a>
-                                <a class="dropdown-item" href="{{ route('user.house.create') }}">Nuova Casa</a>
                                 <a class="dropdown-item" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->email }}
                                 </a>
@@ -59,9 +74,22 @@
                         <a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a>
                     @endif
                     @else
-                    <a class="dropdown-item" href="{{ route('user.home') }}">Dashboard</a>
-                    <a class="dropdown-item" href="{{ route('user.house.create') }}">Nuova Casa</a>
-                    <a class="dropdown-item" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <a class="dropdown-item" href="{{ route('user.home') }}">
+                        Dashboard
+                    </a>
+                    <a class="dropdown-item" href="{{ route('user.house.create') }}">
+                        Aggiungi casa
+                    </a>
+                    <a class="dropdown-item" href="{{ route('user.house.index') }}">
+                        Vedi case
+                    </a>
+                    <a class="dropdown-item" href="{{ route('user.message.index') }}">
+                        Messaggi
+                    </a>
+                    <a class="dropdown-item" href="{{ route('user.sponsor') }}">
+                        Sponsorizza
+                    </a>
+                    <a class="dropdown-item" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre href="{{ route('user.home') }}">
                         {{ Auth::user()->email }}
                     </a>
                     <div class="dropdown-item" aria-labelledby="navbarDropdown">
