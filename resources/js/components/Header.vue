@@ -14,8 +14,9 @@
                         <li class="col-offset-2 col-2">
                             <router-link :to="{name: 'home'}">Home</router-link>
                         </li>
-                        <li class="col-4">
-                            <input type="text" placeholder="Cerca...">
+                        <li class="search col-4">
+                            <input type="text">
+                            <button class="search-btn">Cerca</button>
                         </li>
                         <li class="col-2 col-offset-2">
                             <div class="dropdown-menu">
@@ -31,7 +32,8 @@
                     </ul>
                 </div>
                 <div class="menu-search col-12">
-                    <input type="text" placeholder="Cerca...">
+                    <input type="text">
+                    <button class="search-btn">Cerca</button>
                 </div>
                 <div class="dropdown-menu responsive col-12 row">
                     <button class="dropdown-btn">
@@ -66,7 +68,6 @@ $boolgreen: #00E165;
     box-shadow: 2px 2px 5px rgba(200, 200, 200, 0.9);
     color: $boolblue;
     font-weight: 700;
-    
     .logo {
         text-align: center;
         h1 {
@@ -85,8 +86,21 @@ $boolgreen: #00E165;
     .menu {
         text-align: center;
     }
-    .menu-search {
-        text-align: center;
+    button.search-btn {
+        width: 20%;
+        margin: 0 10% 0 0;
+        background-color: white;
+        color: $boolblue;
+        border: none;
+        border-bottom: 2px solid $boolblue;
+        font-weight: bold;
+    }
+    .search {
+        display: flex;
+        input {
+            width: 70%;
+            margin: 0 0 0 10%;
+        }
     }
     a {
         text-decoration: none;
@@ -105,7 +119,6 @@ $boolgreen: #00E165;
             line-height: 50px;
             height: 50px;
             a:hover {
-                border-radius: 50px;
                 background-color: rgba(235, 233, 233, 0.9);
             }
         }
@@ -125,6 +138,12 @@ $boolgreen: #00E165;
     .menu-search {
         line-height: 50px;
         margin-bottom: 20px;
+        text-align: center;
+        display: flex;
+        input {
+            width: 70%;
+            margin: 0 0 0 10%;
+        }
     }
     .dropdown-menu {
         position: relative;
@@ -164,14 +183,14 @@ $boolgreen: #00E165;
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
     .menu.container {
         display: none;
     }
 }
 
-@media (min-width: 768px) {
-    .dropdown-menu.row.responsive, .menu-search {
+@media (min-width: 992px) {
+    .dropdown-menu.row.responsive, .menu-search.col-12 {
         display: none;
     }
 }
