@@ -22,19 +22,23 @@ class HouseController extends Controller
     {   
         
         
-        $position = Http::get('https://api.tomtom.com/search/2/geocode/' . $request->input('city') . '.json?radius=5000&key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
+        $position = Http::get('https://api.tomtom.com/search/2/geocode/' . $request->input('city') . '.json?radius=20000&key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
 
+        
+        $mylat = $position['results']['0']['position']['lat'];
+        $mylng = $position['results']['0']['position']['lon'];
 
-        $maxlat = $position['results']['0']['viewport']['topLeftPoint']['lat'];
-        $minlat = $position['results']['0']['viewport']['btmRightPoint']['lat'];
-        $maxlng = $position['results']['0']['viewport']['topLeftPoint']['lon'];
-        $minlng = $position['results']['0']['viewport']['btmRightPoint']['lon'];
-        
-        
+        $radius = 20000;
+        $km = 0.009;
+
+        $maxlat = $mylat + $radius * $km;
+        $minlat = $mylat - $radius * $km;
+        $maxlng = $mylng + $radius * $km;
+        $minlng = $mylng - $radius * $km;
         
         $houses = House::with('services')
                 ->whereBetween('lat', [$minlat, $maxlat])
-                /* ->whereBetween('long', [$minlng, $maxlng])  */
+                ->whereBetween('long', [$minlng, $maxlng]) 
                 ->where('visibility', true)->orderBy('id','DESC');
 
                 
@@ -51,6 +55,65 @@ class HouseController extends Controller
         
         return response()->json(compact('houses'));
     }
+
+    public function advsearch(Request $request)
+    {   
+        
+        
+        $position = Http::get('https://api.tomtom.com/search/2/geocode/' . $request->input('city') . '.json?radius=20000&key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
+      
+
+        $mylat = $position['results']['0']['position']['lat'];
+        $mylng = $position['results']['0']['position']['lon'];
+        $radius= $request('radius');
+    
+        /* $radius = 200000; */
+        $km = 0.009;
+
+        $maxlat = $mylat + $radius * $km;
+        $minlat = $mylat - $radius * $km;
+        $maxlng = $mylng + $radius * $km;
+        $minlng = $mylng - $radius * $km;
+        
+        
+        
+        $houses = House::with('services')
+                ->whereBetween('lat', [$minlat, $maxlat])
+                ->whereBetween('long', [$minlng, $maxlng]) 
+                ->where('visibility', true)->orderBy('id','DESC');
+
+
+        if ($request->has('city')) {
+            $houses = $houses->where('city', 'like', '%' . $request->input('city') . '%');
+        };
+        if ($request->has('rooms_number')) {
+            $houses = $houses->where('rooms_number', '<=', $request->input('rooms_number'));
+        };
+        
+        if($request->has('service-name')){
+            $tosearch = $request->input('service-name');
+            $houses = House::with('services')->whereHas('services',function(Builder $query) use ($tosearch){
+                $query->where('name','=',$tosearch);
+            });
+        };
+       
+        $houses = $houses->get();
+        
+        return response()->json(compact('houses'));
+        
+
+        }
+    public function alldata(){
+
+        $houses = House::with('services')
+             ->where('visibility', true)
+             ->get();
+
+
+        return response()->json($houses);
+
+    }
+
 
 
     public function show($slug)
@@ -73,5 +136,7 @@ class HouseController extends Controller
             'error' => 'Nessun post trovato'
         ]);
     }
+
+    
 
 }

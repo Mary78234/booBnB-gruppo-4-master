@@ -7,7 +7,7 @@
 
         <div class="search">
           <h2>Cerca Citta</h2>
-          <input type="search">
+          <input v-model="advAdress" type="search">
         </div>
         <div class="content-house-search row ">
           <div class="left col-sm-12 col-md-12 col-lg-6">
@@ -108,19 +108,155 @@
       </div>
 
     </section>
+     <section>
+      
+      <div class="contenedor-risultati">
+        <div class="content-house-resultati row ">
+          <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
+            <div class="risultati">
+              <ul>
+                <li class="row"
+                   v-for="house in firstData" :key="house.id">
+                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
+                  <div class="col-sm-12 col-md-12 col-lg-8 description">
+                    <h3>{{ house.title }}</h3>
+                    <p class="description">{{house.description}}</p>
+                    
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
 
+          <div id="map" style="width: 400px; height: 400px;" class="right col-sm-12 col-md-12 col-lg-6">
+          </div>
+        </div>
+      </div>
+    </section>
     
   </main>
 </template>
 
 <script>
+<<<<<<< HEAD
 /* import Loader from '../components/Loader.vue'; */
 
 export default {
   name: 'AdvSearch',
   components: {
     /* Loader */
+=======
+import Loader from '../components/Loader.vue';
+import Search from '../components/Search.vue';
+export default {
+  name: 'AdvSearch',
+  components: {
+    Loader,
+    Search
+  },
+  data(){
+    return{
+        firstData:[],
+        houseLocation : [],
+        allData: []
+    }
+  },
+  methods:{
+
+    resetResult(){
+      this.houseLocation = []
+    },
+
+     findLocation(obj){
+       this.getLocations(obj.text);
+       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+       const APPLICATION_NAME = 'BoolBnB';
+       const APPLICATION_VERSION = '1.0';
+       let outerthis = this;
+       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+        
+
+
+        tt.services.fuzzySearch({
+         key: apiKey,
+         query: obj.text
+       })
+
+       .then(function(response) {
+                let mymap = tt.map({
+                key: apiKey,
+                container: 'map-div',
+                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+                center: response.results[0].position,
+                zoom: 15
+              });  
+                outerthis.houseLocation.forEach(child=>{
+                new tt.Marker().setLngLat(child).addTo(mymap);
+              })       
+       })
+       
+        
+     },
+    
+     getLocations(obj){
+       this.resetResult()
+       axios.get('http://localhost:8000/api/houses?',{
+         params:{
+           city : obj
+         }
+       })
+            .then(res=>{
+              this.firstData = res.data.houses;
+              /* console.log(this.firstData), */
+                 console.log(this.firstData);
+              this.firstData.forEach(house => {
+                    this.houseLocation.push(
+                      {
+                            lat: house.lat,
+                            lng: house.long
+                      }
+                    )
+                    
+            },
+                
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+     },
+     
+  },
+  mounted(){
+   
+    this.findLocation(this.place);
+    
+  },
+  created(){
+
+    axios.get('http://localhost:8000/api/houses')
+            .then(res=>{
+              this.allData = res.data.houses;
+              /* console.log(this.firstData), */
+                 console.log(this.firstData);
+              this.allData.forEach(house => {
+                    this.houseLocation.push(
+                      {
+                            lat: house.lat,
+                            lng: house.long
+                      }
+                    )
+            },
+            
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+>>>>>>> ale-dalponte
   }
+  
+
 }
 </script>
 

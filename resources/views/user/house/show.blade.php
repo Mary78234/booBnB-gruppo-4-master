@@ -140,7 +140,6 @@
          let cityStoresList = document.getElementById(city);
          const marker = new tt.Marker().setLngLat(pos).setPopup(new tt.Popup({offset: 35}).setHTML(title + '<br>' + city + ' ' + address + ' ' + houseNumber)).addTo(map);
 
-
 </script> 
 
 
