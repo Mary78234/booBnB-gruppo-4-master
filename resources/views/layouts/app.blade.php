@@ -18,10 +18,15 @@
     <script  src = "https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.5.0/services/services-web.min.js" ></script>
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.11/SearchBox-web.js"></script>
     <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.11/SearchBox.css'>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
+    <!-- Fontawsome -->
+    <script defer src="~@fortawesome/fontawesome-free/scss/brands"></script>
+    <script defer src="~@fortawesome/fontawesome-free/scss/solid"></script>
+    <script defer src="~@fortawesome/fontawesome-free/scss/fontawsome"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -31,7 +36,7 @@
    
             @include('partials.header')
 
-            <main class="py-4 main-content">
+            <main class="main-content">
                 @yield('content')
             </main>
 
