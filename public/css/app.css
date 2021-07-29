@@ -1,7 +1,4 @@
 @import url(https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap);@charset "UTF-8";
-/* @import url('../font/airbnb-cereal/style.css'); 
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;600;700;800;900&display=swap'); */
 /*!
  * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -16135,11 +16132,10 @@ h3 {
   }
 }
 .navbar-container {
-  width: 100vw;
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: white;
-  box-shadow: 2px 2px 5px rgba(208, 208, 208, 0.898);
+  box-shadow: 2px 2px 5px rgba(200, 200, 200, 0.9);
   color: #04459e;
   font-weight: 700;
 }
@@ -16148,6 +16144,9 @@ h3 {
 }
 .navbar-container .logo h1 a {
   color: black;
+}
+.navbar-container .logo:hover h1 a {
+  color: #04459e;
 }
 .navbar-container .menu {
   text-align: center;
@@ -16167,87 +16166,83 @@ h3 {
   margin: 0;
 }
 .navbar-container ul li {
-  margin-left: 15px;
-  margin-right: 15px;
-  font-size: 12.5px;
-}
-.navbar-container ul li a {
-  padding: 13px;
+  line-height: 50px;
+  height: 50px;
+  margin: 0 20px;
 }
 .navbar-container ul li a:hover {
-  border-radius: 50px;
-  background-color: rgba(235, 233, 233, 0.981);
+  background-color: rgba(235, 233, 233, 0.9);
 }
-.navbar-container ul input {
+.navbar-container ul.row {
+  margin: 0;
+  padding: 0;
+}
+.navbar-container input {
   border: none;
   border-bottom: 2px solid #04459e;
-  width: 400px;
+  width: 90%;
   outline: none;
   color: #04459e;
+  margin: 0 5%;
 }
-
-@media (min-width: 200px) and (max-width: 549px) {
-  .bigbar ul {
-    padding: 0;
-    display: flex;
-    align-items: center;
-  }
-  .bigbar ul li {
-    margin: 0;
-    text-align: right;
-    width: 100%;
-    float: left;
-  }
-}
-.main-content {
-  /* height: calc(100vh - 60px); */
-  background-image: url("https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg");
-  background-size: cover;
-  background-position-y: center;
-  background-position-x: center;
-}
-
-.card {
-  margin-top: 50px;
-  box-shadow: 0px 0px 10px rgba(155, 155, 155, 0.898);
-  border: none;
-  background-color: rgba(255, 255, 255, 0.9);
-}
-.card .card-header {
-  background-color: #04459e;
-  color: white;
-  /* @keyframes welcome {
-    0% {
-      opacity: 0;
-    }
-
-    100% {
-      opacity: 1;
-
-    }
-  } */
-}
-.card .card-header a {
-  color: white;
-  text-decoration: none;
-}
-.card .card-header .welcome-animation {
-  color: white;
-  float: right;
-  /* animation-name: welcome;
-  animation-fill-mode: forwards;
-  animation-duration: 5s; */
-}
-.card .card-body {
-  height: 36;
-  position: relative;
-  padding-top: 8px;
-  padding-bottom: 5px;
+.navbar-container .menu-search {
+  line-height: 50px;
+  margin-bottom: 20px;
   text-align: center;
 }
-.card .card-body .login-animation {
+.navbar-container .dropdown-menu {
+  position: relative;
+  display: inline-block;
+  border: none;
+  height: 50px;
+  min-width: 0;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+}
+.navbar-container .dropdown-menu button.dropdown-btn {
+  border: none;
+  background-color: white;
+  font-weight: 700;
+  height: 50px;
   color: #04459e;
-  line-height: 50px;
+  text-align: center;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.navbar-container .dropdown-menu .dropdown-content {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  z-index: 1;
+  text-align: center;
+  background-color: white;
+}
+.navbar-container .dropdown-menu:active .dropdown-content,
+.navbar-container .dropdown-menu:hover .dropdown-content {
+  display: block;
+}
+
+@media (max-width: 991px) {
+  .menu {
+    display: none;
+  }
+}
+@media (min-width: 992px) {
+  .dropdown-menu.row.responsive, .menu-search {
+    display: none;
+  }
+}
+.login-animation {
+  color: white;
+  line-height: 100px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 24px;
   -webkit-animation-duration: 3s;
           animation-duration: 3s;
   -webkit-animation-delay: 1s;
@@ -16257,6 +16252,7 @@ h3 {
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
 }
+
 @-webkit-keyframes disappear {
   0% {
     opacity: 1;
@@ -16266,6 +16262,7 @@ h3 {
     display: none;
   }
 }
+
 @keyframes disappear {
   0% {
     opacity: 1;
@@ -16275,34 +16272,63 @@ h3 {
     display: none;
   }
 }
-.card .card-body .user-options {
-  margin-bottom: 30px;
-}
-.card .card-body .user-options ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.card .card-body .user-options ul li {
-  width: 120px;
-  margin-bottom: 20px;
-  background-color: #ededed;
-  border-radius: 30px;
-  padding: 10px;
-  text-align: center;
-  box-shadow: 0px 0px 5px rgba(208, 208, 208, 0.898);
-}
-.card .card-body .user-options ul li a {
+.dashboard-background {
   width: 100%;
-  text-decoration: none;
-  color: #04459e;
-  font-size: 12px;
+  /* background-color: $boolblue; */
 }
-.card .card-body .user-options ul li:hover {
+
+.divider {
+  width: 100%;
+  height: 100px;
   background-color: #04459e;
+  margin: 0;
 }
-.card .card-body .user-options ul li:hover a {
+
+.dashboard {
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.dashboard .new-house {
+  background-image: url("https://customhomesottawa.ca/wp-content/uploads/2016/05/placeholder-house1.jpg");
+}
+.dashboard .see-houses {
+  background-image: url("https://www.ryanhomes.com/images/ryan/hero-image-slider-placeholder.jpeg");
+}
+.dashboard .messages {
+  background-image: url("https://i.insider.com/5b364d558faac38b088b4779?width=700");
+}
+.dashboard .sponsor {
+  background-image: url("https://static.bangkokpost.com/media/content/dcx/2020/06/23/3670196.jpg");
+}
+.dashboard .dashboard-item {
+  width: 300px;
+  height: 300px;
+  line-height: 300px;
+  margin: 50px;
+  background-size: cover;
+  font-weight: bold;
+  text-align: center;
+  font-size: 24px;
+  position: relative;
+  box-shadow: 0px 0px 20px rgba(100, 100, 100, 0.5);
+}
+.dashboard .dashboard-item a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 300px;
+  line-height: 300px;
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
+}
+.dashboard .dashboard-item a:hover {
+  font-size: 30px;
+  text-decoration: none;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
 }
 
 footer {
