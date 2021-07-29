@@ -1,17 +1,5 @@
 import axios from '../../../public/js/user';
 <template>
-    <!-- <header>
-        <div class="container text-center">
-
-            <h1>Questo è l header</h1>
-            <router-link class="nav-link" :to="{name: 'home'}">Torna alla home</router-link>
-            <router-link class="nav-link" :to="{name: 'results'}">Search</router-link>
-            <a href="http://localhost:8000/user">Login</a>
-            <a href="http://localhost:8000/register">Register</a>
-
-        </div>
-    </header>  -->
-
     <header>
         <nav class="navbar-container">
             <div class="navbar">
@@ -22,22 +10,15 @@ import axios from '../../../public/js/user';
                         </router-link>
                     </h1>
                 </div>
-                <div class="menu col-12">
-                    <ul class="row">
-                        <li class="col-offset-3 col-1">
+                <div class="menu container col-12">
+                    <ul>
+                        <li>
                             <router-link :to="{name: 'home'}">Home</router-link>
                         </li>
-                        <!-- <li class="col-4">
-
-                            <input type="text" 
-                            v-model="textToSearch"
-                            placeholder="Cerca...">
-                            <button
-                            @click="$emit('textToSearch',{text:textToSearch})"
-                            >Cerca</button>
-
-                        </li> -->
-                        <li class="col-1 col-offset-3">
+                        <li>
+                            <router-link :to="{name: 'advsearch'}">Ricerca Avanzata</router-link>
+                        </li>
+                        <li>
                             <div class="dropdown-menu">
                                 <button class="dropdown-btn">
                                     Account
@@ -50,15 +31,13 @@ import axios from '../../../public/js/user';
                         </li>
                     </ul>
                 </div>
-                <div class="menu-search col-12">
-                    <input type="text" placeholder="Cerca...">
-                </div>
                 <div class="dropdown-menu responsive col-12 row">
                     <button class="dropdown-btn">
                         Menù
                     </button>
                     <div class="dropdown-content">
                         <router-link :to="{name: 'home'}" class="dropdown-item">Home</router-link>
+                        <router-link :to="{name: 'advsearch'}" class="dropdown-item">Ricerca Avanzata</router-link>
                         <a href="http://localhost:8000/user" class="dropdown-item">Login</a>
                         <a href="http://localhost:8000/register" class="dropdown-item">Register</a>
                     </div>
@@ -102,7 +81,6 @@ $boolgreen: #00E165;
     box-shadow: 2px 2px 5px rgba(200, 200, 200, 0.9);
     color: $boolblue;
     font-weight: 700;
-    
     .logo {
         text-align: center;
         h1 {
@@ -121,8 +99,21 @@ $boolgreen: #00E165;
     .menu {
         text-align: center;
     }
-    .menu-search {
-        text-align: center;
+    button.search-btn {
+        width: 20%;
+        margin: 0 10% 0 0;
+        background-color: white;
+        color: $boolblue;
+        border: none;
+        border-bottom: 2px solid $boolblue;
+        font-weight: bold;
+    }
+    .search {
+        display: flex;
+        input {
+            width: 70%;
+            margin: 0 0 0 10%;
+        }
     }
     a {
         text-decoration: none;
@@ -138,36 +129,62 @@ $boolgreen: #00E165;
         list-style: none;
         margin: 0;
         li {
+            line-height: 50px;
+            height: 50px;
+            margin: 0 20px;
             a:hover {
-                border-radius: 50px;
                 background-color: rgba(235, 233, 233, 0.9);
             }
         }
     }
+    ul.row {
+        margin: 0;
+        padding: 0;
+    }
     input {
         border: none;
         border-bottom: 2px solid $boolblue;
-        width: 100%;
+        width: 90%;
         outline: none;
         color: $boolblue;
+        margin: 0 5%;
+    }
+    .menu-search {
+        line-height: 50px;
+        margin-bottom: 20px;
+        text-align: center;
+        display: flex;
+        input {
+            width: 70%;
+            margin: 0 0 0 10%;
+        }
     }
     .dropdown-menu {
         position: relative;
-        text-align: center;
         display: inline-block;
         border: none;
+        height: 50px;
+        min-width: 0;
+        top: 0;
+        padding: 0;
+        margin: 0;
         width: 100%;
-        button {
+        text-align: center;
+        button.dropdown-btn {
             border: none;
             background-color: white;
             font-weight: 700;
+            height: 50px;
             color: $boolblue;
-            height: 100%;
+            text-align: center;
             width: 100%;
+            padding: 0;
+            margin: 0;
         }
         .dropdown-content {
             position: absolute;
             left: 50%;
+            transform: translateX(-50%);
             display: none;
             z-index: 1;
             text-align: center;
@@ -178,16 +195,19 @@ $boolgreen: #00E165;
     .dropdown-menu:hover .dropdown-content {
         display: block;
     }
+    router-link.dropdown-item {
+        background-color: white;
+    }
 }
 
-@media (max-width: 767px) {
-    .menu {
+@media (max-width: 991px) {
+    .menu.container {
         display: none;
     }
 }
 
-@media (min-width: 768px) {
-    .dropdown-menu.row.responsive, .menu-search {
+@media (min-width: 992px) {
+    .dropdown-menu.row.responsive {
         display: none;
     }
 }

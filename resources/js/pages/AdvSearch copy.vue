@@ -1,38 +1,39 @@
 <template>
   <main>
+    <!-- <Loader /> -->
 
-    <section class="container">
+    <section>
+      <div class="contenedor-search-av">
 
-      <div class="mb-5 mt-5">
+        <!-- <div class="search">
+          <h2>Cerca Citta</h2>
+          <input v-model="advAdress" type="search">
+        </div> -->
+
         <Search @textToSearch = 'findLocation'/>
-      </div>
 
-      <div class="contenedor-risultati">
-        <div class="content-house-resultati row">
-
-          <div class="left col-sm-12 col-md-12 col-lg-6">
+        <div class="content-house-search row ">
+          <!-- <div class="left col-sm-12 col-md-12 col-lg-6">
             <div class="first-left">
-              <h2>Casa</h2>
+              <h1>Casa</h1>
               <ul>
                 <li>
                   <label for="stanze">Stanze</label>
-                  <!-- <select id="stanze" name="rooms">
-                    <option v-for="n in 10" :key="n">{{ n }}</option>
-                  </select> -->
-                  <input 
-                    class="input-number" 
-                    type="number" 
-                    onKeyPress="if(this.value.length==2) return false;">
+                  <select id="stanze" name="rooms">
+                    <option value="letto1">1</option>
+                    <option value="letto2">2</option>
+                    <option value="letto3">3</option>
+                    <option value="letto4">4</option>
+                  </select>
                 </li>
                 <li>
                   <label for="letti">Letti</label>
-                  <!-- <select id="letti" name="beds">
-                    <option v-for="n in 30" :key="n">{{ n }}</option>
-                  </select> -->
-                  <input 
-                    class="input-number" 
-                    type="number" 
-                    onKeyPress="if(this.value.length==2) return false;">
+                  <select id="letti" name="beds">
+                    <option value="letto1">1</option>
+                    <option value="letto2">2</option>
+                    <option value="letto3">3</option>
+                    <option value="letto4">4</option>
+                  </select>
                 </li>
                 <li>
                   <label for="raggio">Raggio</label>
@@ -48,7 +49,7 @@
             </div>
 
             <div class="second-left">
-              <h2>Caratteristiche</h2>
+              <h1>Caratteristiche</h1>
               <form action="/action_page.php">
                 <ul>
                   <li>
@@ -98,32 +99,55 @@
                 </ul>
               </form>
             </div>
-          </div>
+          </div> -->
 
-          <div id="map-div" style="width: 400px; height: 500px;" class="right col-sm-12 col-md-12 col-lg-6">
-          </div>
-
-          <div class="left-risultati col-sm-12 col-md-12 col-lg-12">
-            <div class="risultati">
-              <ul>
-                <li 
-                class="row"
-                v-for="house in firstData" :key="house.id">
-                  <img 
-                  class="col-sm-12 col-md-6 col-lg-4" 
-                  :src="'http://localhost:8000/storage/' + house.image" 
-                  alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>{{ house.title }}</h3>
-                    <p class="description">{{house.description}}</p>
-                    <p class="services">Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}</p>
+          <div class="right col-sm-12 col-md-12 col-lg-6">
+            <div class="contenedor-risultati">
+              <div class="content-house-resultati row ">
+                <!-- <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
+                  <div class="risultati">
+                    <ul>
+                      <li 
+                        class="row"
+                        v-for="house in firstData" :key="house.id">
+                        <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
+                        <div class="col-sm-12 col-md-12 col-lg-8 description">
+                          <h3>{{ house.title }}</h3>
+                          <p class="description">{{house.description}}</p>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
-                </li>
-              </ul>
+                </div> -->
+
+                <div id="map" class="right col-sm-12 col-md-12 col-lg-6">
+                  <div class="contenedor-risultati">
+                    <div class="content-house-resultati row ">
+                      <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
+                        <div class="risultati">
+                          <ul>
+                            <li class="row"
+                            v-for="house in firstData" :key="house.id">
+                              <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
+                              <div class="col-sm-12 col-md-12 col-lg-8 description">
+                              <h3>{{ house.title }}</h3>
+                              <p class="description">{{house.description}}</p>
+                            </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div id="map-div" class="right col-sm-12 col-md-12 col-lg-6">
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
         </div>
+        
+        <!-- <router-link class="nav-link" :to="{name: 'house'}">House</router-link>
+        <a href="http://127.0.0.1:8000/results">search</a> -->
       </div>
 
     </section>
@@ -247,100 +271,74 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ .contenedor-search-av{
+   width: 100%;
+   margin-top: 15px;
+   
+    .search  {
+     width: 40%;
+     margin: auto;
+     h2{
+       margin-left: 5px;
+     }
+     input{
+       width: 100%;
+       font-style: none;
+       outline: none;
+       border-radius: 50px;
+       padding-left: 15px;
+      }
+    }
 
-$boolblue: #04459e;
-
-section {
-  min-height: 500px;
-  width: 100%;
-  margin-top: 15px;
-  .left{
-    padding: 20px 60px;
-    margin-top: 30px;
-    .first-left{
-      width: 100%;
-      margin-bottom: 30px;
-      ul{
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        li{
-          width: 200px;
-          margin-bottom: 10px;
-          select{
-            width: 65px;
-            margin-left: 10px;
+    .content-house-search{
+      margin: 0;
+      .left{
+        padding: 20px 60px;
+        margin-top: 30px;
+        .first-left{
+          width: 100%;
+          margin-bottom: 30px;
+          ul{
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            li{
+              width: 200px;
+              margin-bottom: 10px;
+              select{
+                width: 65px;
+                margin-left: 10px;
+              }
+              label{
+                width: 65px;
+              }
+              
+            }
           }
-          label{
-            width: 65px;
+        }
+
+        .second-left{
+          ul{
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            li{
+              width: 200px;
+              margin-bottom: 10px;
+            }
           }
         }
       }
-    }
-    .second-left{
-      ul{
-        list-style: none;
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 25px;
-        li{
-          width: 200px;
-          margin-bottom: 10px;
-        }
+      .right{
+        padding: 20px 60px;
+        margin-top: 30px;
+        text-align: center;
       }
     }
-  }
-  .right{
-    padding: 20px 60px;
-    margin-top: 30px;
-    text-align: center;
-    width: 300px;
-    height: 300px;
-    min-height: 300px;
-  }
-  .risultati {
-    li {
-      width: 80%;
-      margin: 10% auto;
-      img {
-        max-height: 100px;
-        max-width: 200px;
-      }
-      p.description {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 100%;
-      }
+    #map-div {
+      width: 300px;
+      height: 300px;
     }
   }
-  input.input-number {
-    width: 100px;
-    border: 1px solid $boolblue;
-    outline: none;
-    color: $boolblue;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  input[type=number] {
-    -moz-appearance: textfield;
-  }
-  select {
-    width: 100px;
-    border: 1px solid $boolblue;
-    outline: none;
-    color: $boolblue;
-    padding: 5px 10px;
-    border-radius: 5px;
-  }
-  ul {
-    padding-left: 0;
-  }
-}
-
 </style>

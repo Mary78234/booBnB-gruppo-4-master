@@ -29,11 +29,11 @@ export default {
 
 section.loader{
   background-color: rgb(255, 255, 255);
-  /* height: 100vh;
+  height: 100vh;
   width: 100vw;
   display:flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center; 
 }
 
 
