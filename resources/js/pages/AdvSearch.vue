@@ -7,7 +7,7 @@
 
         <div class="search">
           <h2>Cerca Citta</h2>
-          <input type="search">
+          <input v-model="advAdress" type="search">
         </div>
         <div class="content-house-search row ">
           <div class="left col-sm-12 col-md-12 col-lg-6">
@@ -120,6 +120,96 @@ export default {
   name: 'AdvSearch',
   components: {
     Loader
+  },
+  data(){
+    return{
+      advAdress: '',
+      advRooms: '',
+      advBeds: '',
+      advRadius: '',
+      advServices: '',
+    }
+  },
+  methods:{
+
+    resetResult(){
+      this.houses = []
+    },
+
+    
+     findLocation(obj){
+       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+       const APPLICATION_NAME = 'BoolBnB';
+       const APPLICATION_VERSION = '1.0';
+        
+       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+        this.getLocations(obj.text);
+       tt.services.fuzzySearch({
+         key: apiKey,
+         query: obj.text
+       })
+
+
+       .then(function(response) {
+                let mymap = tt.map({
+                key: apiKey,
+                container: 'map',
+                center: response.results[0].position,
+                zoom: 15
+              });
+              
+              this.houses.forEach(child=>{
+                 new tt.Marker().setLngLat(child.geometry).addTo(mymap);
+              })
+                
+       })
+        
+     },
+    
+     getLocations(obj){
+       this.resetResult()
+       axios.get('http://localhost:8000/api/houses?',{
+         params:{
+           city : obj
+         }
+       })
+            .then(res=>{
+              this.firstData = res.data.houses;
+              /* console.log(this.firstData), */
+                  /* console.log(this.firstData) */
+              this.firstData.forEach(house => {
+                    console.log(this.firstData);
+                    this.houses.push(
+                      {
+                        id: house.id,
+                        title: house.title,
+                        description: house.description,
+                        country: house.country,
+                        region: house.region,
+                        city: house.city,
+                        address: house.address,
+                        postal_code: house.address,
+                        geometry: [{
+                            lat: house.lat,
+                            lng: house.long
+                        }],
+                        image : house.image
+                      }
+                    )
+            },
+            
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+     },
+     
+  },
+  mounted(){
+   
+    this.findLocation(this.place);
+    
   }
 }
 </script>

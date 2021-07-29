@@ -10,7 +10,7 @@
             <div class="risultati">
               <ul>
                 <li class="row"
-                   v-for="house in houses" :key="house.id">
+                   v-for="house in firstData" :key="house.id">
                   <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
                     <h3>{{ house.title }}</h3>
@@ -18,7 +18,6 @@
                     
                   </div>
                 </li>
-
               </ul>
             </div>
           </div>
@@ -45,43 +44,44 @@ export default {
   data(){
     return{
         firstData:[],
-        houses : [],
-        
+        houseLocation : [],
+        allData: []
     }
   },
   methods:{
 
     resetResult(){
-      this.houses = []
+      this.houseLocation = []
     },
 
-    
      findLocation(obj){
+       this.getLocations(obj.text);
        const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
        const APPLICATION_NAME = 'BoolBnB';
        const APPLICATION_VERSION = '1.0';
-        
+       let outerthis = this;
        tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-        this.getLocations(obj.text);
-       tt.services.fuzzySearch({
+        
+
+
+        tt.services.fuzzySearch({
          key: apiKey,
          query: obj.text
        })
-
 
        .then(function(response) {
                 let mymap = tt.map({
                 key: apiKey,
                 container: 'map',
+                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
                 center: response.results[0].position,
                 zoom: 15
-              });
-              console.log(this.houses);
-              this.houses.forEach(function (child) {
-                new tt.Marker().setLngLat(child.geometry).addTo(mymap);
-            });
-                
+              });  
+              outerthis.houseLocation.forEach(child=>{
+                 new tt.Marker().setLngLat(child).addTo(mymap);
+              })       
        })
+       
         
      },
     
@@ -95,28 +95,17 @@ export default {
             .then(res=>{
               this.firstData = res.data.houses;
               /* console.log(this.firstData), */
-                  /* console.log(this.firstData) */
+                 console.log(this.firstData);
               this.firstData.forEach(house => {
-
-                    this.houses.push(
+                    this.houseLocation.push(
                       {
-                        id: house.id,
-                        title: house.title,
-                        description: house.description,
-                        country: house.country,
-                        region: house.region,
-                        city: house.city,
-                        address: house.address,
-                        postal_code: house.address,
-                        geometry: [{
                             lat: house.lat,
                             lng: house.long
-                        }],
-                        image : house.image
                       }
                     )
+                    
             },
-            /* console.log(this.houses) */
+            
             );  
             })
             .catch(err=>{
@@ -130,6 +119,28 @@ export default {
     this.findLocation(this.place);
     
   },
+  created(){
+
+    axios.get('http://localhost:8000/api/houses')
+            .then(res=>{
+              this.allData = res.data.houses;
+              /* console.log(this.firstData), */
+                 console.log(this.firstData);
+              this.allData.forEach(house => {
+                    this.houseLocation.push(
+                      {
+                            lat: house.lat,
+                            lng: house.long
+                      }
+                    )
+            },
+            
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+  }
   
 }
 </script>

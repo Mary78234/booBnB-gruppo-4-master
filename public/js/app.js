@@ -2401,6 +2401,81 @@ __webpack_require__.r(__webpack_exports__);
   name: 'AdvSearch',
   components: {
     Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      advAdress: '',
+      advRooms: '',
+      advBeds: '',
+      advRadius: '',
+      advServices: ''
+    };
+  },
+  methods: {
+    resetResult: function resetResult() {
+      this.houses = [];
+    },
+    findLocation: function findLocation(obj) {
+      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+      var APPLICATION_NAME = 'BoolBnB';
+      var APPLICATION_VERSION = '1.0';
+      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+      this.getLocations(obj.text);
+      tt.services.fuzzySearch({
+        key: apiKey,
+        query: obj.text
+      }).then(function (response) {
+        var mymap = tt.map({
+          key: apiKey,
+          container: 'map',
+          center: response.results[0].position,
+          zoom: 15
+        });
+        this.houses.forEach(function (child) {
+          new tt.Marker().setLngLat(child.geometry).addTo(mymap);
+        });
+      });
+    },
+    getLocations: function getLocations(obj) {
+      var _this = this;
+
+      this.resetResult();
+      axios.get('http://localhost:8000/api/houses?', {
+        params: {
+          city: obj
+        }
+      }).then(function (res) {
+        _this.firstData = res.data.houses;
+        /* console.log(this.firstData), */
+
+        /* console.log(this.firstData) */
+
+        _this.firstData.forEach(function (house) {
+          console.log(_this.firstData);
+
+          _this.houses.push({
+            id: house.id,
+            title: house.title,
+            description: house.description,
+            country: house.country,
+            region: house.region,
+            city: house.city,
+            address: house.address,
+            postal_code: house.address,
+            geometry: [{
+              lat: house.lat,
+              lng: house["long"]
+            }],
+            image: house.image
+          });
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.findLocation(this.place);
   }
 });
 
@@ -2446,6 +2521,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Slider_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Slider.vue */ "./resources/js/components/Slider.vue");
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
+/* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
 //
 //
 //
@@ -2472,13 +2550,132 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Home',
   components: {
     Slider: _components_Slider_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    Search: _components_Search_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: function data() {
+    return {
+      firstData: [],
+      houseLocation: [],
+      allData: []
+    };
+  },
+  methods: {
+    resetResult: function resetResult() {
+      this.houseLocation = [];
+    },
+    findLocation: function findLocation(obj) {
+      this.getLocations(obj.text);
+      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+      var APPLICATION_NAME = 'BoolBnB';
+      var APPLICATION_VERSION = '1.0';
+      var outerthis = this;
+      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+      tt.services.fuzzySearch({
+        key: apiKey,
+        query: obj.text
+      }).then(function (response) {
+        var mymap = tt.map({
+          key: apiKey,
+          container: 'map-div',
+          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+          center: response.results[0].position,
+          zoom: 15
+        });
+        outerthis.houseLocation.forEach(function (child) {
+          new tt.Marker().setLngLat(child).addTo(mymap);
+        });
+      });
+    },
+    getLocations: function getLocations(obj) {
+      var _this = this;
+
+      this.resetResult();
+      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('http://localhost:8000/api/houses?', {
+        params: {
+          city: obj
+        }
+      }).then(function (res) {
+        _this.firstData = res.data.houses;
+        /* console.log(this.firstData), */
+
+        console.log(_this.firstData);
+
+        _this.firstData.forEach(function (house) {
+          _this.houseLocation.push({
+            lat: house.lat,
+            lng: house["long"]
+          });
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.findLocation(this.place);
+  },
+  created: function created() {
+    var _this2 = this;
+
+    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('http://localhost:8000/api/houses').then(function (res) {
+      _this2.allData = res.data.houses;
+      /* console.log(this.firstData), */
+
+      console.log(_this2.firstData);
+
+      _this2.allData.forEach(function (house) {
+        _this2.houseLocation.push({
+          lat: house.lat,
+          lng: house["long"]
+        });
+      });
+    })["catch"](function (err) {
+      console.log(err);
+    });
   }
 });
 
@@ -2600,7 +2797,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 
@@ -2613,79 +2809,84 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       firstData: [],
-      houses: []
+      houseLocation: [],
+      allData: []
     };
   },
   methods: {
     resetResult: function resetResult() {
-      this.houses = [];
+      this.houseLocation = [];
     },
     findLocation: function findLocation(obj) {
+      this.getLocations(obj.text);
       var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
       var APPLICATION_NAME = 'BoolBnB';
       var APPLICATION_VERSION = '1.0';
+      var outerthis = this;
       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
       tt.services.fuzzySearch({
         key: apiKey,
         query: obj.text
       }).then(function (response) {
-        var map = tt.map({
+        var mymap = tt.map({
           key: apiKey,
           container: 'map',
+          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
           center: response.results[0].position,
           zoom: 15
         });
-      });
-      this.getLocations(obj.text);
-    },
-    markerLocation: function markerLocation() {
-      this.houses.forEach(function (house) {
-        var city = house.city;
-        var address = house.address;
-        var location = house.geometry;
-        var cityStoresList = document.getElementById(city);
-        var marker = new tt.Marker().setLngLat(location).setPopup(new tt.Popup({
-          offset: 35
-        }).setHTML(address)).addTo(map);
+        outerthis.houseLocation.forEach(function (child) {
+          new tt.Marker().setLngLat(child).addTo(mymap);
+        });
       });
     },
     getLocations: function getLocations(obj) {
       var _this = this;
 
       this.resetResult();
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses?city=' + obj).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses?', {
+        params: {
+          city: obj
+        }
+      }).then(function (res) {
         _this.firstData = res.data.houses;
         /* console.log(this.firstData), */
 
         console.log(_this.firstData);
 
         _this.firstData.forEach(function (house) {
-          _this.houses.push({
-            id: house.id,
-            title: house.title,
-            description: house.description,
-            country: house.country,
-            region: house.region,
-            city: house.city,
-            address: house.address,
-            postal_code: house.address,
-            geometry: {
-              lat: house.lat,
-              lng: house["long"]
-            },
-            image: house.image
+          _this.houseLocation.push({
+            lat: house.lat,
+            lng: house["long"]
           });
-        }, console.log(_this.houses));
+        });
       })["catch"](function (err) {
         console.log(err);
       });
     }
   },
   mounted: function mounted() {
-    this.markerLocation();
     this.findLocation(this.place);
   },
-  computed: {}
+  created: function created() {
+    var _this2 = this;
+
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses').then(function (res) {
+      _this2.allData = res.data.houses;
+      /* console.log(this.firstData), */
+
+      console.log(_this2.firstData);
+
+      _this2.allData.forEach(function (house) {
+        _this2.houseLocation.push({
+          lat: house.lat,
+          lng: house["long"]
+        });
+      });
+    })["catch"](function (err) {
+      console.log(err);
+    });
+  }
 });
 
 /***/ }),
@@ -4595,9 +4796,32 @@ var render = function() {
           "div",
           { staticClass: "contenedor-search-av" },
           [
-            _vm._m(0),
+            _c("div", { staticClass: "search" }, [
+              _c("h2", [_vm._v("Cerca Citta")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.advAdress,
+                    expression: "advAdress"
+                  }
+                ],
+                attrs: { type: "search" },
+                domProps: { value: _vm.advAdress },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.advAdress = $event.target.value
+                  }
+                }
+              })
+            ]),
             _vm._v(" "),
-            _vm._m(1),
+            _vm._m(0),
             _vm._v(" "),
             _c(
               "router-link",
@@ -4617,16 +4841,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "search" }, [
-      _c("h2", [_vm._v("Cerca Citta")]),
-      _vm._v(" "),
-      _c("input", { attrs: { type: "search" } })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -4939,18 +5153,86 @@ var render = function() {
           "div",
           { staticClass: "container text-center" },
           [
-            _c("h1", [_vm._v("Qui inizia la tua avventura!")]),
+            _c("Search", { on: { textToSearch: _vm.findLocation } }),
             _vm._v(" "),
-            _c("h5", [_vm._v("Esperienze uniche in luoghi magnifici.")]),
-            _vm._v(" "),
-            _c("h5", { staticClass: "mb-5" }, [
-              _vm._v("Entra nel magico mondo di BoolBnB.")
+            _c("div", { staticClass: "contenedor-risultati" }, [
+              _c("div", { staticClass: "content-house-resultati row " }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "left-risultati col-sm-12 col-md-12 col-lg-6"
+                  },
+                  [
+                    _c("div", { staticClass: "risultati" }, [
+                      _c(
+                        "ul",
+                        _vm._l(_vm.firstData, function(house) {
+                          return _c(
+                            "li",
+                            { key: house.id, staticClass: "row" },
+                            [
+                              _c("img", {
+                                staticClass: "col-sm-12 col-md-6 col-lg-4",
+                                attrs: {
+                                  src:
+                                    "http://localhost:8000/storage/" +
+                                    house.image,
+                                  alt: ""
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "col-sm-12 col-md-12 col-lg-8 description"
+                                },
+                                [
+                                  _c("h3", [_vm._v(_vm._s(house.title))]),
+                                  _vm._v(" "),
+                                  _c("p", { staticClass: "description" }, [
+                                    _vm._v(_vm._s(house.description))
+                                  ])
+                                ]
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", {
+                  staticClass: "right col-sm-12 col-md-12 col-lg-6",
+                  staticStyle: { width: "400px", height: "400px" },
+                  attrs: { id: "map-div" }
+                })
+              ])
             ]),
             _vm._v(" "),
             _c(
-              "router-link",
-              { staticClass: "nav-link", attrs: { to: { name: "advsearch" } } },
-              [_c("span", [_vm._v("Ricerca Avanzata")])]
+              "div",
+              [
+                _c("h1", [_vm._v("Qui inizia la tua avventura!")]),
+                _vm._v(" "),
+                _c("h5", [_vm._v("Esperienze uniche in luoghi magnifici.")]),
+                _vm._v(" "),
+                _c("h5", { staticClass: "mb-5" }, [
+                  _vm._v("Entra nel magico mondo di BoolBnB.")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "nav-link",
+                    attrs: { to: { name: "advsearch" } }
+                  },
+                  [_c("span", [_vm._v("Ricerca Avanzata")])]
+                )
+              ],
+              1
             )
           ],
           1
@@ -5081,7 +5363,7 @@ var render = function() {
                 _c("div", { staticClass: "risultati" }, [
                   _c(
                     "ul",
-                    _vm._l(_vm.houses, function(house) {
+                    _vm._l(_vm.firstData, function(house) {
                       return _c("li", { key: house.id, staticClass: "row" }, [
                         _c("img", {
                           staticClass: "col-sm-12 col-md-6 col-lg-4",
