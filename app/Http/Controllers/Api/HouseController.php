@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Service;
-use Grimzy\LaravelMysqlSpatial\Eloquent\Builder;
 use HousesTableSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,8 +64,6 @@ class HouseController extends Controller
 
         $mylat = $position['results']['0']['position']['lat'];
         $mylng = $position['results']['0']['position']['lon'];
-
-       
         $radius= $request('radius');
     
         /* $radius = 200000; */

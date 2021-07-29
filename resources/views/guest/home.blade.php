@@ -11,6 +11,7 @@
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.11/SearchBox-web.js"></script>
     <link rel='stylesheet' type='text/css' href='https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.11/SearchBox.css'>
     {{-- TOMTOM --}}
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>Home Pubblica</title>
 </head>
 <body>

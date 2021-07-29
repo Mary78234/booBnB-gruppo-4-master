@@ -1,65 +1,111 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container bg-light">
+<div class="container col-xs-12 offset-md-2 col-md-8">
     
-    <h1>DETTAGLI CASA: {{ $house->title }}</h1>
-    
-    <div>
-        @if ($house->image)
-
-            <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
-        
-        @endif        
-    </div>
-    <h2 class="mt-4">Descrizione</h2>
-    <p class="mt-2">{{ $house->description }}</p>
-
-    <h2>Caratteristiche:</h2>
-    <ul>
-        <li>Numero di stanze: {{ $house->rooms_number }}</li>
-        <li>Numero letti: {{ $house->beds }}</li>
-        <li>Bagni: {{ $house->bathrooms }}</li>
-        <li>Dimensione: {{ $house->square_metre }} metri quadri</li>
-        <li>Nazione: {{ $house->country }}</li>
-        <li>Regione: {{ $house->region }}</li>
-        <li>Città: {{ $house->city }}</li>
-        <li>Indirizzo: {{ $house->address }} {{ $house->house_number }}</li>
-        <li>Codice Postale: {{ $house->postal_code }}</li>
-        <li>Latitudine: {{ $house->lat }}</li>
-        <li>Longitudine: {{ $house->long }}</li>
-        @if ($house->visibility)
-        <li>Visibile: SI</li>
+    <h1 class="text-center mb-4">Dettagli: {{ $house->title }}</h1>
+    <div class="offset-xs-4 col-xs-4">
+        @if ($house->image === null)
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Immagine non caricata.</h2>  
+            </div> 
         @else
-        <li>Visibile: NO</li>  
+
+            <div class="img-area text-center mb-5" style="width:80%; margin:0 auto; ">
+                <img style="width: 100%;" src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
+            </div>
+            
+        @endif   
+    </div>
+    
+    <div class="row mb-5">
+        <div class="col-xs-12 offset-lg-1 col-lg-5">
+            <h2>Caratteristiche:</h2>
+        <ul class="text-left" style="list-style-type: none; padding: 0;">
+            <li>Numero di stanze: {{ $house->rooms_number }}</li>
+            <li>Numero letti: {{ $house->beds }}</li>
+            <li>Bagni: {{ $house->bathrooms }}</li>
+            <li>Dimensione: {{ $house->square_metre }} metri quadri</li>
+            
+            {{-- <li>Latitudine: {{ $house->lat }}</li>
+            <li>Longitudine: {{ $house->long }}</li> --}}
+            @if ($house->visibility)
+            <li>Visibile: SI</li>
+            @else
+            <li>Visibile: NO</li>  
+            @endif
+    
+        </ul>
+        </div>
+
+        <div class="col-xs-12 offset-lg-1 col-lg-5">
+            <h2>Indirizzo:</h2>
+            <ul style="list-style-type: none; padding: 0;">
+                <li>{{ $house->address }} {{ $house->house_number }}</li>
+                <li>{{ $house->postal_code }}</li>
+                <li>{{ $house->city }}</li>
+                <li>{{ $house->region }}</li>
+                <li>{{ $house->country }}</li>
+                
+            </ul>
+        </div>
+    
+        
+    </div>
+    
+    {{-- conta se ci sono servizi  --}}
+    @if (count($house->services) === 0)
+    <div class="col-xs-12 text-center mb-5">
+        <h2>Non ci sono servizi</h2>  
+    </div> 
+    @else
+        <div class="col-xs-12 text-center mb-5">
+            <h2>Servizi:</h2>
+            <ul style="list-style-type: none; padding: 0;">
+                @foreach ($house->services as $service)
+                    <li class="mr-3" style=" display: inline;">{{ $service->name }}</li>
+                @endforeach
+            </ul>
+        </div> 
+    @endif
+    
+    
+    <h2 class="text-center mb-3">Posizione:</h2>
+    {{-------------------------MAPPA----------------------}}
+    <div class="mb-5" style="width:100%; height: 75vh;" id='map-div'></div>
+    {{-------------------------MAPPA----------------------}}
+
+
+    <div class="text-center mb-5">
+        <a class="btn btn-primary" href="{{ route('user.house.edit', $house) }}">Modifica</a>
+        <a class="btn btn-info">Visualizza</a>
+        <a class="btn btn-success">Sponsorizza</a>
+    </div>
+
+    {{-- SEZIONE MESSAGGI DA TERMINARE --}}
+    <div class="mb-5">
+        @if (count($messages) === 0)
+        <div class="col-xs-12 text-center mb-5">
+            <h2>Non ci sono messaggi.</h2>  
+        </div> 
+        @else
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Messaggi:</h2>
+                <ul style="list-style-type: none; padding: 0;">
+                    @foreach ($messages as $message)
+                        <li>
+                            <h5 class="text-center">{{ $message->title }}</h5>
+                            <p>{{ $message->content }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div> 
         @endif
 
-    </ul>
-    <h3>Servizi:</h3>
-    <ul>
-        @foreach ($house->services as $service)
-            <li>{{ $service->name }}</li>
-        @endforeach
-    </ul>
-    <h3>MAPPA</h3>
-    {{-------------------------MAPPA----------------------}}
-    <div style="width:75%; height: 75vh; margin: 0 auto;" id='map-div'></div>
-    {{-------------------------MAPPA----------------------}}
-
-
-    <div>
-        <a class="btn btn-dark" href="{{ route('user.house.edit', $house) }}">Modifica</a>
     </div>
-    {{-- SEZIONE MESSAGGI DA TERMINARE --}}
-    <h1>Lista Messaggi:</h1>
-    <ul>
-        @foreach ($messages as $message)
-            <li>
-                <h5>{{ $message->title }}</h5>
-                <p>{{ $message->content }}</p>
-            </li>
-        @endforeach
-    </ul>
+    {{-- /SEZIONE MESSAGGI DA TERMINARE --}}
+
+        
   
 </div>
 {{-------------------------MAPPA----------------------}}
