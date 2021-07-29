@@ -11,7 +11,7 @@
             <div class="menu container col-12">
                 <ul class="row">
                     <li class="col-offset-2 col-2">
-                        <a href="{{ route('home') }}">{{ __('Home') }}</a>
+                        <a href="{{ url('/') }}">{{ __('Home') }}</a>
                     </li>
                     <li class="col-4">
                         <input type="text" placeholder="Cerca...">
