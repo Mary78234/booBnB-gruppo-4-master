@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::namespace('Api')
+        ->group(function(){
+            Route::get('houses/','HouseController@index')->name('api.houses');
+            Route::get('houses/alldata/', 'HouseController@alldata')->name('api.alldata');
+            Route::get('houses/advsearch/', 'HouseController@advsearch')->name('api.advsearch');
+            Route::get('houses/{slug}','HouseController@show')->name('show');
+        });

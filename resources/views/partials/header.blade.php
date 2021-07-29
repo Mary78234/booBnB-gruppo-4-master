@@ -11,9 +11,7 @@
             <div class="menu col-12">
                 <ul>
                     <li>
-                        <a href="{{ route('home') }}">
-                            {{ __('Home') }}
-                        </a>
+                        <a href="{{ url('/') }}">{{ __('Home') }}</a>
                     </li>
                     <li>
                         <a href="{{ route('user.house.create') }}">
