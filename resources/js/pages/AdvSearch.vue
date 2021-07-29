@@ -4,7 +4,16 @@
     <section class="container">
 
       <div class="mb-5 mt-5">
-        <Search @textToSearch = 'findLocation'/>
+        <div>
+        <input 
+            type="text" 
+            v-model="location"
+            placeholder="Cerca...">
+         <button
+            @click="findLocation(location)"  >
+            cerca
+        </button>
+    </div>
       </div>
 
       <div class="contenedor-risultati">
@@ -141,32 +150,39 @@ export default {
     Loader,
     Search
   },
+  props:{
+    location: String,
+  },
   data(){
     return{
         firstData:[],
         houseLocation : [],
-        allData: []
+        location : '',
+
     }
   },
   methods:{
+
+    saveLocation(location){
+      this.myLocation = location;
+      console.log(this.myLocation);
+    },
 
     resetResult(){
       this.houseLocation = []
     },
 
-     findLocation(obj){
-       this.getLocations(obj.text);
+     findLocation(location){
+       this.getLocations(location);
        const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
        const APPLICATION_NAME = 'BoolBnB';
        const APPLICATION_VERSION = '1.0';
        let outerthis = this;
        tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-        
-
 
         tt.services.fuzzySearch({
          key: apiKey,
-         query: obj.text
+         query: location
        })
 
        .then(function(response) {
@@ -176,10 +192,10 @@ export default {
                 style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
                 center: response.results[0].position,
                 zoom: 15
-              });  
+              });
                 outerthis.houseLocation.forEach(child=>{
                 new tt.Marker().setLngLat(child).addTo(mymap);
-              })       
+              })
        })
        
         
@@ -215,31 +231,13 @@ export default {
      
   },
   mounted(){
-   
-    this.findLocation(this.place);
+    this.saveLocation(location);
+    this.findLocation(this.location);
     
   },
   created(){
 
-    axios.get('http://localhost:8000/api/houses')
-            .then(res=>{
-              this.allData = res.data.houses;
-              /* console.log(this.firstData), */
-                 console.log(this.firstData);
-              this.allData.forEach(house => {
-                    this.houseLocation.push(
-                      {
-                            lat: house.lat,
-                            lng: house.long
-                      }
-                    )
-            },
-            
-            );  
-            })
-            .catch(err=>{
-              console.log(err);
-            })
+    
   }
   
 

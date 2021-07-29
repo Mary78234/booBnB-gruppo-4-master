@@ -67,9 +67,9 @@ class HouseController extends Controller
         $mylng = $position['results']['0']['position']['lon'];
 
        
-        $radius= $request('radius');
+        /* $radius= $request('radius'); */
     
-        /* $radius = 200000; */
+        $radius = 20000;
         $km = 0.009;
 
         $maxlat = $mylat + $radius * $km;
