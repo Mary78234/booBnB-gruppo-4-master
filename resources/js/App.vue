@@ -2,15 +2,16 @@
   <div>
     
     <Header />
-
-    <router-view></router-view>
     
+    <router-view></router-view>
+                 
     <Footer />
 
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 
@@ -19,7 +20,27 @@ export default {
   components: {
     Header,
     Footer
-  }
+  },
+  data() {
+        return {
+            FindLocation : ''
+    }
+  },
+    methods:{
+
+     
+        
+    },
+    created(){
+      
+    },
+    mounted(){
+      
+    },
+    computed:{
+     
+    }
+
 }
 </script>
 
