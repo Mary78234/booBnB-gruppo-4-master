@@ -4,7 +4,7 @@
     <section class="container">
 
       <div class="mb-5 mt-5">
-        <div>
+        <div class="search-location">
         <input 
             type="text" 
             v-model="location"
@@ -31,7 +31,10 @@
                   <input 
                     class="input-number" 
                     type="number" 
-                    onKeyPress="if(this.value.length==2) return false;">
+                    onKeyPress="if(this.value.length==2) return false;"
+                    v-model="roomsNumber"
+                    >
+                  
                 </li>
                 <li>
                   <label for="letti">Letti</label>
@@ -41,17 +44,18 @@
                   <input 
                     class="input-number" 
                     type="number" 
-                    onKeyPress="if(this.value.length==2) return false;">
+                    onKeyPress="if(this.value.length==2) return false;"
+                    v-model="beds"
+                    >
                 </li>
+                
                 <li>
-                  <label for="raggio">Raggio</label>
-                  <select id="raggio" name="raggio">
-                    <option value="raggio">1km</option>
-                    <option value="raggio">2km</option>
-                    <option value="raggio">5km</option>
-                    <option value="raggio">10km</option>
-                    <option value="raggio">20km</option>
-                  </select>
+                  <label for="radius">Km</label>
+                  <div class="d-flex">
+                  <input type="range" min="1" max="20" step="1" v-model="radius"> 
+                  <input class="ml-3" id="radius" type="text" v-model="radius"/>
+                  </div>
+                  
                 </li>
               </ul>
             </div>
@@ -158,11 +162,19 @@ export default {
         firstData:[],
         houseLocation : [],
         location : '',
-
+          /* ricerca avanzata */
+        roomsNumber : '',
+        radius: 10,
+        
     }
   },
   methods:{
 
+   /*  getRadius(){
+        this.radius = document.getElementById('range').value;
+        document.getElementById('range-value').innerHTML(this.radius);
+    },
+ */
     saveLocation(location){
       this.myLocation = location;
       console.log(this.myLocation);
@@ -238,6 +250,11 @@ export default {
   created(){
 
     
+  },
+  computed: {
+      total: function () {
+      return this.value * 10
+    }
   }
   
 
@@ -339,6 +356,36 @@ section {
   ul {
     padding-left: 0;
   }
+}
+#radius{
+  border: none;
+  outline: none;
+  background: none;
+  display: inline;
+}
+
+.search-location {
+    display: flex;
+    input {
+        border: none;
+        border-bottom: 2px solid $boolblue;
+        outline: none;
+        color: $boolblue;
+        width: 70%;
+        margin: 0 0 0 10%;
+        padding: 10px 20px;
+        border-radius: 20px 0 0 20px;
+    }
+    button {
+        width: 20%;
+        margin: 0 10% 0 0;
+        background-color: white;
+        color: $boolblue;
+        border: none;
+        border-bottom: 2px solid $boolblue;
+        font-weight: bold;
+        border-radius: 0 20px 20px 0;
+    }
 }
 
 </style>

@@ -120,8 +120,8 @@ class HouseController extends Controller
 
     public function show($slug)
     {
-        $house = House::where('slug', $slug)->with('services')->get();
-
+       
+        $house = House::with('services')->where('slug', $slug)->get();
         if($house) {
             if($house->image){
                 $house->image = url('storage/' . $house->image);

@@ -1924,6 +1924,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -1935,10 +1938,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      FindLocation: ''
+      location: ''
     };
   },
-  methods: {},
+  methods: {
+    getlocation: function getlocation(obj) {
+      this.location = obj.text;
+    }
+  },
   created: function created() {},
   mounted: function mounted() {},
   computed: {}
@@ -2494,6 +2501,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2503,19 +2523,35 @@ __webpack_require__.r(__webpack_exports__);
     Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Search: _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  props: {
+    location: String
+  },
   data: function data() {
     return {
       firstData: [],
       houseLocation: [],
-      allData: []
+      location: '',
+
+      /* ricerca avanzata */
+      roomsNumber: '',
+      radius: 10
     };
   },
   methods: {
+    /*  getRadius(){
+         this.radius = document.getElementById('range').value;
+         document.getElementById('range-value').innerHTML(this.radius);
+     },
+    */
+    saveLocation: function saveLocation(location) {
+      this.myLocation = location;
+      console.log(this.myLocation);
+    },
     resetResult: function resetResult() {
       this.houseLocation = [];
     },
-    findLocation: function findLocation(obj) {
-      this.getLocations(obj.text);
+    findLocation: function findLocation(location) {
+      this.getLocations(location);
       var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
       var APPLICATION_NAME = 'BoolBnB';
       var APPLICATION_VERSION = '1.0';
@@ -2523,7 +2559,7 @@ __webpack_require__.r(__webpack_exports__);
       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
       tt.services.fuzzySearch({
         key: apiKey,
-        query: obj.text
+        query: location
       }).then(function (response) {
         var mymap = tt.map({
           key: apiKey,
@@ -2563,26 +2599,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.findLocation(this.place);
+    this.saveLocation(location);
+    this.findLocation(this.location);
   },
-  created: function created() {
-    var _this2 = this;
-
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses').then(function (res) {
-      _this2.allData = res.data.houses;
-      /* console.log(this.firstData), */
-
-      console.log(_this2.firstData);
-
-      _this2.allData.forEach(function (house) {
-        _this2.houseLocation.push({
-          lat: house.lat,
-          lng: house["long"]
-        });
-      });
-    })["catch"](function (err) {
-      console.log(err);
-    });
+  created: function created() {},
+  computed: {
+    total: function total() {
+      return this.value * 10;
+    }
   }
 });
 
@@ -2631,18 +2655,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2752,28 +2764,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {
-    this.findLocation(this.place);
-  },
-  created: function created() {
-    var _this2 = this;
-
-    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('http://localhost:8000/api/houses').then(function (res) {
-      _this2.allData = res.data.houses;
-      /* console.log(this.firstData), */
-
-      console.log(_this2.firstData);
-
-      _this2.allData.forEach(function (house) {
-        _this2.houseLocation.push({
-          lat: house.lat,
-          lng: house["long"]
-        });
-      });
-    })["catch"](function (err) {
-      console.log(err);
-    });
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -3186,7 +3177,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n  margin-left: 10px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}", ""]);
+exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n  margin-left: 10px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
 
 // exports
 
@@ -3205,7 +3196,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section.jumbotron[data-v-b3c5cf30] {\n  color: white;\n  background-image: url(\"https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg\");\n  background-size: cover;\n  background-position-y: center;\n  background-position-x: center;\n  box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.596);\n  min-height: 700px;\n  margin-bottom: 0px;\n  position: relative;\n  border-radius: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\nsection.jumbotron h1[data-v-b3c5cf30] {\n  margin-top: 100px;\n}", ""]);
+exports.push([module.i, "section.jumbotron[data-v-b3c5cf30] {\n  color: white;\n  background-image: url(\"https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg\");\n  background-size: cover;\n  background-position-y: center;\n  background-position-x: center;\n  box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.596);\n  min-height: 700px;\n  margin-bottom: 0px;\n  position: relative;\n  border-radius: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\nsection.jumbotron h1[data-v-b3c5cf30] {\n  margin-top: 100px;\n}\nsection.jumbotron .homesearch[data-v-b3c5cf30] {\n  display: flex;\n}\nsection.jumbotron .homesearch input[data-v-b3c5cf30] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\nsection.jumbotron .homesearch button[data-v-b3c5cf30] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
 
 // exports
 
@@ -4661,7 +4652,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("Header"), _vm._v(" "), _c("router-view"), _vm._v(" "), _c("Footer")],
+    [
+      _c("Header"),
+      _vm._v(" "),
+      _c("router-view", {
+        attrs: { location: _vm.location },
+        on: { textToSearch: _vm.getlocation }
+      }),
+      _vm._v(" "),
+      _c("Footer")
+    ],
     1
   )
 }
@@ -5099,7 +5099,7 @@ var render = function() {
           ) {
             return null
           }
-          _vm.$emit("textToSearch", { text: _vm.textToSearch }), _vm.resetText()
+          return _vm.gotoAdvSearch()
         },
         input: function($event) {
           if ($event.target.composing) {
@@ -5116,11 +5116,11 @@ var render = function() {
         on: {
           click: function($event) {
             _vm.$emit("textToSearch", { text: _vm.textToSearch }),
-              _vm.resetText()
+              _vm.$router.push("/advsearch")
           }
         }
       },
-      [_vm._v("\n        Cerca\n    ")]
+      [_vm._v("\n        Cerca \n    ")]
     )
   ])
 }
@@ -5253,16 +5253,158 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("main", [
     _c("section", { staticClass: "container" }, [
-      _c(
-        "div",
-        { staticClass: "mb-5 mt-5" },
-        [_c("Search", { on: { textToSearch: _vm.findLocation } })],
-        1
-      ),
+      _c("div", { staticClass: "mb-5 mt-5" }, [
+        _c("div", { staticClass: "search-location" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.location,
+                expression: "location"
+              }
+            ],
+            attrs: { type: "text", placeholder: "Cerca..." },
+            domProps: { value: _vm.location },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.location = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.findLocation(_vm.location)
+                }
+              }
+            },
+            [_vm._v("\n          cerca\n      ")]
+          )
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "contenedor-risultati" }, [
         _c("div", { staticClass: "content-house-resultati row" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "left col-sm-12 col-md-12 col-lg-6" }, [
+            _c("div", { staticClass: "first-left" }, [
+              _c("h2", [_vm._v("Casa")]),
+              _vm._v(" "),
+              _c("ul", [
+                _c("li", [
+                  _c("label", { attrs: { for: "stanze" } }, [_vm._v("Stanze")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.roomsNumber,
+                        expression: "roomsNumber"
+                      }
+                    ],
+                    staticClass: "input-number",
+                    attrs: {
+                      type: "number",
+                      onKeyPress: "if(this.value.length==2) return false;"
+                    },
+                    domProps: { value: _vm.roomsNumber },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.roomsNumber = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c("label", { attrs: { for: "letti" } }, [_vm._v("Letti")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.beds,
+                        expression: "beds"
+                      }
+                    ],
+                    staticClass: "input-number",
+                    attrs: {
+                      type: "number",
+                      onKeyPress: "if(this.value.length==2) return false;"
+                    },
+                    domProps: { value: _vm.beds },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.beds = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c("label", { attrs: { for: "radius" } }, [_vm._v("Km")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.radius,
+                          expression: "radius"
+                        }
+                      ],
+                      attrs: { type: "range", min: "1", max: "20", step: "1" },
+                      domProps: { value: _vm.radius },
+                      on: {
+                        __r: function($event) {
+                          _vm.radius = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.radius,
+                          expression: "radius"
+                        }
+                      ],
+                      staticClass: "ml-3",
+                      attrs: { id: "radius", type: "text" },
+                      domProps: { value: _vm.radius },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.radius = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ]),
           _vm._v(" "),
           _c("div", {
             staticClass: "right col-sm-12 col-md-12 col-lg-6",
@@ -5329,225 +5471,177 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "left col-sm-12 col-md-12 col-lg-6" }, [
-      _c("div", { staticClass: "first-left" }, [
-        _c("h2", [_vm._v("Casa")]),
-        _vm._v(" "),
+    return _c("div", { staticClass: "second-left" }, [
+      _c("h2", [_vm._v("Caratteristiche")]),
+      _vm._v(" "),
+      _c("form", { attrs: { action: "/action_page.php" } }, [
         _c("ul", [
           _c("li", [
-            _c("label", { attrs: { for: "stanze" } }, [_vm._v("Stanze")]),
-            _vm._v(" "),
             _c("input", {
-              staticClass: "input-number",
               attrs: {
-                type: "number",
-                onKeyPress: "if(this.value.length==2) return false;"
+                type: "checkbox",
+                id: "wifi",
+                name: "wifi",
+                value: "wifi"
               }
-            })
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "wifi" } }, [_vm._v("Wifi")]),
+            _c("br")
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("label", { attrs: { for: "letti" } }, [_vm._v("Letti")]),
-            _vm._v(" "),
             _c("input", {
-              staticClass: "input-number",
               attrs: {
-                type: "number",
-                onKeyPress: "if(this.value.length==2) return false;"
+                type: "checkbox",
+                id: "posto macchina",
+                name: "posto macchina",
+                value: "posto macchina"
               }
-            })
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "posto macchina" } }, [
+              _vm._v("Posto Macchina")
+            ]),
+            _c("br")
           ]),
           _vm._v(" "),
           _c("li", [
-            _c("label", { attrs: { for: "raggio" } }, [_vm._v("Raggio")]),
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "piscina",
+                name: "piscina",
+                value: "piscina"
+              }
+            }),
             _vm._v(" "),
-            _c("select", { attrs: { id: "raggio", name: "raggio" } }, [
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("1km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("2km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("5km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("10km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("20km")])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "second-left" }, [
-        _c("h2", [_vm._v("Caratteristiche")]),
-        _vm._v(" "),
-        _c("form", { attrs: { action: "/action_page.php" } }, [
-          _c("ul", [
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "wifi",
-                  name: "wifi",
-                  value: "wifi"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "wifi" } }, [_vm._v("Wifi")]),
-              _c("br")
+            _c("label", { attrs: { for: "piscina" } }, [_vm._v("Piscina")]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "idromassagio",
+                name: "idromassagio",
+                value: "idromassagio"
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "idromassagio" } }, [
+              _vm._v("Idromassagio")
             ]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "portineria",
+                name: "portineria",
+                value: "portineria"
+              }
+            }),
             _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "posto macchina",
-                  name: "posto macchina",
-                  value: "posto macchina"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "posto macchina" } }, [
-                _vm._v("Posto Macchina")
-              ]),
-              _c("br")
+            _c("label", { attrs: { for: "portineria" } }, [
+              _vm._v("Portineria")
             ]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "sauna",
+                name: "sauna",
+                value: "sauna"
+              }
+            }),
             _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "piscina",
-                  name: "piscina",
-                  value: "piscina"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "piscina" } }, [_vm._v("Piscina")]),
-              _c("br")
+            _c("label", { attrs: { for: "sauna" } }, [_vm._v(" Sauna")]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "vista mare",
+                name: "vista mare",
+                value: "vista mare"
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "vista mare" } }, [
+              _vm._v("Vista Mare")
             ]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "aria condizionata",
+                name: "aria condizionata",
+                value: "aria condizionata"
+              }
+            }),
             _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "idromassagio",
-                  name: "idromassagio",
-                  value: "idromassagio"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "idromassagio" } }, [
-                _vm._v("Idromassagio")
-              ]),
-              _c("br")
+            _c("label", { attrs: { for: "aria condizionata" } }, [
+              _vm._v("Aria Condizionata")
             ]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "animali domestici ammesi",
+                name: "animali domestici ammesi",
+                value: "animali domestici ammesi"
+              }
+            }),
             _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "portineria",
-                  name: "portineria",
-                  value: "portineria"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "portineria" } }, [
-                _vm._v("Portineria")
-              ]),
-              _c("br")
+            _c("label", { attrs: { for: "animali domestici ammesi" } }, [
+              _vm._v("Animali Ammesi")
             ]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "cucina",
+                name: "cucina",
+                value: "cucina"
+              }
+            }),
             _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "sauna",
-                  name: "sauna",
-                  value: "sauna"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "sauna" } }, [_vm._v(" Sauna")]),
-              _c("br")
+            _c("label", { attrs: { for: "cucina" } }, [_vm._v("Cucina")]),
+            _c("br")
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("input", {
+              attrs: {
+                type: "checkbox",
+                id: "bagno privato",
+                name: "bagno privato",
+                value: "bagno privato"
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "bagno privato" } }, [
+              _vm._v("Bagno privato")
             ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "vista mare",
-                  name: "vista mare",
-                  value: "vista mare"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "vista mare" } }, [
-                _vm._v("Vista Mare")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "aria condizionata",
-                  name: "aria condizionata",
-                  value: "aria condizionata"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "aria condizionata" } }, [
-                _vm._v("Aria Condizionata")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "animali domestici ammesi",
-                  name: "animali domestici ammesi",
-                  value: "animali domestici ammesi"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "animali domestici ammesi" } }, [
-                _vm._v("Animali Ammesi")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "cucina",
-                  name: "cucina",
-                  value: "cucina"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "cucina" } }, [_vm._v("Cucina")]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "bagno privato",
-                  name: "bagno privato",
-                  value: "bagno privato"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "bagno privato" } }, [
-                _vm._v("Bagno privato")
-              ]),
-              _c("br")
-            ])
+            _c("br")
           ])
         ])
       ])
@@ -5618,16 +5712,54 @@ var render = function() {
     "main",
     [
       _c("section", { staticClass: "jumbotron" }, [
-        _c(
-          "div",
-          { staticClass: "container text-center" },
-          [
-            _c("Search", { on: { textToSearch: _vm.findLocation } }),
+        _c("div", { staticClass: "container text-center" }, [
+          _c("div", { staticClass: "homesearch" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.textToSearch,
+                  expression: "textToSearch"
+                }
+              ],
+              attrs: { type: "text", placeholder: "Cerca..." },
+              domProps: { value: _vm.textToSearch },
+              on: {
+                keyup: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.gotoAdvSearch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.textToSearch = $event.target.value
+                }
+              }
+            }),
             _vm._v(" "),
-            _vm._m(0)
-          ],
-          1
-        )
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.$emit("textToSearch", { text: _vm.textToSearch }),
+                      _vm.$router.push("/advsearch")
+                  }
+                }
+              },
+              [_vm._v("\n                 Cerca \n           ")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
       ]),
       _vm._v(" "),
       _c("Slider")
