@@ -138,14 +138,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-/* import Loader from '../components/Loader.vue'; */
-
-export default {
-  name: 'AdvSearch',
-  components: {
-    /* Loader */
-=======
 import Loader from '../components/Loader.vue';
 import Search from '../components/Search.vue';
 export default {
@@ -253,7 +245,6 @@ export default {
             .catch(err=>{
               console.log(err);
             })
->>>>>>> ale-dalponte
   }
   
 
