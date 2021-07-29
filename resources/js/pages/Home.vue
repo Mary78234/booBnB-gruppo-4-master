@@ -14,13 +14,12 @@
                  <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
                  <div class="risultati">
                 <ul>
-                <li class="row"
+                 <li class="row"
                    v-for="house in firstData" :key="house.id">
                   <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
                     <h3>{{ house.title }}</h3>
                     <p class="description">{{house.description}}</p>
-                    
                   </div>
                 </li>
               </ul>
@@ -30,10 +29,6 @@
           </div>
         </div>
       </div>
-
-
-
-
                 <div>
 
                     <h1>Qui inizia la tua avventura!</h1>
@@ -43,7 +38,6 @@
                 <router-link class="nav-link" :to="{name: 'advsearch'}">
                     <span>Ricerca Avanzata</span>
                 </router-link>
-
 
                 </div>
 

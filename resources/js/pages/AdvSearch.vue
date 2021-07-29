@@ -108,61 +108,85 @@
       </div>
 
     </section>
+     <section>
+      
+      <div class="contenedor-risultati">
+        <div class="content-house-resultati row ">
+          <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
+            <div class="risultati">
+              <ul>
+                <li class="row"
+                   v-for="house in firstData" :key="house.id">
+                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
+                  <div class="col-sm-12 col-md-12 col-lg-8 description">
+                    <h3>{{ house.title }}</h3>
+                    <p class="description">{{house.description}}</p>
+                    
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
 
+          <div id="map" style="width: 400px; height: 400px;" class="right col-sm-12 col-md-12 col-lg-6">
+          </div>
+        </div>
+      </div>
+    </section>
     
   </main>
 </template>
 
 <script>
 import Loader from '../components/Loader.vue';
-
+import Search from '../components/Search.vue';
 export default {
   name: 'AdvSearch',
   components: {
-    Loader
+    Loader,
+    Search
   },
   data(){
     return{
-      advAdress: '',
-      advRooms: '',
-      advBeds: '',
-      advRadius: '',
-      advServices: '',
+        firstData:[],
+        houseLocation : [],
+        allData: []
     }
   },
   methods:{
 
     resetResult(){
-      this.houses = []
+      this.houseLocation = []
     },
 
-    
      findLocation(obj){
+       this.getLocations(obj.text);
        const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
        const APPLICATION_NAME = 'BoolBnB';
        const APPLICATION_VERSION = '1.0';
-        
+       let outerthis = this;
        tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-        this.getLocations(obj.text);
-       tt.services.fuzzySearch({
+        
+
+
+        tt.services.fuzzySearch({
          key: apiKey,
          query: obj.text
        })
 
-
        .then(function(response) {
                 let mymap = tt.map({
                 key: apiKey,
-                container: 'map',
+                container: 'map-div',
+                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
                 center: response.results[0].position,
                 zoom: 15
-              });
-              
-              this.houses.forEach(child=>{
-                 new tt.Marker().setLngLat(child.geometry).addTo(mymap);
-              })
-                
+              });  
+                outerthis.houseLocation.forEach(child=>{
+                new tt.Marker().setLngLat(child).addTo(mymap);
+              })       
        })
+       
         
      },
     
@@ -176,28 +200,17 @@ export default {
             .then(res=>{
               this.firstData = res.data.houses;
               /* console.log(this.firstData), */
-                  /* console.log(this.firstData) */
+                 console.log(this.firstData);
               this.firstData.forEach(house => {
-                    console.log(this.firstData);
-                    this.houses.push(
+                    this.houseLocation.push(
                       {
-                        id: house.id,
-                        title: house.title,
-                        description: house.description,
-                        country: house.country,
-                        region: house.region,
-                        city: house.city,
-                        address: house.address,
-                        postal_code: house.address,
-                        geometry: [{
                             lat: house.lat,
                             lng: house.long
-                        }],
-                        image : house.image
                       }
                     )
+                    
             },
-            
+                
             );  
             })
             .catch(err=>{
@@ -210,7 +223,31 @@ export default {
    
     this.findLocation(this.place);
     
+  },
+  created(){
+
+    axios.get('http://localhost:8000/api/houses')
+            .then(res=>{
+              this.allData = res.data.houses;
+              /* console.log(this.firstData), */
+                 console.log(this.firstData);
+              this.allData.forEach(house => {
+                    this.houseLocation.push(
+                      {
+                            lat: house.lat,
+                            lng: house.long
+                      }
+                    )
+            },
+            
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
   }
+  
+
 }
 </script>
 

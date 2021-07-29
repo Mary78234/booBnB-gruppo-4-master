@@ -29,7 +29,7 @@ class HouseController extends Controller
         $mylng = $position['results']['0']['position']['lon'];
 
         $radius = 20000;
-        $km = 0.009009;
+        $km = 0.009;
 
         $maxlat = $mylat + $radius * $km;
         $minlat = $mylat - $radius * $km;
@@ -66,9 +66,11 @@ class HouseController extends Controller
         $mylat = $position['results']['0']['position']['lat'];
         $mylng = $position['results']['0']['position']['lon'];
 
-        /* $radius = $request->input('radius'); */
-        $radius = 200000;
-        $km = 0.009009;
+       
+        $radius= $request('radius');
+    
+        /* $radius = 200000; */
+        $km = 0.009;
 
         $maxlat = $mylat + $radius * $km;
         $minlat = $mylat - $radius * $km;
@@ -76,12 +78,13 @@ class HouseController extends Controller
         $minlng = $mylng - $radius * $km;
         
         
+        
         $houses = House::with('services')
                 ->whereBetween('lat', [$minlat, $maxlat])
                 ->whereBetween('long', [$minlng, $maxlng]) 
                 ->where('visibility', true)->orderBy('id','DESC');
 
-        
+
         if ($request->has('city')) {
             $houses = $houses->where('city', 'like', '%' . $request->input('city') . '%');
         };
