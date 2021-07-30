@@ -74,10 +74,10 @@ class HouseController extends Controller
        
         $km = 0.009;
         /* Moltiplicato per 1000 perchè il valore radius si esprime in metri */
-        $maxlat = $mylat + $radius * 1000 * $km;
-        $minlat = $mylat - $radius * 1000 * $km;
-        $maxlng = $mylng + $radius * 1000 * $km;
-        $minlng = $mylng - $radius * 1000 * $km;
+        $maxlat = $mylat + $radius * $km;
+        $minlat = $mylat - $radius * $km;
+        $maxlng = $mylng + $radius * $km;
+        $minlng = $mylng - $radius * $km;
         
         
         
