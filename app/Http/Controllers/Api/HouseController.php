@@ -85,21 +85,35 @@ class HouseController extends Controller
                 ->whereBetween('lat', [$minlat, $maxlat])
                 ->whereBetween('long', [$minlng, $maxlng]) 
                 ->where('visibility', true)->orderBy('id','DESC');
+        
+        /* if($request->has('service_name')){
+           $tosearch = $request->input('service_name');
+           $houses->whereHas('services',function(Builder $query) use ($tosearch){
+            $query->where('name','=',$tosearch);
+            });
+            };      */   
 
 
         if ($request->has('city')) {
             $houses = $houses->where('city', 'like', '%' . $request->input('city') . '%');
         };
         if ($request->has('rooms_number')) {
-            $houses = $houses->where('rooms_number', '<=', $request->input('rooms_number'));
+            $houses = $houses->where('rooms_number', '>=', $request->input('rooms_number'));
+        };
+        if ($request->has('beds')) {
+            $houses = $houses->where('beds', '>=', $request->input('beds'));
         };
         
-        if($request->has('service-name')){
-            $tosearch = $request->input('service-name');
-            $houses = House::with('services')->whereHas('services',function(Builder $query) use ($tosearch){
+        if($request->has('service_name')){
+            $tosearch = $request->input('service_name');
+            $houses->whereHas('services',function(Builder $query) use ($tosearch){
                 $query->where('name','=',$tosearch);
             });
         };
+
+   
+
+        
        
         $houses = $houses->get();
         

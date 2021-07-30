@@ -16,7 +16,7 @@
                      placeholder="Cerca...">
                    <button
                       @click="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')">
-                     Cerca 
+                      Cerca 
                </button>
             </div>
             <div>

@@ -2368,6 +2368,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
 //
 //
 //
@@ -2528,13 +2533,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      advSearch: '',
       firstData: [],
       houseLocation: [],
       location: '',
 
       /* ricerca avanzata */
       roomsNumber: '',
-      radius: 10
+      radius: 20,
+      checkedInput: [],
+      beds: ""
     };
   },
   methods: {
@@ -2585,10 +2593,62 @@ __webpack_require__.r(__webpack_exports__);
         _this.firstData = res.data.houses;
         /* console.log(this.firstData), */
 
-        console.log(_this.firstData);
-
         _this.firstData.forEach(function (house) {
           _this.houseLocation.push({
+            lat: house.lat,
+            lng: house["long"]
+          });
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+
+    /* RICERCA AVANZATA */
+    advFinder: function advFinder(AdvSearch) {
+      this.advLocation(AdvSearch);
+      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+      var APPLICATION_NAME = 'BoolBnB';
+      var APPLICATION_VERSION = '1.0';
+      var outerthis = this;
+      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+      tt.services.fuzzySearch({
+        key: apiKey,
+        query: AdvSearch
+      }).then(function (response) {
+        var mymap = tt.map({
+          key: apiKey,
+          container: 'map-div',
+          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+          center: response.results[0].position,
+          zoom: 15
+        });
+        outerthis.houseLocation.forEach(function (child) {
+          new tt.Marker().setLngLat(child).addTo(mymap);
+        });
+      });
+    },
+    advLocation: function advLocation(AdvSearch) {
+      var _this2 = this;
+
+      this.resetResult();
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
+        params: _defineProperty({
+          city: AdvSearch,
+          radius: this.radius,
+          beds: this.beds,
+          rooms_number: this.roomsNumber,
+          service_name: this.wifi
+        }, "service_name", this.checkedInput)
+      }).then(function (res) {
+        _this2.firstData = [];
+        _this2.firstData = res.data.houses;
+        /* console.log(this.firstData), */
+
+        console.log(_this2.firstData);
+
+        _this2.firstData.forEach(function (house) {
+          _this2.houseLocation.push({
             lat: house.lat,
             lng: house["long"]
           });
@@ -5260,18 +5320,18 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.location,
-                expression: "location"
+                value: _vm.advSearch,
+                expression: "advSearch"
               }
             ],
             attrs: { type: "text", placeholder: "Cerca..." },
-            domProps: { value: _vm.location },
+            domProps: { value: _vm.advSearch },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.location = $event.target.value
+                _vm.advSearch = $event.target.value
               }
             }
           }),
@@ -5281,7 +5341,7 @@ var render = function() {
             {
               on: {
                 click: function($event) {
-                  return _vm.findLocation(_vm.location)
+                  return _vm.advFinder(_vm.advSearch)
                 }
               }
             },
@@ -5403,7 +5463,545 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(0)
+            _c("div", { staticClass: "second-left" }, [
+              _c("h2", [_vm._v("Caratteristiche")]),
+              _vm._v(" "),
+              _c("form", { attrs: { action: "/action_page.php" } }, [
+                _c("ul", [
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: { type: "checkbox", id: "wifi", value: "wifi" },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "wifi") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "wifi",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "wifi" } }, [_vm._v("Wi-Fi")]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "posto macchina",
+                        value: "posto macchina"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "posto macchina") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "posto macchina",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "posto macchina" } }, [
+                      _vm._v("Posto Macchina")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "piscina",
+                        value: "piscina"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "piscina") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "piscina",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "piscina" } }, [
+                      _vm._v("Piscina")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "idromassagio",
+                        value: "idromassagio"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "idromassagio") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "idromassagio",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "idromassagio" } }, [
+                      _vm._v("Idromassagio")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "portineria",
+                        value: "portineria"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "portineria") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "portineria",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "portineria" } }, [
+                      _vm._v("Portineria")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: { type: "checkbox", id: "sauna", value: "sauna" },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "sauna") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "sauna",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "sauna" } }, [_vm._v("Sauna")]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "vista mare",
+                        value: "vista mare"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "vista mare") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "vista mare",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "vista mare" } }, [
+                      _vm._v("Vista Mare")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "aria condizionata",
+                        value: "aria condizionata"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "aria condizionata") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "aria condizionata",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "aria condizionata" } }, [
+                      _vm._v("Aria Condizionata")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "animali domestici ammesi",
+                        value: "animali domestici ammesi"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(
+                              _vm.checkedInput,
+                              "animali domestici ammesi"
+                            ) > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "animali domestici ammesi",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      { attrs: { for: "animali domestici ammesi" } },
+                      [_vm._v("Animali Ammesi")]
+                    ),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "cucina",
+                        value: "cucina"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "cucina") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "cucina",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "cucina" } }, [
+                      _vm._v("Cucina")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "bagno privato",
+                        value: "bagno privato"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "bagno privato") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "bagno privato",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "bagno privato" } }, [
+                      _vm._v("Bagno privato")
+                    ]),
+                    _c("br")
+                  ])
+                ])
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c("div", {
@@ -5451,8 +6049,19 @@ var render = function() {
                                 " - Letti: " +
                                 _vm._s(house.beds)
                             )
-                          ])
-                        ]
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(house.services, function(service) {
+                            return _c("div", { key: service.id }, [
+                              _c(
+                                "span",
+                                { staticClass: "badge m-1 badge-dark" },
+                                [_vm._v(_vm._s(service.name))]
+                              )
+                            ])
+                          })
+                        ],
+                        2
                       )
                     ])
                   }),
@@ -5466,188 +6075,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "second-left" }, [
-      _c("h2", [_vm._v("Caratteristiche")]),
-      _vm._v(" "),
-      _c("form", { attrs: { action: "/action_page.php" } }, [
-        _c("ul", [
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "wifi",
-                name: "wifi",
-                value: "wifi"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "wifi" } }, [_vm._v("Wifi")]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "posto macchina",
-                name: "posto macchina",
-                value: "posto macchina"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "posto macchina" } }, [
-              _vm._v("Posto Macchina")
-            ]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "piscina",
-                name: "piscina",
-                value: "piscina"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "piscina" } }, [_vm._v("Piscina")]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "idromassagio",
-                name: "idromassagio",
-                value: "idromassagio"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "idromassagio" } }, [
-              _vm._v("Idromassagio")
-            ]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "portineria",
-                name: "portineria",
-                value: "portineria"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "portineria" } }, [
-              _vm._v("Portineria")
-            ]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "sauna",
-                name: "sauna",
-                value: "sauna"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "sauna" } }, [_vm._v(" Sauna")]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "vista mare",
-                name: "vista mare",
-                value: "vista mare"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "vista mare" } }, [
-              _vm._v("Vista Mare")
-            ]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "aria condizionata",
-                name: "aria condizionata",
-                value: "aria condizionata"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "aria condizionata" } }, [
-              _vm._v("Aria Condizionata")
-            ]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "animali domestici ammesi",
-                name: "animali domestici ammesi",
-                value: "animali domestici ammesi"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "animali domestici ammesi" } }, [
-              _vm._v("Animali Ammesi")
-            ]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "cucina",
-                name: "cucina",
-                value: "cucina"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "cucina" } }, [_vm._v("Cucina")]),
-            _c("br")
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("input", {
-              attrs: {
-                type: "checkbox",
-                id: "bagno privato",
-                name: "bagno privato",
-                value: "bagno privato"
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "bagno privato" } }, [
-              _vm._v("Bagno privato")
-            ]),
-            _c("br")
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -5754,7 +6182,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                 Cerca \n           ")]
+              [_vm._v("\n                  Cerca \n           ")]
             )
           ]),
           _vm._v(" "),
