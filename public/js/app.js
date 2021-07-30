@@ -2541,7 +2541,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       /* ricerca avanzata */
       roomsNumber: '1',
-      radius: 20,
+      radius: 5,
       checkedInput: [],
       beds: "1"
     };
@@ -5429,7 +5429,7 @@ var render = function() {
                           expression: "radius"
                         }
                       ],
-                      attrs: { type: "range", min: "1", max: "20", step: "1" },
+                      attrs: { type: "range", min: "1", max: "40", step: "1" },
                       domProps: { value: _vm.radius },
                       on: {
                         __r: function($event) {

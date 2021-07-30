@@ -52,7 +52,7 @@
                 <li>
                   <label for="radius">Km</label>
                   <div class="d-flex">
-                  <input type="range" min="1" max="20" step="1" v-model="radius"> 
+                  <input type="range" min="1" max="40" step="1" v-model="radius"> 
                   <input class="ml-3" id="radius" type="text" v-model="radius"/>
                 
                   </div>
@@ -169,7 +169,7 @@ export default {
         location : '',
           /* ricerca avanzata */
         roomsNumber : '1',
-        radius: 20,
+        radius: 5,
         checkedInput: [],
         beds: "1"
 
