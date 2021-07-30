@@ -265,11 +265,10 @@ section {
         display: flex;
         flex-wrap: wrap;
         li{
-          width: 200px;
+          width: 130px;
           margin-bottom: 10px;
           select{
             width: 65px;
-            margin-left: 10px;
           }
           label{
             width: 65px;

@@ -9,23 +9,32 @@
         text-align: center;
         h1 {
             a {
-                color: black;
+                color: $boolblue;
+                font-size: 48px;
             }
         }
     }
     .logo:hover {
         h1 {
             a {
-                color: $boolblue;
+                color: black;
             }
         }
     }
     .menu {
         text-align: center;
     }
-    a {
+    a, button.dropdown-btn, .dropdown-content a {
         text-decoration: none;
         color: $boolblue;
+        text-transform: uppercase;
+        font-size: 18px;
+    }
+    a:hover, button.dropdown-btn:hover, .dropdown-content a:hover {
+        text-decoration: none;
+        color: #04233a;
+        text-transform: uppercase;
+        font-size: 18px;
     }
     ul {
         display: flex;
@@ -40,9 +49,6 @@
             line-height: 50px;
             height: 50px;
             margin: 0 20px;
-            a:hover {
-                background-color: rgba(235, 233, 233, 0.9);
-            }
         }
     }
     ul.row {
@@ -78,7 +84,6 @@
             background-color: white;
             font-weight: 700;
             height: 50px;
-            color: $boolblue;
             text-align: center;
             width: 100%;
             padding: 0;
@@ -92,6 +97,9 @@
             z-index: 1;
             text-align: center;
             background-color: white;
+            a {
+                font-size: 16px;
+            }
         }
     }
     .dropdown-menu:active .dropdown-content,
