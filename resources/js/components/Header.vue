@@ -85,39 +85,32 @@ $boolgreen: #00E165;
         text-align: center;
         h1 {
             a {
-                color: black;
+                color: $boolblue;
+                font-size: 48px;
             }
         }
     }
     .logo:hover {
         h1 {
             a {
-                color: $boolblue;
+                color: black;
             }
         }
     }
     .menu {
         text-align: center;
     }
-    button.search-btn {
-        width: 20%;
-        margin: 0 10% 0 0;
-        background-color: white;
-        color: $boolblue;
-        border: none;
-        border-bottom: 2px solid $boolblue;
-        font-weight: bold;
-    }
-    .search {
-        display: flex;
-        input {
-            width: 70%;
-            margin: 0 0 0 10%;
-        }
-    }
-    a {
+    a, button.dropdown-btn, .dropdown-content a {
         text-decoration: none;
         color: $boolblue;
+        text-transform: uppercase;
+        font-size: 18px;
+    }
+    a:hover, button.dropdown-btn:hover, .dropdown-content a:hover {
+        text-decoration: none;
+        color: #04233a;
+        text-transform: uppercase;
+        font-size: 18px;
     }
     ul {
         display: flex;
@@ -132,9 +125,6 @@ $boolgreen: #00E165;
             line-height: 50px;
             height: 50px;
             margin: 0 20px;
-            a:hover {
-                background-color: rgba(235, 233, 233, 0.9);
-            }
         }
     }
     ul.row {
@@ -153,11 +143,6 @@ $boolgreen: #00E165;
         line-height: 50px;
         margin-bottom: 20px;
         text-align: center;
-        display: flex;
-        input {
-            width: 70%;
-            margin: 0 0 0 10%;
-        }
     }
     .dropdown-menu {
         position: relative;
@@ -175,7 +160,6 @@ $boolgreen: #00E165;
             background-color: white;
             font-weight: 700;
             height: 50px;
-            color: $boolblue;
             text-align: center;
             width: 100%;
             padding: 0;
@@ -189,25 +173,25 @@ $boolgreen: #00E165;
             z-index: 1;
             text-align: center;
             background-color: white;
+            a {
+                font-size: 16px;
+            }
         }
     }
     .dropdown-menu:active .dropdown-content,
     .dropdown-menu:hover .dropdown-content {
         display: block;
     }
-    router-link.dropdown-item {
-        background-color: white;
-    }
 }
 
 @media (max-width: 991px) {
-    .menu.container {
+    .menu {
         display: none;
     }
 }
 
 @media (min-width: 992px) {
-    .dropdown-menu.row.responsive {
+    .dropdown-menu.row.responsive, .menu-search {
         display: none;
     }
 }

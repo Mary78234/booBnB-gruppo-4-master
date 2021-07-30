@@ -34,7 +34,22 @@
             </ul>
         </div>
 
+        @if (count($house->services) === 0)
         <div class="col-sm-12 col-md-6 col-lg-3">
+            <h2>Non ci sono servizi</h2>  
+        </div> 
+        @else
+        <div class="col-sm-12 col-md-6 col-lg-3">
+            <h2>Servizi</h2>
+            <ul>
+                @foreach ($house->services as $service)
+                    <li>{{ $service->name }}</li>
+                @endforeach
+            </ul>
+        </div> 
+        @endif
+
+        <!-- <div class="col-sm-12 col-md-6 col-lg-3">
             <h3>Indirizzo</h3>
             <ul>
                 <li>{{ $house->address }} {{ $house->house_number }}</li>
@@ -42,35 +57,21 @@
                 <li>{{ $house->region }}</li>
                 <li>{{ $house->country }}</li>
             </ul>
-        </div>
+        </div> -->
     
         
     </div>
     
-    {{-- conta se ci sono servizi  --}}
-    @if (count($house->services) === 0)
-    <div class="col-xs-12 text-center mb-5">
-        <h2>Non ci sono servizi</h2>  
-    </div> 
-    @else
-        <div class="col-xs-12 text-center mb-5">
-            <h2>Servizi:</h2>
-            <ul style="list-style-type: none; padding: 0;">
-                @foreach ($house->services as $service)
-                    <li class="mr-3" style=" display: inline;">{{ $service->name }}</li>
-                @endforeach
-            </ul>
-        </div> 
-    @endif
-    
-    
-    <h2 class="text-center mb-3">Posizione:</h2>
-    {{-------------------------MAPPA----------------------}}
+    <div class="address col-12">
+        <h2>Indirizzo</h2>
+        <h5>{{ $house->address }} {{ $house->house_number }}, {{ $house->city }} - {{ $house->postal_code }} ({{ $house->country }})</h5>
+    </div>
+    <!-- -------------------------MAPPA---------------------- -->
     <div class="mb-5" style="width:100%; height: 75vh;" id='map-div'></div>
-    {{-------------------------MAPPA----------------------}}
+    <!-- -------------------------MAPPA---------------------- -->
 
 
-    <div class="buttons">
+    <div class="buttons col-12">
         <a class="button" href="{{ route('user.house.edit', $house) }}">Modifica</a>
         <a class="button" href="/house">Visualizza</a>
         <a class="button">Sponsorizza</a>
