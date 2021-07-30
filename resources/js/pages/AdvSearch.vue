@@ -130,8 +130,11 @@
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
                     <h3>{{ house.title }}</h3>
                     <p class="description">{{house.description}}</p>
+
+                    <router-link class="inline btn btn-outline-success m-3" :to="{name:'house',params:{ slug:house.slug }}">Vai ai Dettagli</router-link>
+                   
                     <p class="services">Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}</p>
-                    <div v-for="service in house.services" :key="service.id">
+                    <div class="btn-services" v-for="service in house.services" :key="service.id">
                         <span class="badge m-1 badge-dark">{{service.name}}</span>
                     </div>
                   </div>
@@ -457,5 +460,6 @@ section {
         border-radius: 0 20px 20px 0;
     }
 }
+
 
 </style>

@@ -2520,6 +2520,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2841,6 +2844,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
 /* harmony import */ var _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/MessageForm.vue */ "./resources/js/components/MessageForm.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -2898,15 +2903,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2914,6 +2911,55 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     MessageForm: _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      house: {},
+      houseLocation: {}
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    console.log(this.$route.params.slug);
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/' + this.$route.params.slug).then(function (res) {
+      console.log(res.data);
+
+      if (res.data.success) {
+        _this.house = res.data.result;
+      } else {
+        _this.$router.push({
+          name: 'error404'
+        });
+      }
+
+      ;
+
+      _this.houseLocation.push({
+        lat: house.lat,
+        lng: house["long"]
+      });
+    })["catch"](function (err) {
+      console.log(err);
+    });
+    var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+    var APPLICATION_NAME = 'BoolBnB';
+    var APPLICATION_VERSION = '1.0';
+    var outerthis = this;
+    tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+    tt.services.fuzzySearch({
+      key: apiKey,
+      query: outerthis.houseLocation
+    }).then(function (response) {
+      var mymap = tt.map({
+        key: apiKey,
+        container: 'map-div',
+        style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+        center: response.results[0].position,
+        zoom: 15
+      });
+      new tt.Marker().setLngLat(outerthis.houseLocation).addTo(mymap);
+    });
   }
 });
 
@@ -3238,7 +3284,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n  margin-left: 10px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
+exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 130px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
 
 // exports
 
@@ -6041,6 +6087,20 @@ var render = function() {
                             _vm._v(_vm._s(house.description))
                           ]),
                           _vm._v(" "),
+                          _c(
+                            "router-link",
+                            {
+                              staticClass: "inline btn btn-outline-success m-3",
+                              attrs: {
+                                to: {
+                                  name: "house",
+                                  params: { slug: house.slug }
+                                }
+                              }
+                            },
+                            [_vm._v("Vai ai Dettagli")]
+                          ),
+                          _vm._v(" "),
                           _c("p", { staticClass: "services" }, [
                             _vm._v(
                               "Stanze: " +
@@ -6053,13 +6113,17 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _vm._l(house.services, function(service) {
-                            return _c("div", { key: service.id }, [
-                              _c(
-                                "span",
-                                { staticClass: "badge m-1 badge-dark" },
-                                [_vm._v(_vm._s(service.name))]
-                              )
-                            ])
+                            return _c(
+                              "div",
+                              { key: service.id, staticClass: "btn-services" },
+                              [
+                                _c(
+                                  "span",
+                                  { staticClass: "badge m-1 badge-dark" },
+                                  [_vm._v(_vm._s(service.name))]
+                                )
+                              ]
+                            )
                           })
                         ],
                         2
@@ -6238,13 +6302,76 @@ var render = function() {
       "section",
       { staticClass: "container-fluid" },
       [
-        _c("h1", [_vm._v("TITOLO CASA")]),
+        _c("h1", [_vm._v(_vm._s(_vm.house.title))]),
         _vm._v(" "),
-        _vm._m(0),
+        _c("div", { staticClass: "image-details row" }, [
+          _c("div", { staticClass: "image-left col-md-6 col-sm-12" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "details-right col-md-6 col-sm-12" }, [
+            _c("h3", [_vm._v("Caratteristiche")]),
+            _vm._v(" "),
+            _c("ul", [
+              _c("li", [
+                _c("p", [_c("strong", [_vm._v(_vm._s(_vm.house.description))])])
+              ]),
+              _vm._v(" "),
+              _c("li", [
+                _vm._v("\n            Numero di stanze: "),
+                _c("strong", [_vm._v(_vm._s(_vm.house.rooms_number))])
+              ]),
+              _vm._v(" "),
+              _c("li", [
+                _vm._v("\n            Numero di letti: "),
+                _c("strong", [_vm._v(_vm._s(_vm.house.beds))])
+              ]),
+              _c("li", [
+                _vm._v("\n            Numero di bagni: "),
+                _c("strong", [_vm._v(_vm._s(_vm.house.bathrooms))])
+              ]),
+              _vm._v(" "),
+              _c("li", [
+                _vm._v("\n            Superficie totale: "),
+                _c("strong", [_vm._v(_vm._s(_vm.house.square_metre))])
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "features" }, [
+          _c(
+            "ul",
+            _vm._l(_vm.house.services, function(service) {
+              return _c("li", { key: service.pivot.service_id }, [
+                _c("span", { staticClass: "btn btn-dark m-3" }, [
+                  _vm._v(_vm._s(service.name))
+                ])
+              ])
+            }),
+            0
+          )
+        ]),
         _vm._v(" "),
-        _vm._m(2),
+        _c("div", { staticClass: "address-map row" }, [
+          _c("div", { staticClass: "address-left col-md-6 col-sm-12" }, [
+            _c("h3", [_vm._v("Indirizzo")]),
+            _vm._v(" "),
+            _c("p", [
+              _vm._v(
+                _vm._s(_vm.house.city) +
+                  ", " +
+                  _vm._s(_vm.house.address) +
+                  ", " +
+                  _vm._s(_vm.house.house_number) +
+                  ", " +
+                  _vm._s(_vm.house.postal_code) +
+                  ", " +
+                  _vm._s(_vm.house.country)
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "map-right col-md-6 col-sm-12" })
+        ]),
         _vm._v(" "),
         _c("MessageForm")
       ],
@@ -6252,73 +6379,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "image-details row" }, [
-      _c("div", { staticClass: "image-left col-md-6 col-sm-12" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "details-right col-md-6 col-sm-12" }, [
-        _c("h3", [_vm._v("Caratteristiche")]),
-        _vm._v(" "),
-        _c("ul", [
-          _c("li", [
-            _vm._v("\n            Numero di stanze: "),
-            _c("strong", [_vm._v("3")])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _vm._v("\n            Numero di letti: "),
-            _c("strong", [_vm._v("8")])
-          ]),
-          _c("li", [
-            _vm._v("\n            Numero di bagni: "),
-            _c("strong", [_vm._v("2")])
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _vm._v("\n            Superficie totale: "),
-            _c("strong", [_vm._v("190mq")])
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "features" }, [
-      _c("ul", [
-        _c("li", [_vm._v("\n          WiFi\n        ")]),
-        _vm._v(" "),
-        _c("li", [_vm._v("\n          Cucina\n        ")]),
-        _vm._v(" "),
-        _c("li", [_vm._v("\n          Vista Mare\n        ")]),
-        _vm._v(" "),
-        _c("li", [_vm._v("\n          Piscina\n        ")]),
-        _vm._v(" "),
-        _c("li", [_vm._v("\n          Aria Condizionata\n        ")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "address-map row" }, [
-      _c("div", { staticClass: "address-left col-md-6 col-sm-12" }, [
-        _c("h3", [_vm._v("Indirizzo")]),
-        _vm._v(" "),
-        _c("p", [_vm._v("Viale Tal dei Tali, 47, Milano (MI), Italia")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "map-right col-md-6 col-sm-12" })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -22938,7 +22999,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     name: 'advsearch',
     component: _pages_AdvSearch_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
   }, {
-    path: '/house',
+    path: '/house/:slug',
     name: 'house',
     component: _pages_House_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
   }, {

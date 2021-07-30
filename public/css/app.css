@@ -16143,17 +16143,26 @@ h3 {
   text-align: center;
 }
 .navbar-container .logo h1 a {
-  color: black;
+  color: #04459e;
+  font-size: 48px;
 }
 .navbar-container .logo:hover h1 a {
-  color: #04459e;
+  color: black;
 }
 .navbar-container .menu {
   text-align: center;
 }
-.navbar-container a {
+.navbar-container a, .navbar-container button.dropdown-btn, .navbar-container .dropdown-content a {
   text-decoration: none;
   color: #04459e;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+.navbar-container a:hover, .navbar-container button.dropdown-btn:hover, .navbar-container .dropdown-content a:hover {
+  text-decoration: none;
+  color: #04233a;
+  text-transform: uppercase;
+  font-size: 18px;
 }
 .navbar-container ul {
   display: flex;
@@ -16169,9 +16178,6 @@ h3 {
   line-height: 50px;
   height: 50px;
   margin: 0 20px;
-}
-.navbar-container ul li a:hover {
-  background-color: rgba(235, 233, 233, 0.9);
 }
 .navbar-container ul.row {
   margin: 0;
@@ -16207,7 +16213,6 @@ h3 {
   background-color: white;
   font-weight: 700;
   height: 50px;
-  color: #04459e;
   text-align: center;
   width: 100%;
   padding: 0;
@@ -16221,6 +16226,9 @@ h3 {
   z-index: 1;
   text-align: center;
   background-color: white;
+}
+.navbar-container .dropdown-menu .dropdown-content a {
+  font-size: 16px;
 }
 .navbar-container .dropdown-menu:active .dropdown-content,
 .navbar-container .dropdown-menu:hover .dropdown-content {
@@ -16355,4 +16363,52 @@ footer .footer-bottom {
   font-size: 12px;
   padding: 20px 0;
   border-top: 1px solid #DDDDDD;
+}
+
+.house_container {
+  margin-top: 50px;
+}
+.house_container .row {
+  margin-bottom: 30px;
+}
+.house_container h1.title {
+  text-align: center;
+  margin: 40px auto;
+  text-transform: uppercase;
+}
+.house_container ul {
+  list-style-type: none;
+  padding: 0;
+}
+.house_container ul li {
+  font-size: 16px;
+}
+.house_container .img-area {
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 30px;
+}
+.house_container .details {
+  padding-left: 30px;
+}
+.house_container .buttons {
+  text-align: center;
+  margin: 80px auto;
+}
+.house_container .buttons .button {
+  width: 20%;
+  margin: 30px;
+  padding: 10px 30px;
+  background-color: white;
+  color: #04459e;
+  border: none;
+  border-bottom: 2px solid #04459e;
+  font-weight: bold;
+  border-radius: 20px;
+}
+.house_container .buttons .button:hover {
+  text-decoration: none;
+  color: #04233a;
+  border-bottom: 2px solid #04233a;
 }

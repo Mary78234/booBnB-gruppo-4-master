@@ -31,7 +31,7 @@ const router = new VueRouter({
             component: AdvSearch
         },
         {
-            path: '/house',
+            path: '/house/:slug',
             name: 'house',
             component: House
         },
