@@ -3,11 +3,11 @@
         <input 
             type="text" 
             v-model="textToSearch"
-            @keyup.enter="$emit('textToSearch',{text:textToSearch}), resetText()"
-            placeholder="Cerca...">
-        <button
-        @click="$emit('textToSearch',{text:textToSearch}), resetText()">
-            Cerca
+            @keyup.enter="gotoAdvSearch()"
+          placeholder="Cerca...">
+         <button
+              @click="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')">
+            Cerca 
         </button>
     </div>
 </template>
@@ -24,8 +24,11 @@ export default {
         resetText(){
          let reset = '';
          this.textToSearch = reset;
-         return this.textToSearch 
-  }
+         return this.textToSearch;
+
+    },
+       
+ 
     }
 }
 </script>

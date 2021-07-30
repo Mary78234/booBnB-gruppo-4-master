@@ -109,7 +109,6 @@ module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/li
 
 var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
 var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
-var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
 var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
 var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
 var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
@@ -130,7 +129,7 @@ module.exports = function xhrAdapter(config) {
     // HTTP basic authentication
     if (config.auth) {
       var username = config.auth.username || '';
-      var password = config.auth.password ? unescape(encodeURIComponent(config.auth.password)) : '';
+      var password = config.auth.password || '';
       requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
     }
 
@@ -211,6 +210,8 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
+
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
         cookies.read(config.xsrfCookieName) :
@@ -276,7 +277,7 @@ module.exports = function xhrAdapter(config) {
       });
     }
 
-    if (!requestData) {
+    if (requestData === undefined) {
       requestData = null;
     }
 
@@ -344,9 +345,6 @@ axios.all = function all(promises) {
   return Promise.all(promises);
 };
 axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
-
-// Expose isAxiosError
-axios.isAxiosError = __webpack_require__(/*! ./helpers/isAxiosError */ "./node_modules/axios/lib/helpers/isAxiosError.js");
 
 module.exports = axios;
 
@@ -556,10 +554,9 @@ Axios.prototype.getUri = function getUri(config) {
 utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, config) {
-    return this.request(mergeConfig(config || {}, {
+    return this.request(utils.merge(config || {}, {
       method: method,
-      url: url,
-      data: (config || {}).data
+      url: url
     }));
   };
 });
@@ -567,7 +564,7 @@ utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData
 utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
   /*eslint func-names:0*/
   Axios.prototype[method] = function(url, data, config) {
-    return this.request(mergeConfig(config || {}, {
+    return this.request(utils.merge(config || {}, {
       method: method,
       url: url,
       data: data
@@ -827,7 +824,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   error.response = response;
   error.isAxiosError = true;
 
-  error.toJSON = function toJSON() {
+  error.toJSON = function() {
     return {
       // Standard
       message: this.message,
@@ -876,73 +873,59 @@ module.exports = function mergeConfig(config1, config2) {
   config2 = config2 || {};
   var config = {};
 
-  var valueFromConfig2Keys = ['url', 'method', 'data'];
-  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy', 'params'];
+  var valueFromConfig2Keys = ['url', 'method', 'params', 'data'];
+  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy'];
   var defaultToConfig2Keys = [
-    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
-    'timeout', 'timeoutMessage', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
-    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'decompress',
-    'maxContentLength', 'maxBodyLength', 'maxRedirects', 'transport', 'httpAgent',
-    'httpsAgent', 'cancelToken', 'socketPath', 'responseEncoding'
+    'baseURL', 'url', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress',
+    'maxContentLength', 'validateStatus', 'maxRedirects', 'httpAgent',
+    'httpsAgent', 'cancelToken', 'socketPath'
   ];
-  var directMergeKeys = ['validateStatus'];
-
-  function getMergedValue(target, source) {
-    if (utils.isPlainObject(target) && utils.isPlainObject(source)) {
-      return utils.merge(target, source);
-    } else if (utils.isPlainObject(source)) {
-      return utils.merge({}, source);
-    } else if (utils.isArray(source)) {
-      return source.slice();
-    }
-    return source;
-  }
-
-  function mergeDeepProperties(prop) {
-    if (!utils.isUndefined(config2[prop])) {
-      config[prop] = getMergedValue(config1[prop], config2[prop]);
-    } else if (!utils.isUndefined(config1[prop])) {
-      config[prop] = getMergedValue(undefined, config1[prop]);
-    }
-  }
 
   utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
-    if (!utils.isUndefined(config2[prop])) {
-      config[prop] = getMergedValue(undefined, config2[prop]);
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
     }
   });
 
-  utils.forEach(mergeDeepPropertiesKeys, mergeDeepProperties);
+  utils.forEach(mergeDeepPropertiesKeys, function mergeDeepProperties(prop) {
+    if (utils.isObject(config2[prop])) {
+      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
+    } else if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (utils.isObject(config1[prop])) {
+      config[prop] = utils.deepMerge(config1[prop]);
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
 
   utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
-    if (!utils.isUndefined(config2[prop])) {
-      config[prop] = getMergedValue(undefined, config2[prop]);
-    } else if (!utils.isUndefined(config1[prop])) {
-      config[prop] = getMergedValue(undefined, config1[prop]);
-    }
-  });
-
-  utils.forEach(directMergeKeys, function merge(prop) {
-    if (prop in config2) {
-      config[prop] = getMergedValue(config1[prop], config2[prop]);
-    } else if (prop in config1) {
-      config[prop] = getMergedValue(undefined, config1[prop]);
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
     }
   });
 
   var axiosKeys = valueFromConfig2Keys
     .concat(mergeDeepPropertiesKeys)
-    .concat(defaultToConfig2Keys)
-    .concat(directMergeKeys);
+    .concat(defaultToConfig2Keys);
 
   var otherKeys = Object
-    .keys(config1)
-    .concat(Object.keys(config2))
+    .keys(config2)
     .filter(function filterAxiosKeys(key) {
       return axiosKeys.indexOf(key) === -1;
     });
 
-  utils.forEach(otherKeys, mergeDeepProperties);
+  utils.forEach(otherKeys, function otherKeysDefaultToConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
 
   return config;
 };
@@ -971,7 +954,7 @@ var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios
  */
 module.exports = function settle(resolve, reject, response) {
   var validateStatus = response.config.validateStatus;
-  if (!response.status || !validateStatus || validateStatus(response.status)) {
+  if (!validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     reject(createError(
@@ -1103,7 +1086,6 @@ var defaults = {
   xsrfHeaderName: 'X-XSRF-TOKEN',
 
   maxContentLength: -1,
-  maxBodyLength: -1,
 
   validateStatus: function validateStatus(status) {
     return status >= 200 && status < 300;
@@ -1167,6 +1149,7 @@ var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/util
 
 function encode(val) {
   return encodeURIComponent(val).
+    replace(/%40/gi, '@').
     replace(/%3A/gi, ':').
     replace(/%24/g, '$').
     replace(/%2C/gi, ',').
@@ -1347,29 +1330,6 @@ module.exports = function isAbsoluteURL(url) {
   // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
   // by any combination of letters, digits, plus, period, or hyphen.
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
-};
-
-
-/***/ }),
-
-/***/ "./node_modules/axios/lib/helpers/isAxiosError.js":
-/*!********************************************************!*\
-  !*** ./node_modules/axios/lib/helpers/isAxiosError.js ***!
-  \********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Determines whether the payload is an error thrown by Axios
- *
- * @param {*} payload The value to test
- * @returns {boolean} True if the payload is an error thrown by Axios, otherwise false
- */
-module.exports = function isAxiosError(payload) {
-  return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
 
@@ -1699,21 +1659,6 @@ function isObject(val) {
 }
 
 /**
- * Determine if a value is a plain Object
- *
- * @param {Object} val The value to test
- * @return {boolean} True if value is a plain Object, otherwise false
- */
-function isPlainObject(val) {
-  if (toString.call(val) !== '[object Object]') {
-    return false;
-  }
-
-  var prototype = Object.getPrototypeOf(val);
-  return prototype === null || prototype === Object.prototype;
-}
-
-/**
  * Determine if a value is a Date
  *
  * @param {Object} val The value to test
@@ -1869,12 +1814,34 @@ function forEach(obj, fn) {
 function merge(/* obj1, obj2, obj3, ... */) {
   var result = {};
   function assignValue(val, key) {
-    if (isPlainObject(result[key]) && isPlainObject(val)) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
       result[key] = merge(result[key], val);
-    } else if (isPlainObject(val)) {
-      result[key] = merge({}, val);
-    } else if (isArray(val)) {
-      result[key] = val.slice();
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Function equal to merge with the difference being that no reference
+ * to original objects is kept.
+ *
+ * @see merge
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function deepMerge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = deepMerge(result[key], val);
+    } else if (typeof val === 'object') {
+      result[key] = deepMerge({}, val);
     } else {
       result[key] = val;
     }
@@ -1905,19 +1872,6 @@ function extend(a, b, thisArg) {
   return a;
 }
 
-/**
- * Remove byte order marker. This catches EF BB BF (the UTF-8 BOM)
- *
- * @param {string} content with BOM
- * @return {string} content value without BOM
- */
-function stripBOM(content) {
-  if (content.charCodeAt(0) === 0xFEFF) {
-    content = content.slice(1);
-  }
-  return content;
-}
-
 module.exports = {
   isArray: isArray,
   isArrayBuffer: isArrayBuffer,
@@ -1927,7 +1881,6 @@ module.exports = {
   isString: isString,
   isNumber: isNumber,
   isObject: isObject,
-  isPlainObject: isPlainObject,
   isUndefined: isUndefined,
   isDate: isDate,
   isFile: isFile,
@@ -1938,9 +1891,9 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
+  deepMerge: deepMerge,
   extend: extend,
-  trim: trim,
-  stripBOM: stripBOM
+  trim: trim
 };
 
 
@@ -1971,6 +1924,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -1982,10 +1938,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      FindLocation: ''
+      location: ''
     };
   },
-  methods: {},
+  methods: {
+    getlocation: function getlocation(obj) {
+      this.location = obj.text;
+    }
+  },
   created: function created() {},
   mounted: function mounted() {},
   computed: {}
@@ -2408,6 +2368,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2550,19 +2529,38 @@ __webpack_require__.r(__webpack_exports__);
     Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Search: _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  props: {
+    location: String
+  },
   data: function data() {
     return {
+      advSearch: '',
       firstData: [],
       houseLocation: [],
-      allData: []
+      location: '',
+
+      /* ricerca avanzata */
+      roomsNumber: '1',
+      radius: 5,
+      checkedInput: [],
+      beds: "1"
     };
   },
   methods: {
+    /*  getRadius(){
+         this.radius = document.getElementById('range').value;
+         document.getElementById('range-value').innerHTML(this.radius);
+     },
+    */
+    saveLocation: function saveLocation(location) {
+      this.myLocation = location;
+      console.log(this.myLocation);
+    },
     resetResult: function resetResult() {
       this.houseLocation = [];
     },
-    findLocation: function findLocation(obj) {
-      this.getLocations(obj.text);
+    findLocation: function findLocation(location) {
+      this.getLocations(location);
       var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
       var APPLICATION_NAME = 'BoolBnB';
       var APPLICATION_VERSION = '1.0';
@@ -2570,7 +2568,7 @@ __webpack_require__.r(__webpack_exports__);
       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
       tt.services.fuzzySearch({
         key: apiKey,
-        query: obj.text
+        query: location
       }).then(function (response) {
         var mymap = tt.map({
           key: apiKey,
@@ -2596,10 +2594,62 @@ __webpack_require__.r(__webpack_exports__);
         _this.firstData = res.data.houses;
         /* console.log(this.firstData), */
 
-        console.log(_this.firstData);
-
         _this.firstData.forEach(function (house) {
           _this.houseLocation.push({
+            lat: house.lat,
+            lng: house["long"]
+          });
+        });
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+
+    /* RICERCA AVANZATA */
+    advFinder: function advFinder(AdvSearch) {
+      this.advLocation(AdvSearch);
+      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+      var APPLICATION_NAME = 'BoolBnB';
+      var APPLICATION_VERSION = '1.0';
+      var outerthis = this;
+      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+      tt.services.fuzzySearch({
+        key: apiKey,
+        query: AdvSearch
+      }).then(function (response) {
+        var mymap = tt.map({
+          key: apiKey,
+          container: 'map-div',
+          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+          center: response.results[0].position,
+          zoom: 15
+        });
+        outerthis.houseLocation.forEach(function (child) {
+          new tt.Marker().setLngLat(child).addTo(mymap);
+        });
+      });
+    },
+    advLocation: function advLocation(AdvSearch) {
+      var _this2 = this;
+
+      this.resetResult();
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
+        params: _defineProperty({
+          city: AdvSearch,
+          radius: this.radius,
+          beds: this.beds,
+          rooms_number: this.roomsNumber,
+          service_name: this.wifi
+        }, "service_name", this.checkedInput)
+      }).then(function (res) {
+        _this2.firstData = [];
+        _this2.firstData = res.data.houses;
+        /* console.log(this.firstData), */
+
+        console.log(_this2.firstData);
+
+        _this2.firstData.forEach(function (house) {
+          _this2.houseLocation.push({
             lat: house.lat,
             lng: house["long"]
           });
@@ -2610,26 +2660,14 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    this.findLocation(this.place);
+    this.saveLocation(location);
+    this.findLocation(this.location);
   },
-  created: function created() {
-    var _this2 = this;
-
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses').then(function (res) {
-      _this2.allData = res.data.houses;
-      /* console.log(this.firstData), */
-
-      console.log(_this2.firstData);
-
-      _this2.allData.forEach(function (house) {
-        _this2.houseLocation.push({
-          lat: house.lat,
-          lng: house["long"]
-        });
-      });
-    })["catch"](function (err) {
-      console.log(err);
-    });
+  created: function created() {},
+  computed: {
+    total: function total() {
+      return this.value * 10;
+    }
   }
 });
 
@@ -2678,18 +2716,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2799,28 +2825,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {
-    this.findLocation(this.place);
-  },
-  created: function created() {
-    var _this2 = this;
-
-    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('http://localhost:8000/api/houses').then(function (res) {
-      _this2.allData = res.data.houses;
-      /* console.log(this.firstData), */
-
-      console.log(_this2.firstData);
-
-      _this2.allData.forEach(function (house) {
-        _this2.houseLocation.push({
-          lat: house.lat,
-          lng: house["long"]
-        });
-      });
-    })["catch"](function (err) {
-      console.log(err);
-    });
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -3233,7 +3238,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n  margin-left: 10px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}", ""]);
+exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n  margin-left: 10px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
 
 // exports
 
@@ -3252,7 +3257,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section.jumbotron[data-v-b3c5cf30] {\n  color: white;\n  background-image: url(\"https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg\");\n  background-size: cover;\n  background-position-y: center;\n  background-position-x: center;\n  box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.596);\n  min-height: 700px;\n  margin-bottom: 0px;\n  position: relative;\n  border-radius: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\nsection.jumbotron h1[data-v-b3c5cf30] {\n  margin-top: 100px;\n}", ""]);
+exports.push([module.i, "section.jumbotron[data-v-b3c5cf30] {\n  color: white;\n  background-image: url(\"https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg\");\n  background-size: cover;\n  background-position-y: center;\n  background-position-x: center;\n  box-shadow: inset 0 0 0 50vw rgba(0, 0, 0, 0.596);\n  min-height: 700px;\n  margin-bottom: 0px;\n  position: relative;\n  border-radius: 0px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\nsection.jumbotron h1[data-v-b3c5cf30] {\n  margin-top: 100px;\n}\nsection.jumbotron .homesearch[data-v-b3c5cf30] {\n  display: flex;\n}\nsection.jumbotron .homesearch input[data-v-b3c5cf30] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\nsection.jumbotron .homesearch button[data-v-b3c5cf30] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
 
 // exports
 
@@ -4708,7 +4713,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("Header"), _vm._v(" "), _c("router-view"), _vm._v(" "), _c("Footer")],
+    [
+      _c("Header"),
+      _vm._v(" "),
+      _c("router-view", {
+        attrs: { location: _vm.location },
+        on: { textToSearch: _vm.getlocation }
+      }),
+      _vm._v(" "),
+      _c("Footer")
+    ],
     1
   )
 }
@@ -5146,7 +5160,7 @@ var render = function() {
           ) {
             return null
           }
-          _vm.$emit("textToSearch", { text: _vm.textToSearch }), _vm.resetText()
+          return _vm.gotoAdvSearch()
         },
         input: function($event) {
           if ($event.target.composing) {
@@ -5163,11 +5177,11 @@ var render = function() {
         on: {
           click: function($event) {
             _vm.$emit("textToSearch", { text: _vm.textToSearch }),
-              _vm.resetText()
+              _vm.$router.push("/advsearch")
           }
         }
       },
-      [_vm._v("\n        Cerca\n    ")]
+      [_vm._v("\n        Cerca \n    ")]
     )
   ])
 }
@@ -5300,16 +5314,696 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("main", [
     _c("section", { staticClass: "container" }, [
-      _c(
-        "div",
-        { staticClass: "mb-5 mt-5" },
-        [_c("Search", { on: { textToSearch: _vm.findLocation } })],
-        1
-      ),
+      _c("div", { staticClass: "mb-5 mt-5" }, [
+        _c("div", { staticClass: "search-location" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.advSearch,
+                expression: "advSearch"
+              }
+            ],
+            attrs: { type: "text", placeholder: "Cerca..." },
+            domProps: { value: _vm.advSearch },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.advSearch = $event.target.value
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.advFinder(_vm.advSearch)
+                }
+              }
+            },
+            [_vm._v("\n          cerca\n      ")]
+          )
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "contenedor-risultati" }, [
         _c("div", { staticClass: "content-house-resultati row" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "left col-sm-12 col-md-12 col-lg-6" }, [
+            _c("div", { staticClass: "first-left" }, [
+              _c("h2", [_vm._v("Casa")]),
+              _vm._v(" "),
+              _c("ul", [
+                _c("li", [
+                  _c("label", { attrs: { for: "stanze" } }, [_vm._v("Stanze")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.roomsNumber,
+                        expression: "roomsNumber"
+                      }
+                    ],
+                    staticClass: "input-number",
+                    attrs: {
+                      type: "number",
+                      onKeyPress: "if(this.value.length==2) return false;"
+                    },
+                    domProps: { value: _vm.roomsNumber },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.roomsNumber = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c("label", { attrs: { for: "letti" } }, [_vm._v("Letti")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.beds,
+                        expression: "beds"
+                      }
+                    ],
+                    staticClass: "input-number",
+                    attrs: {
+                      type: "number",
+                      onKeyPress: "if(this.value.length==2) return false;"
+                    },
+                    domProps: { value: _vm.beds },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.beds = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c("label", { attrs: { for: "radius" } }, [_vm._v("Km")]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "d-flex" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.radius,
+                          expression: "radius"
+                        }
+                      ],
+                      attrs: { type: "range", min: "1", max: "40", step: "1" },
+                      domProps: { value: _vm.radius },
+                      on: {
+                        __r: function($event) {
+                          _vm.radius = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.radius,
+                          expression: "radius"
+                        }
+                      ],
+                      staticClass: "ml-3",
+                      attrs: { id: "radius", type: "text" },
+                      domProps: { value: _vm.radius },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.radius = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "second-left" }, [
+              _c("h2", [_vm._v("Caratteristiche")]),
+              _vm._v(" "),
+              _c("form", { attrs: { action: "/action_page.php" } }, [
+                _c("ul", [
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: { type: "checkbox", id: "wifi", value: "wifi" },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "wifi") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "wifi",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "wifi" } }, [_vm._v("Wi-Fi")]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "posto macchina",
+                        value: "posto macchina"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "posto macchina") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "posto macchina",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "posto macchina" } }, [
+                      _vm._v("Posto Macchina")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "piscina",
+                        value: "piscina"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "piscina") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "piscina",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "piscina" } }, [
+                      _vm._v("Piscina")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "idromassagio",
+                        value: "idromassagio"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "idromassagio") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "idromassagio",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "idromassagio" } }, [
+                      _vm._v("Idromassagio")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "portineria",
+                        value: "portineria"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "portineria") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "portineria",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "portineria" } }, [
+                      _vm._v("Portineria")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: { type: "checkbox", id: "sauna", value: "sauna" },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "sauna") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "sauna",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "sauna" } }, [_vm._v("Sauna")]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "vista mare",
+                        value: "vista mare"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "vista mare") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "vista mare",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "vista mare" } }, [
+                      _vm._v("Vista Mare")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "aria condizionata",
+                        value: "aria condizionata"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "aria condizionata") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "aria condizionata",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "aria condizionata" } }, [
+                      _vm._v("Aria Condizionata")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "animali domestici ammesi",
+                        value: "animali domestici ammesi"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(
+                              _vm.checkedInput,
+                              "animali domestici ammesi"
+                            ) > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "animali domestici ammesi",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "label",
+                      { attrs: { for: "animali domestici ammesi" } },
+                      [_vm._v("Animali Ammesi")]
+                    ),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "cucina",
+                        value: "cucina"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "cucina") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "cucina",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "cucina" } }, [
+                      _vm._v("Cucina")
+                    ]),
+                    _c("br")
+                  ]),
+                  _vm._v(" "),
+                  _c("li", [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.checkedInput,
+                          expression: "checkedInput"
+                        }
+                      ],
+                      attrs: {
+                        type: "checkbox",
+                        id: "bagno privato",
+                        value: "bagno privato"
+                      },
+                      domProps: {
+                        checked: Array.isArray(_vm.checkedInput)
+                          ? _vm._i(_vm.checkedInput, "bagno privato") > -1
+                          : _vm.checkedInput
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.checkedInput,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = "bagno privato",
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 && (_vm.checkedInput = $$a.concat([$$v]))
+                            } else {
+                              $$i > -1 &&
+                                (_vm.checkedInput = $$a
+                                  .slice(0, $$i)
+                                  .concat($$a.slice($$i + 1)))
+                            }
+                          } else {
+                            _vm.checkedInput = $$c
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", { attrs: { for: "bagno privato" } }, [
+                      _vm._v("Bagno privato")
+                    ]),
+                    _c("br")
+                  ])
+                ])
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _c("div", {
             staticClass: "right col-sm-12 col-md-12 col-lg-6",
@@ -5356,8 +6050,19 @@ var render = function() {
                                 " - Letti: " +
                                 _vm._s(house.beds)
                             )
-                          ])
-                        ]
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(house.services, function(service) {
+                            return _c("div", { key: service.id }, [
+                              _c(
+                                "span",
+                                { staticClass: "badge m-1 badge-dark" },
+                                [_vm._v(_vm._s(service.name))]
+                              )
+                            ])
+                          })
+                        ],
+                        2
                       )
                     ])
                   }),
@@ -5371,236 +6076,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "left col-sm-12 col-md-12 col-lg-6" }, [
-      _c("div", { staticClass: "first-left" }, [
-        _c("h2", [_vm._v("Casa")]),
-        _vm._v(" "),
-        _c("ul", [
-          _c("li", [
-            _c("label", { attrs: { for: "stanze" } }, [_vm._v("Stanze")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "input-number",
-              attrs: {
-                type: "number",
-                onKeyPress: "if(this.value.length==2) return false;"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("label", { attrs: { for: "letti" } }, [_vm._v("Letti")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "input-number",
-              attrs: {
-                type: "number",
-                onKeyPress: "if(this.value.length==2) return false;"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("li", [
-            _c("label", { attrs: { for: "raggio" } }, [_vm._v("Raggio")]),
-            _vm._v(" "),
-            _c("select", { attrs: { id: "raggio", name: "raggio" } }, [
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("1km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("2km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("5km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("10km")]),
-              _vm._v(" "),
-              _c("option", { attrs: { value: "raggio" } }, [_vm._v("20km")])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "second-left" }, [
-        _c("h2", [_vm._v("Caratteristiche")]),
-        _vm._v(" "),
-        _c("form", { attrs: { action: "/action_page.php" } }, [
-          _c("ul", [
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "wifi",
-                  name: "wifi",
-                  value: "wifi"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "wifi" } }, [_vm._v("Wifi")]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "posto macchina",
-                  name: "posto macchina",
-                  value: "posto macchina"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "posto macchina" } }, [
-                _vm._v("Posto Macchina")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "piscina",
-                  name: "piscina",
-                  value: "piscina"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "piscina" } }, [_vm._v("Piscina")]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "idromassagio",
-                  name: "idromassagio",
-                  value: "idromassagio"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "idromassagio" } }, [
-                _vm._v("Idromassagio")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "portineria",
-                  name: "portineria",
-                  value: "portineria"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "portineria" } }, [
-                _vm._v("Portineria")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "sauna",
-                  name: "sauna",
-                  value: "sauna"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "sauna" } }, [_vm._v(" Sauna")]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "vista mare",
-                  name: "vista mare",
-                  value: "vista mare"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "vista mare" } }, [
-                _vm._v("Vista Mare")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "aria condizionata",
-                  name: "aria condizionata",
-                  value: "aria condizionata"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "aria condizionata" } }, [
-                _vm._v("Aria Condizionata")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "animali domestici ammesi",
-                  name: "animali domestici ammesi",
-                  value: "animali domestici ammesi"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "animali domestici ammesi" } }, [
-                _vm._v("Animali Ammesi")
-              ]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "cucina",
-                  name: "cucina",
-                  value: "cucina"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "cucina" } }, [_vm._v("Cucina")]),
-              _c("br")
-            ]),
-            _vm._v(" "),
-            _c("li", [
-              _c("input", {
-                attrs: {
-                  type: "checkbox",
-                  id: "bagno privato",
-                  name: "bagno privato",
-                  value: "bagno privato"
-                }
-              }),
-              _vm._v(" "),
-              _c("label", { attrs: { for: "bagno privato" } }, [
-                _vm._v("Bagno privato")
-              ]),
-              _c("br")
-            ])
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -5665,16 +6141,54 @@ var render = function() {
     "main",
     [
       _c("section", { staticClass: "jumbotron" }, [
-        _c(
-          "div",
-          { staticClass: "container text-center" },
-          [
-            _c("Search", { on: { textToSearch: _vm.findLocation } }),
+        _c("div", { staticClass: "container text-center" }, [
+          _c("div", { staticClass: "homesearch" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.textToSearch,
+                  expression: "textToSearch"
+                }
+              ],
+              attrs: { type: "text", placeholder: "Cerca..." },
+              domProps: { value: _vm.textToSearch },
+              on: {
+                keyup: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.gotoAdvSearch()
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.textToSearch = $event.target.value
+                }
+              }
+            }),
             _vm._v(" "),
-            _vm._m(0)
-          ],
-          1
-        )
+            _c(
+              "button",
+              {
+                on: {
+                  click: function($event) {
+                    _vm.$emit("textToSearch", { text: _vm.textToSearch }),
+                      _vm.$router.push("/advsearch")
+                  }
+                }
+              },
+              [_vm._v("\n                  Cerca \n           ")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
       ]),
       _vm._v(" "),
       _c("Slider")
@@ -22459,8 +22973,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\aleco\OneDrive\Documents\Boolean\Progetto Finale\booBnB-gruppo-4-master\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\aleco\OneDrive\Documents\Boolean\Progetto Finale\booBnB-gruppo-4-master\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\adalp\BOOLBNB-GRUPPO4\booBnB-gruppo-4-master\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\adalp\BOOLBNB-GRUPPO4\booBnB-gruppo-4-master\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
