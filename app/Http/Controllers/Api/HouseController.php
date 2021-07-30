@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Service;
+use Grimzy\LaravelMysqlSpatial\Eloquent\Builder;
 use HousesTableSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -64,9 +65,11 @@ class HouseController extends Controller
 
         $mylat = $position['results']['0']['position']['lat'];
         $mylng = $position['results']['0']['position']['lon'];
-        $radius= $request('radius');
+
+       
+        /* $radius= $request('radius'); */
     
-        /* $radius = 200000; */
+        $radius = 20000;
         $km = 0.009;
 
         $maxlat = $mylat + $radius * $km;
@@ -94,6 +97,7 @@ class HouseController extends Controller
             $houses = House::with('services')->whereHas('services',function(Builder $query) use ($tosearch){
                 $query->where('name','=',$tosearch);
             });
+    
         };
        
         $houses = $houses->get();
@@ -117,8 +121,8 @@ class HouseController extends Controller
 
     public function show($slug)
     {
-        $house = House::where('slug', $slug)->with('services')->get();
-
+       
+        $house = House::with('services')->where('slug', $slug)->get();
         if($house) {
             if($house->image){
                 $house->image = url('storage/' . $house->image);
