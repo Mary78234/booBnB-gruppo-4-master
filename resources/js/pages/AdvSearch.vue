@@ -54,6 +54,7 @@
                   <div class="d-flex">
                   <input type="range" min="1" max="20" step="1" v-model="radius"> 
                   <input class="ml-3" id="radius" type="text" v-model="radius"/>
+                
                   </div>
                   
                 </li>
@@ -167,10 +168,10 @@ export default {
         houseLocation : [],
         location : '',
           /* ricerca avanzata */
-        roomsNumber : '',
+        roomsNumber : '1',
         radius: 20,
         checkedInput: [],
-        beds: ""
+        beds: "1"
 
     }
   },

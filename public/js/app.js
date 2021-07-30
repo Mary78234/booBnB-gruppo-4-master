@@ -2519,6 +2519,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -2539,10 +2540,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       location: '',
 
       /* ricerca avanzata */
-      roomsNumber: '',
+      roomsNumber: '1',
       radius: 20,
       checkedInput: [],
-      beds: ""
+      beds: "1"
     };
   },
   methods: {

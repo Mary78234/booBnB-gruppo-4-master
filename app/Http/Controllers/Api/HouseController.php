@@ -61,10 +61,10 @@ class HouseController extends Controller
     public function advsearch(Request $request)
     {   
         
-        
+        /* posizione generale nella mappa, lo prendo come punto di riferimento per poi tracciare un raggio */
         $position = Http::get('https://api.tomtom.com/search/2/geocode/' . $request->input('city') . '.json?radius=20000&key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
       
-
+        
         $mylat = $position['results']['0']['position']['lat'];
         $mylng = $position['results']['0']['position']['lon'];
 
@@ -73,11 +73,11 @@ class HouseController extends Controller
         
        
         $km = 0.009;
-
-        $maxlat = $mylat + $radius * $km;
-        $minlat = $mylat - $radius * $km;
-        $maxlng = $mylng + $radius * $km;
-        $minlng = $mylng - $radius * $km;
+        /* Moltiplicato per 1000 perchè il valore radius si esprime in metri */
+        $maxlat = $mylat + $radius * 1000 * $km;
+        $minlat = $mylat - $radius * 1000 * $km;
+        $maxlng = $mylng + $radius * 1000 * $km;
+        $minlng = $mylng - $radius * 1000 * $km;
         
         
         
