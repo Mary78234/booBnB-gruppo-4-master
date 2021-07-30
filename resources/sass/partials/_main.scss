@@ -1,42 +1,5 @@
-.main-content {
-  background-color: white;
-  min-height: calc(100vh - 355px);
-}
-
-.map-div {
-  width: 400px;
-  height: 400px;
-}
-
-section.jumbotron {
-  color: white;
-  background-image: url("https://i.pinimg.com/originals/e9/62/97/e96297cf9fdf03ccdef1fab87bda06e4.jpg");
-  background-size: cover;
-  background-position-y: center;
-  background-position-x:center;
-  box-shadow:inset 0 0 0 50vw rgba(0, 0, 0, 0.596);
-  min-height: 700px;
-  margin-bottom: 0px;
-  position: relative;
-  border-radius: 0px;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  .nav-link span {
-    background-color: white;
-    padding: 10px 50px;
-    border-radius: 10px;   
-    transition:0.5s;
-    color: $boolblue;
-  }
-  .nav-link span:hover {
-    box-shadow: 0px 0px 15px rgba(204, 204, 204, 0.884);
-    font-weight: bold;
-  }
-}
-
 .login-animation {
-  color: $boolblue;
+  color: white;
   line-height: 100px;
   text-align: center;
   font-weight: bold;
@@ -54,6 +17,18 @@ section.jumbotron {
   opacity: 0;
   display: none;
   }
+}
+
+.dashboard-background {
+  width: 100%;
+  /* background-color: $boolblue; */
+}
+
+.divider {
+  width: 100%;
+  height: 100px;
+  background-color: $boolblue;
+  margin: 0;
 }
 
 .dashboard {
@@ -98,78 +73,7 @@ section.jumbotron {
     a:hover {
       font-size: 30px;
       text-decoration: none;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
     }
   }
 }
-
-/* .card{
-  margin-top: 50px;
-  box-shadow: 0px 0px 10px rgba(155, 155, 155, 0.898);
-  border: none;
-  background-color: rgba(255, 255, 255, 0.9);
-  .card-header {
-    background-color: $boolblue;
-    color: white;
-    a {
-      color: white;
-      text-decoration: none;
-    }
-    .welcome-animation {
-      color: white;
-      float: right;
-    }
-    .card-body {
-      height: 36;
-      position: relative;
-      padding-top: 8px;
-      padding-bottom: 5px;
-      text-align: center;
-      .login-animation {
-        color: $boolblue;
-        line-height: 50px;
-        animation-duration: 3s;
-        animation-delay: 1s;
-        animation-name: disappear;
-        animation-fill-mode: forwards;
-      }
-      @keyframes disappear {
-        0% {
-        opacity: 1;
-        }
-        100% {
-        opacity: 0;
-        display: none;
-        }
-      }
-      .user-options {
-        margin-bottom: 30px;
-        ul {
-          margin: 0;
-          padding: 0;
-          list-style: none;
-          li{
-            width: 120px;
-            margin-bottom: 20px;
-            background-color: rgb(237, 237, 237);
-            border-radius: 30px;
-            padding: 10px;
-            text-align: center;
-            box-shadow: 0px 0px 5px rgba(208, 208, 208, 0.898);
-            a {
-              width:100%;
-              text-decoration: none;
-              color: $boolblue;
-              font-size: 12px;
-            }
-          }
-          li:hover {
-            background-color: $boolblue;
-            a {
-              color: white;
-            }
-          }
-        }
-      }
-    }
-  }
-}  */
