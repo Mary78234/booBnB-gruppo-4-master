@@ -8,9 +8,9 @@
                     </a>
                 </h1>
             </div>
-            <div class="menu col-12">
-                <ul>
-                    <li>
+            <div class="menu container col-12">
+                <ul class="row">
+                    <li class="col-offset-2 col-2">
                         <a href="{{ url('/') }}">{{ __('Home') }}</a>
                     </li>
                     <li>

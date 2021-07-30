@@ -1,6 +1,9 @@
 <template>
   <main>
+<<<<<<< HEAD
     
+=======
+>>>>>>> ale-colonna
 
     <section class="container">
 

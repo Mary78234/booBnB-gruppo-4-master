@@ -28,7 +28,6 @@
     <script defer src="~@fortawesome/fontawesome-free/scss/regular"></script>
     <script defer src="~@fortawesome/fontawesome-free/scss/solid"></script>
     <script defer src="~@fortawesome/fontawesome-free/scss/fontawsome"></script>
-    
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
