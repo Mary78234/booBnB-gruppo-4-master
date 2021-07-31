@@ -12,19 +12,17 @@
             </strong>
         @endif
 
-        <h3>Ecco tutte le tue case:</h3>
+        <h1 class="title text-uppercase">Le case inserite</h1>
         
         <table class="table">
 
             <thead>
 
                 <tr>
-                    <th>ID</th>
-                    <th>Titolo</th>
-                    <th>Servizi</th>
-                    <th>Città</th>
-                    <th>Paese</th>
-                    <th colspan="3">Opzioni</th>
+                    <th>Nome casa</th>
+                    <th class="text-center">Visibilità</th>
+                    <th>Indirizzo</th>
+                    <th colspan="3"></th>
                 </tr>
 
             </thead>
@@ -33,14 +31,18 @@
 
                 @foreach ($houses as $house)
                 <tr>
-                    <td>id:{{ $house->id }}</td>
                     <td>{{ $house->title }}</td>
-                    <td>
-                    @foreach ($house->services as $service)
-                    <div>{{ $service->name }}</div>
-                    @endforeach</td>
-                    <td>{{ $house->city }}</td>
-                    <td>{{ $house->country }}</td>
+                    {{-- <td>
+                        @foreach ($house->services as $service)
+                        <div>{{ $service->name }}</div>
+                        @endforeach
+                    </td> --}}
+                    @if ($house->visibility)
+                        <td class="text-center">Si</td>
+                    @else
+                        <td class="text-center">No</td>
+                    @endif
+                    <td>{{ $house->address }}, {{$house->house_number}} - {{$house->city}} - {{$house->postal_code}} </td>
                     <td>
                         <a class="button" href="{{ route('user.house.show', $house) }}">
                             DETTAGLI

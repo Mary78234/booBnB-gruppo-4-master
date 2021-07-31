@@ -3,7 +3,7 @@
 @section('content')
 <div class="container edit-container">
     <div class="form-container col-xs-12 offset-md-2 col-md-8">
-    <h1>Inserisci una nuova casa:</h1>
+    <h1 class="text-uppercase">Inserisci una nuova casa</h1>
 
     {{-- ERRORI --}}
     @if ($errors->any())
