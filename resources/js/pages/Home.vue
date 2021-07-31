@@ -6,6 +6,14 @@
         
             
             <div class="container text-center">
+
+              <div>
+
+                <h1>Qui inizia la tua avventura!</h1>
+                <h5>Esperienze uniche in luoghi magnifici.</h5>
+                <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
+
+            </div>
                <!--  <Search @textToSearch = 'findLocation'/> -->
               <div class="homesearch">
                   <input 
@@ -15,16 +23,10 @@
                      placeholder="Cerca...">
                    <button
                       @click="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')">
-                     Cerca 
+                      Cerca 
                </button>
             </div>
-            <div>
-
-                <h1>Qui inizia la tua avventura!</h1>
-                <h5>Esperienze uniche in luoghi magnifici.</h5>
-                <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
-
-            </div>
+            
 
           </div>
 

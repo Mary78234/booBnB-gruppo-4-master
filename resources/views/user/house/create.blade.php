@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container edit-container">
     <div class="form-container col-xs-12 offset-md-2 col-md-8">
     <h1>Inserisci una nuova casa:</h1>
 
@@ -21,7 +21,7 @@
         @csrf
         @method('POST')
 
-        {{-- <div class="mb-4">
+        <!-- {{-- <div class="mb-4">
             <label for="visibility">Visibile</label>
             <select class="form-control @error('visibility') is-invalid @enderror" name="visibility" id="visibility">
     
@@ -30,8 +30,7 @@
                 <option value="0">no</option>
     
             </select>
-        </div> --}}
-        
+        </div> --}} -->
         
 
         <div class="mb-4">
@@ -55,6 +54,7 @@
              @enderror
         </div>
 
+        <div class="details">
         <div class="mb-4">
             <label class="label-control" for="rooms_number">STANZE</label>
             <input type="number" onKeyPress="if(this.value.length==3) return false;" id="rooms_number" name="rooms_number" class="form-control @error('rooms_number') is-invalid @enderror" value="{{ old('rooms_number') }}">
@@ -83,7 +83,9 @@
             <label class="label-control" for="square_metre">METRI QUADRI</label>
             <input type="number" onKeyPress="if(this.value.length==4) return false;" id="square_metre" name="square_metre" class="form-control" value="{{ old('square_metre') }}">
         </div>
+        </div>
 
+        <div class="address">
         <div class="mb-4">
             <label class="label-control" for="country">STATO</label>
             <input type="text" id="country" name="country" class="form-control @error('country') is-invalid @enderror" value="{{ old('country') }}">
@@ -107,7 +109,9 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
+        </div>
 
+        <div class="address">
         <div class="mb-4">
             <label class="label-control" for="address">INDIRIZZO</label>
             <input type="text"  return false;  id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}">
@@ -131,11 +135,9 @@
             <div class="text-danger">{{ $message }}</div>
             @enderror
         </div>
-
-        <div class="mb-4">
-            
-            
-            <h2>Servizi:</h2>
+        </div>
+        <h4>Servizi</h4>
+        <div class="mb-4 services">
               @foreach ($services as $service)
                 <span class="d-inline-block mr-3">
                     <input  type="checkbox" name="services[]" id="service{{ $loop->iteration }}"
@@ -151,36 +153,27 @@
             @enderror
             
         </div>
-
-        <div class="mb-4">
-            <h3>Vuoi rendere la tua casa visibile?</h3>
+        <div class="mb-4 visibility">
+            <h4>Vuoi rendere la tua casa visibile?</h4>
             <input type="radio" id="visibility" name="visibility" value="1" checked>
             <label for="visibility">Si</label>
             <input type="radio" id="visibility" name="visibility" value="0">
-            <label for="visibility">No</label>   
-            </div>
-
-        <div class="mb-4">
-            <button class="btn btn-primary" type="submit">INSERISCI</button>
-        </div>
-
-        <div class="mb-4">
-            <button class="btn btn-danger" type="reset">RESET</button>
-
+            <label for="visibility">No</label>
         </div>
         
 
+        <div class="text-center">
+            <button type="submit">INSERISCI</button>
+            <button type="reset">RESET</button>
+        </div>
 
     </form>
+    
 </div>
 </div>
+
 <script>
 
-
-
-
-
 </script>
-
 
 @endsection
