@@ -23,5 +23,6 @@ Route::namespace('Api')
             Route::get('houses/','HouseController@index')->name('api.houses');
             Route::get('houses/alldata/', 'HouseController@alldata')->name('api.alldata');
             Route::get('houses/advsearch/', 'HouseController@advsearch')->name('api.advsearch');
+            Route::post('messages/', 'MessageController@store');
             Route::get('houses/{slug}','HouseController@show')->name('show');
         });

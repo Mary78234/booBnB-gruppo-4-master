@@ -48,7 +48,9 @@
         </div>
       </div>
 
-      <MessageForm />
+      <MessageForm 
+      :house_id = house.id
+      />
       
     </section>
     

@@ -2196,6 +2196,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2241,8 +2243,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "MessageForm"
+  name: "MessageForm",
+  data: function data() {
+    return {
+      messTitle: '',
+      messContent: '',
+      messMail: ''
+    };
+  },
+  props: {
+    house_id: Number
+  },
+  methods: {
+    handleSubmit: function handleSubmit() {
+      console.log(this.messTitle, this.messContent, this.messMail, this.house_id);
+      var payload = {
+        id: this.house_id,
+        mail: this.messMail,
+        title: this.messTitle,
+        content: this.messContent
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/messages', payload).then(function (res) {
+        console.log('messaggio inviato');
+        console.log(res);
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2550,6 +2590,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    addMarker: function addMarker() {
+      this.houseLocation.forEach(function (child) {
+        new tt.Marker().setLngLat(child).addTo(mymap);
+        console.log('marker');
+      });
+    },
+
     /*  getRadius(){
          this.radius = document.getElementById('range').value;
          document.getElementById('range-value').innerHTML(this.radius);
@@ -2573,6 +2620,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         key: apiKey,
         query: location
       }).then(function (response) {
+        console.log('creazione mappa');
         var mymap = tt.map({
           key: apiKey,
           container: 'map-div',
@@ -2580,8 +2628,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           center: response.results[0].position,
           zoom: 15
         });
+        console.log('creo marker');
         outerthis.houseLocation.forEach(function (child) {
           new tt.Marker().setLngLat(child).addTo(mymap);
+          console.log('aggiunto marker');
+          console.log(child);
         });
       });
     },
@@ -2629,6 +2680,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
         outerthis.houseLocation.forEach(function (child) {
           new tt.Marker().setLngLat(child).addTo(mymap);
+          console.log('marker');
         });
       });
     },
@@ -2846,6 +2898,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/MessageForm.vue */ "./resources/js/components/MessageForm.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
 //
 //
 //
@@ -5108,60 +5162,130 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "message-form" }, [
+    _c("div", { staticClass: "container mb-5" }, [
+      _c("h1", { staticClass: "mb-3" }, [_vm._v("Invia un messaggio")]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          attrs: { method: "POST" },
+          on: {
+            submit: [
+              function($event) {
+                $event.preventDefault()
+                return _vm.onSubmit.apply(null, arguments)
+              },
+              function($event) {
+                return _vm.handleSubmit()
+              }
+            ]
+          }
+        },
+        [
+          _c("input", {
+            attrs: { type: "hidden", name: "house_id", id: "house_id" },
+            domProps: { value: _vm.house_id }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "title" } }, [_vm._v("Oggetto")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.messTitle,
+                  expression: "messTitle"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "title", name: "title" },
+              domProps: { value: _vm.messTitle },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.messTitle = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "mail" } }, [_vm._v("Email address")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.messMail,
+                  expression: "messMail"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "email",
+                name: "mail",
+                id: "mail",
+                placeholder: "name@example.com"
+              },
+              domProps: { value: _vm.messMail },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.messMail = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { attrs: { for: "content" } }, [_vm._v("Messaggio")]),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.messContent,
+                  expression: "messContent"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { id: "content", name: "content", rows: "5" },
+              domProps: { value: _vm.messContent },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.messContent = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("h1", [_vm._v(_vm._s(_vm.id))]),
+          _vm._v(" "),
+          _vm._m(0)
+        ]
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "message-form" }, [
-      _c("div", { staticClass: "container mb-5" }, [
-        _c("h1", { staticClass: "mb-3" }, [_vm._v("Invia un messaggio")]),
-        _vm._v(" "),
-        _c("form", [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlTextarea1" } }, [
-              _vm._v("Oggetto")
-            ]),
-            _vm._v(" "),
-            _c("textarea", {
-              staticClass: "form-control",
-              attrs: { id: "exampleFormControlTextarea1", rows: "1" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlTextarea1" } }, [
-              _vm._v("Messaggio")
-            ]),
-            _vm._v(" "),
-            _c("textarea", {
-              staticClass: "form-control",
-              attrs: { id: "exampleFormControlTextarea1", rows: "5" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { attrs: { for: "exampleFormControlInput1" } }, [
-              _vm._v("Email address")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "email",
-                id: "exampleFormControlInput1",
-                placeholder: "name@example.com"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c("button", [_vm._v("Invia")])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "form-group" }, [
+      _c("button", { attrs: { type: "submit" } }, [_vm._v("Invia")])
     ])
   }
 ]
@@ -6373,7 +6497,7 @@ var render = function() {
           _c("div", { staticClass: "map-right col-md-6 col-sm-12" })
         ]),
         _vm._v(" "),
-        _c("MessageForm")
+        _c("MessageForm", { attrs: { house_id: _vm.house.id } })
       ],
       1
     )

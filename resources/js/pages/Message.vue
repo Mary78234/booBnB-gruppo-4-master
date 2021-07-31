@@ -6,7 +6,7 @@
     <section>
       <div class="container text-center">
         <h1>Questa è la pagina messaggi</h1>
-
+          
       </div>
     </section>
   </main>
@@ -19,7 +19,8 @@ export default {
   name: 'Message',
   components: {
     Loader
-  }
+  },
+ 
 }
 </script>
 

@@ -180,6 +180,12 @@ export default {
   },
   methods:{
 
+    addMarker(){
+      this.houseLocation.forEach(child=>{
+          new tt.Marker().setLngLat(child).addTo(mymap);
+          console.log('marker')
+              })
+    },
    /*  getRadius(){
         this.radius = document.getElementById('range').value;
         document.getElementById('range-value').innerHTML(this.radius);
@@ -208,16 +214,26 @@ export default {
        })
 
        .then(function(response) {
+                console.log('creazione mappa')
                 let mymap = tt.map({
+              
                 key: apiKey,
                 container: 'map-div',
                 style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
                 center: response.results[0].position,
                 zoom: 15
               });
+                console.log('creo marker')
+                
                 outerthis.houseLocation.forEach(child=>{
                 new tt.Marker().setLngLat(child).addTo(mymap);
-              })
+                console.log('aggiunto marker');
+                console.log(child);
+                
+                
+              });
+              
+
        })
        
         
@@ -262,7 +278,6 @@ export default {
          key: apiKey,
          query: AdvSearch
        })
-
        .then(function(response) {
                 let mymap = tt.map({
                 key: apiKey,
@@ -270,9 +285,11 @@ export default {
                 style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
                 center: response.results[0].position,
                 zoom: 15
+                
               });
                 outerthis.houseLocation.forEach(child=>{
                 new tt.Marker().setLngLat(child).addTo(mymap);
+                console.log('marker')
               })
        })
        
@@ -304,7 +321,6 @@ export default {
                             lng: house.long
                       }
                     )
-                    
             },
                 
             );  
