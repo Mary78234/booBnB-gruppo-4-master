@@ -21,6 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::namespace('Api')
         ->group(function(){
             Route::get('houses/','HouseController@index')->name('api.houses');
-            Route::get('houses/search/', 'HouseController@search');
+            Route::get('houses/alldata/', 'HouseController@alldata')->name('api.alldata');
+            Route::get('houses/advsearch', 'HouseController@advsearch')->name('api.advsearch');
+            Route::post('messages/', 'MessageController@store');
             Route::get('houses/{slug}','HouseController@show')->name('show');
         });

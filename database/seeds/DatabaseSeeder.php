@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             ViewsTableSeeder::class,
             UpdateViewsSeeder::class,
             ServicesTableSeeder::class,
-            HousesServicesSeeder::class
-            //HousesSponsorsSeeder::class
+            HousesServicesSeeder::class,
+            HousesSponsorsSeeder::class
         ]);
     }
 }

@@ -10,9 +10,10 @@
             v-model="advSearch"
             placeholder="Cerca...">
          <button
-            @click="advFinder(advSearch)"  >
+            @click="initMap(advSearch)"  >
             cerca
         </button>
+        
     </div>
       </div>
 
@@ -22,6 +23,7 @@
           <div class="left col-sm-12 col-md-12 col-lg-6">
             <div class="first-left">
               <h2>Casa</h2>
+              
               <ul>
                 <li>
                   <label for="stanze">Stanze</label>
@@ -55,7 +57,7 @@
                   <input type="range" min="1" max="40" step="1" v-model="radius"> 
                   <input class="ml-3" id="radius" type="text" v-model="radius"/>
                 
-                  </div>
+                </div>
                   
                 </li>
               </ul>
@@ -164,159 +166,102 @@ export default {
   },
   data(){
     return{
+      /* salvo la posizione con v-model per advsearch */
         advSearch: '',
-        firstData:[],
+
         houseLocation : [],
-        location : '',
           /* ricerca avanzata */
         roomsNumber : '1',
-        radius: 5,
+        radius: 20,
+        /* valori degli input */
         checkedInput: [],
-        beds: "1"
-
+        beds: "1",
+        /* dati TomTom */
+        apiKey: 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf',
+        mymap: null,
+        marker: null,
+        LngLat: null,
+        otherLocation : {lng: -122.47483, lat: 37.80776},
+        /* Axios dove salvo i dati che mi arrivano */
+        firstData : [],
+        /* array posizioni lat e long */
+        houseLocation : null,
     }
   },
   methods:{
+      /* ----------------------------Inizializzazione Mappa----------------------------------- */
+      
+        initMap(obj){
+          this.map = tt.map({
+            key: this.apiKey,
+            container: 'map-div',
+            center: this.otherLocation,
+            zoom: 13
+            
+          })
+          if(this.location || this.advSearch){
+            this.initPointView(obj);
+            this.axiosCall(obj); 
+          };
+        },
 
-   /*  getRadius(){
-        this.radius = document.getElementById('range').value;
-        document.getElementById('range-value').innerHTML(this.radius);
-    },
- */
-    saveLocation(location){
-      this.myLocation = location;
-      console.log(this.myLocation);
-    },
+      /* ---------------------------- Ricerca Punto di interesse ----------------------------------- */
 
-    resetResult(){
-      this.houseLocation = []
-    },
+        initPointView(pos){
+            tt.services.fuzzySearch({
+            key: this.apiKey,
+            query: pos
+        })
+         .then((response) => {this.map.setCenter(response.results[0].position)  })
+        },
 
-     findLocation(location){
-       this.getLocations(location);
-       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
-       const APPLICATION_NAME = 'BoolBnB';
-       const APPLICATION_VERSION = '1.0';
-       let outerthis = this;
-       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-
-        tt.services.fuzzySearch({
-         key: apiKey,
-         query: location
-       })
-
-       .then(function(response) {
-                let mymap = tt.map({
-                key: apiKey,
-                container: 'map-div',
-                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
-                center: response.results[0].position,
-                zoom: 15
-              });
-                outerthis.houseLocation.forEach(child=>{
-                new tt.Marker().setLngLat(child).addTo(mymap);
-              })
-       })
+      /* ------------------------------ AGGIUNTA DEI MARKER --------------------------------- */
        
-        
-     },
-    
-     getLocations(obj){
-       this.resetResult()
-       axios.get('http://localhost:8000/api/houses?',{
-         params:{
-           city : obj       
-         }
-       })
-            .then(res=>{
-              this.firstData = res.data.houses;
-              /* console.log(this.firstData), */
-                 
-              this.firstData.forEach(house => {
-                    this.houseLocation.push(
-                      {
-                            lat: house.lat,
-                            lng: house.long
-                      }
-                    )
-            },
-                
-            );  
-            })
-            .catch(err=>{
-              console.log(err);
-            })
-     },
-/* RICERCA AVANZATA */
-     advFinder(AdvSearch){
-       this.advLocation(AdvSearch);
-       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
-       const APPLICATION_NAME = 'BoolBnB';
-       const APPLICATION_VERSION = '1.0';
-       let outerthis = this;
-       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
 
-        tt.services.fuzzySearch({
-         key: apiKey,
-         query: AdvSearch
-       })
-
-       .then(function(response) {
-                let mymap = tt.map({
-                key: apiKey,
-                container: 'map-div',
-                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
-                center: response.results[0].position,
-                zoom: 15
-              });
-                outerthis.houseLocation.forEach(child=>{
-                new tt.Marker().setLngLat(child).addTo(mymap);
-              })
-       })
-       
+      
+      /* ----------------------------CHIAMATA AXIOS----------------------------------- */
+        /* 
+        lat: house.lat,
+        lng: house.long
         
-     },
-    
-     advLocation(AdvSearch){
-       this.resetResult()
+        */
+
+
+      axiosCall(obj){
        axios.get('http://localhost:8000/api/houses/advsearch',{
          params:{
-           city : AdvSearch,
+           city : obj,
            radius : this.radius,
            beds : this.beds,
            rooms_number : this.roomsNumber,
-           service_name : this.wifi,
            service_name : this.checkedInput
            
          }
        })
             .then(res=>{
               this.firstData = [];
-              this.firstData = res.data.houses;
-              /* console.log(this.firstData), */
-                 console.log(this.firstData);
-              this.firstData.forEach(house => {
+              this.firstData = res.data.houses; 
+              console.log(this.firstData[0]);
+               this.firstData.forEach(house => {
                     this.houseLocation.push(
-                      {
-                            lat: house.lat,
-                            lng: house.long
-                      }
+                      [house.lat, house.long]
                     )
-                    
             },
                 
-            );  
+            ); 
             })
             .catch(err=>{
               console.log(err);
             })
      },
-     
+
+
+
   },
   mounted(){
-    this.saveLocation(location);
-    this.findLocation(this.location);
-    
+    /* ---------- Avvio Mappa tramite props -------- */
+    this.initMap(this.location)
+   
     
   },
   created(){
@@ -324,9 +269,7 @@ export default {
     
   },
   computed: {
-      total: function () {
-      return this.value * 10
-    }
+     
   }
   
 
