@@ -3,58 +3,6 @@
  * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
-@font-face {
-  font-family: "Font Awesome 5 Brands";
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url("../webfonts/fa-brands-400.eot");
-  src: url("../webfonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-brands-400.woff2") format("woff2"), url("../webfonts/fa-brands-400.woff") format("woff"), url("../webfonts/fa-brands-400.ttf") format("truetype"), url("../webfonts/fa-brands-400.svg#fontawesome") format("svg");
-}
-.fab {
-  font-family: "Font Awesome 5 Brands";
-  font-weight: 400;
-}
-
-/*!
- * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- */
-@font-face {
-  font-family: "Font Awesome 5 Free";
-  font-style: normal;
-  font-weight: 400;
-  font-display: block;
-  src: url("../webfonts/fa-regular-400.eot");
-  src: url("../webfonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-regular-400.woff2") format("woff2"), url("../webfonts/fa-regular-400.woff") format("woff"), url("../webfonts/fa-regular-400.ttf") format("truetype"), url("../webfonts/fa-regular-400.svg#fontawesome") format("svg");
-}
-.far {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 400;
-}
-
-/*!
- * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- */
-@font-face {
-  font-family: "Font Awesome 5 Free";
-  font-style: normal;
-  font-weight: 900;
-  font-display: block;
-  src: url("../webfonts/fa-solid-900.eot");
-  src: url("../webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-solid-900.woff2") format("woff2"), url("../webfonts/fa-solid-900.woff") format("woff"), url("../webfonts/fa-solid-900.ttf") format("truetype"), url("../webfonts/fa-solid-900.svg#fontawesome") format("svg");
-}
-.fa,
-.fas {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-}
-
-/*!
- * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
- * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
- */
 .fa,
 .fas,
 .far,
@@ -6126,6 +6074,58 @@ readers do not read off random characters that represent icons */
   overflow: visible;
   position: static;
   width: auto;
+}
+
+/*!
+ * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+@font-face {
+  font-family: "Font Awesome 5 Free";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../webfonts/fa-regular-400.eot");
+  src: url("../webfonts/fa-regular-400.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-regular-400.woff2") format("woff2"), url("../webfonts/fa-regular-400.woff") format("woff"), url("../webfonts/fa-regular-400.ttf") format("truetype"), url("../webfonts/fa-regular-400.svg#fontawesome") format("svg");
+}
+.far {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+}
+
+/*!
+ * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+@font-face {
+  font-family: "Font Awesome 5 Free";
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url("../webfonts/fa-solid-900.eot");
+  src: url("../webfonts/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-solid-900.woff2") format("woff2"), url("../webfonts/fa-solid-900.woff") format("woff"), url("../webfonts/fa-solid-900.ttf") format("truetype"), url("../webfonts/fa-solid-900.svg#fontawesome") format("svg");
+}
+.fa,
+.fas {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+/*!
+ * Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+@font-face {
+  font-family: "Font Awesome 5 Brands";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("../webfonts/fa-brands-400.eot");
+  src: url("../webfonts/fa-brands-400.eot?#iefix") format("embedded-opentype"), url("../webfonts/fa-brands-400.woff2") format("woff2"), url("../webfonts/fa-brands-400.woff") format("woff"), url("../webfonts/fa-brands-400.ttf") format("truetype"), url("../webfonts/fa-brands-400.svg#fontawesome") format("svg");
+}
+.fab {
+  font-family: "Font Awesome 5 Brands";
+  font-weight: 400;
 }
 
 /*!
@@ -16143,17 +16143,26 @@ h3 {
   text-align: center;
 }
 .navbar-container .logo h1 a {
-  color: black;
+  color: #04459e;
+  font-size: 48px;
 }
 .navbar-container .logo:hover h1 a {
-  color: #04459e;
+  color: black;
 }
 .navbar-container .menu {
   text-align: center;
 }
-.navbar-container a {
+.navbar-container a, .navbar-container button.dropdown-btn, .navbar-container .dropdown-content a {
   text-decoration: none;
   color: #04459e;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+.navbar-container a:hover, .navbar-container button.dropdown-btn:hover, .navbar-container .dropdown-content a:hover {
+  text-decoration: none;
+  color: #04233a;
+  text-transform: uppercase;
+  font-size: 18px;
 }
 .navbar-container ul {
   display: flex;
@@ -16169,9 +16178,6 @@ h3 {
   line-height: 50px;
   height: 50px;
   margin: 0 20px;
-}
-.navbar-container ul li a:hover {
-  background-color: rgba(235, 233, 233, 0.9);
 }
 .navbar-container ul.row {
   margin: 0;
@@ -16207,7 +16213,6 @@ h3 {
   background-color: white;
   font-weight: 700;
   height: 50px;
-  color: #04459e;
   text-align: center;
   width: 100%;
   padding: 0;
@@ -16221,6 +16226,9 @@ h3 {
   z-index: 1;
   text-align: center;
   background-color: white;
+}
+.navbar-container .dropdown-menu .dropdown-content a {
+  font-size: 16px;
 }
 .navbar-container .dropdown-menu:active .dropdown-content,
 .navbar-container .dropdown-menu:hover .dropdown-content {
@@ -16355,4 +16363,322 @@ footer .footer-bottom {
   font-size: 12px;
   padding: 20px 0;
   border-top: 1px solid #DDDDDD;
+}
+
+.house_container {
+  margin-top: 50px;
+  /* parti messagi */
+}
+.house_container .row {
+  margin-bottom: 30px;
+}
+.house_container h1.title {
+  text-align: center;
+  margin: 40px auto;
+  text-transform: uppercase;
+}
+.house_container ul {
+  list-style-type: none;
+  padding: 0;
+}
+.house_container ul li {
+  font-size: 16px;
+}
+.house_container .img-area {
+  height: 300px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 30px;
+}
+.house_container .details {
+  padding-left: 30px;
+}
+.house_container .buttons {
+  text-align: center;
+  margin: 80px auto;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.house_container .buttons .button {
+  width: 150px;
+  padding: 10px 30px;
+  background-color: white;
+  color: #04459e;
+  border: none;
+  border-bottom: 2px solid #04459e;
+  font-weight: bold;
+  border-radius: 20px;
+}
+.house_container .buttons .button:hover {
+  text-decoration: none;
+  color: #04233a;
+  border-bottom: 2px solid #04233a;
+}
+@media (max-width: 899px) {
+  .house_container .buttons {
+    flex-direction: column;
+    justify-content: space-between;
+    height: 200px;
+  }
+}
+.house_container .address {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.house_container .messagi-house .messagi-casa h2 {
+  color: #04459e;
+  margin-bottom: 10px;
+}
+.house_container .messagi-house .messagi-casa ul li {
+  margin-bottom: 15px;
+}
+.house_container .messagi-house .messagi-casa ul li h5 {
+  color: #04459e;
+  margin-bottom: 20px;
+}
+.house_container .messagi-house .messagi-casa ul li p {
+  line-height: 30px;
+}
+
+/* PER SHOW E EDIT */
+.edit-container {
+  margin-bottom: 100px;
+}
+.edit-container h1 {
+  margin: 60px auto;
+}
+.edit-container input, .edit-container textarea {
+  border: none;
+  border-bottom: 2px solid #04459e;
+  outline: none;
+  color: #04459e;
+  width: 70%;
+  padding: 10px 20px;
+  margin-bottom: 30px;
+}
+.edit-container input::-webkit-outer-spin-button,
+.edit-container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.edit-container input[type=number] {
+  -moz-appearance: textfield;
+}
+.edit-container input:focus, .edit-container textarea:focus {
+  border-color: #04459e;
+  box-shadow: none;
+}
+.edit-container button, .edit-container .button {
+  margin: 20px 20px 0 0;
+  background-color: white;
+  color: #04459e;
+  border: none;
+  border-bottom: 2px solid #04459e;
+  font-weight: bold;
+  border-radius: 20px;
+  display: inline-block;
+  min-width: 200px;
+  min-height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+.edit-container .button:hover, .edit-container button:hover {
+  text-decoration: none;
+  color: #04233a;
+  border-bottom: 2px solid #04233a;
+}
+.edit-container .danger {
+  border-bottom: 2px solid red;
+  color: red;
+}
+.edit-container .danger:hover {
+  background-color: red;
+  color: white;
+}
+.edit-container #title, .edit-container #description, .edit-container #image {
+  width: 100%;
+}
+.edit-container .details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.edit-container .details div {
+  width: 20%;
+  margin: 0;
+}
+.edit-container .details div input {
+  width: 100%;
+}
+.edit-container .address {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+.edit-container .address div {
+  width: 30%;
+  margin: 0;
+}
+.edit-container .address div input {
+  width: 100%;
+}
+.edit-container .services {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+.edit-container .services span {
+  width: 170px;
+  display: flex;
+  align-items: center;
+}
+.edit-container .services span input {
+  width: 20px;
+}
+.edit-container .visibility {
+  margin-top: 10px;
+}
+.edit-container .visibility input {
+  width: 20px;
+  margin-bottom: 0;
+}
+.edit-container h4 {
+  margin-bottom: 20px;
+}
+
+.index-container {
+  margin: 50px auto;
+}
+.index-container h3 {
+  margin-bottom: 30px;
+}
+.index-container table th, .index-container table td {
+  border: none;
+}
+.index-container table thead {
+  color: #04459e;
+}
+.index-container table div {
+  color: #04459e;
+  border: 1px solid #04459e;
+  border-radius: 5px;
+  padding: 3px;
+  font-size: 12px;
+  margin: 5px;
+  display: inline-block;
+}
+.index-container button, .index-container .button {
+  background-color: white;
+  color: #04459e;
+  border: none;
+  border-bottom: 2px solid #04459e;
+  font-weight: bold;
+  border-radius: 20px;
+  display: inline-block;
+  text-align: center;
+  padding: 5px 10px;
+}
+.index-container .button:hover, .index-container button:hover {
+  text-decoration: none;
+  color: #04233a;
+  border-bottom: 2px solid #04233a;
+}
+
+.main-content {
+  min-height: 250px;
+}
+
+.messagio_am {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px 100px;
+}
+.messagio_am h2, .messagio_am h4 {
+  margin-bottom: 18px;
+  color: #04459E;
+}
+.messagio_am p {
+  text-align: justify;
+  line-height: 30px;
+}
+.messagio_am div {
+  display: flex;
+  justify-content: space-between;
+}
+.messagio_am div a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  padding: 10px;
+  border: solid lightblue 1px;
+  text-decoration: none;
+  border-radius: 50px;
+}
+
+@media (min-width: 300px) and (max-width: 751px) {
+  .messagio_am {
+    padding: 10px 30px;
+  }
+
+  div a {
+    padding: 5px;
+    border-radius: 25px;
+  }
+}
+.list-messagi {
+  margin-top: 25px;
+}
+.list-messagi h4, .list-messagi h5 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #04459E;
+}
+
+.info {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+.info li {
+  min-width: 200px;
+  color: #5597DC;
+}
+.info li p {
+  text-align: justify;
+}
+
+.form-container {
+  margin-top: 35px;
+  margin-bottom: 45px;
+}
+.form-container form .form-group {
+  margin-bottom: 2rem;
+}
+.form-container form .form-group input {
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #04459e;
+  box-shadow: none;
+}
+.form-container form .form-group button {
+  margin-right: 50px;
+  background-color: white;
+  color: #04459e;
+  border: none;
+  border-bottom: 2px solid #04459e;
+  font-weight: bold;
+  border-radius: 20px;
+  min-width: 200px;
+  min-height: 30px;
+  line-height: 30px;
+  text-align: center;
 }

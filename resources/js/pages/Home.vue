@@ -52,8 +52,6 @@ import Search from '../components/Search.vue';
 import axios from 'axios';
 export default {
     components: {
-        Slider,
-        Loader,
         Search
     },
      data(){
