@@ -45,7 +45,7 @@
                 </div>
                 <h1>{{id}}</h1>
                 <div class="form-group">
-                  <button  type="submit">Invia</button>
+                  <button type="submit" @click="$router.push('/home')">Invia</button>
                 </div>
             </form>
         </div>
@@ -80,12 +80,14 @@ export default {
                 .then(res => {
                     console.log('messaggio inviato')
                     console.log(res)
+                   
                 })
                 .catch(err => {
                     console.error(err);
                 })
               
-        }
+        },
+      
     },
     mounted(){
     

@@ -50,12 +50,13 @@
                 </li>
                 
                 <li>
+                  
                   <label for="radius">Km</label>
                   <div class="d-flex">
                   <input type="range" min="1" max="40" step="1" v-model="radius"> 
                   <input class="ml-3" id="radius" type="text" v-model="radius"/>
                 
-                  </div>
+                </div>
                   
                 </li>
               </ul>
@@ -304,7 +305,6 @@ export default {
            radius : this.radius,
            beds : this.beds,
            rooms_number : this.roomsNumber,
-           service_name : this.wifi,
            service_name : this.checkedInput
            
          }

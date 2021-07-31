@@ -2408,8 +2408,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2689,13 +2687,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.resetResult();
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
-        params: _defineProperty({
+        params: {
           city: AdvSearch,
           radius: this.radius,
           beds: this.beds,
           rooms_number: this.roomsNumber,
-          service_name: this.wifi
-        }, "service_name", this.checkedInput)
+          service_name: this.checkedInput
+        }
       }).then(function (res) {
         _this2.firstData = [];
         _this2.firstData = res.data.houses;
@@ -5273,22 +5271,26 @@ var render = function() {
           _vm._v(" "),
           _c("h1", [_vm._v(_vm._s(_vm.id))]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "button",
+              {
+                attrs: { type: "submit" },
+                on: {
+                  click: function($event) {
+                    return _vm.$router.push("/home")
+                  }
+                }
+              },
+              [_vm._v("Invia")]
+            )
+          ])
         ]
       )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("button", { attrs: { type: "submit" } }, [_vm._v("Invia")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
