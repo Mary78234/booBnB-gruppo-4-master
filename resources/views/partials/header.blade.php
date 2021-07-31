@@ -8,10 +8,15 @@
                     </a>
                 </h1>
             </div>
-            <div class="menu col-12">
-                <ul>
+            <div class="menu container col-12">
+                <ul class="row">
                     <li>
                         <a href="{{ url('/') }}">{{ __('Home') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.home') }}">
+                            Dashboard
+                        </a>
                     </li>
                     <li>
                         <a href="{{ route('user.house.create') }}">

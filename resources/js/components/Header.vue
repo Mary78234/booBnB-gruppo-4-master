@@ -19,15 +19,7 @@ import axios from '../../../public/js/user';
                             <router-link :to="{name: 'advsearch'}">Ricerca Avanzata</router-link>
                         </li>
                         <li>
-                            <div class="dropdown-menu">
-                                <button class="dropdown-btn">
-                                    Account
-                                </button>
-                                <div class="dropdown-content">
-                                    <a href="http://localhost:8000/user" class="dropdown-item">Login</a>
-                                    <a href="http://localhost:8000/register" class="dropdown-item">Register</a>
-                                </div>
-                            </div>
+                             <a href="http://localhost:8000/user">Area Riservata</a>
                         </li>
                     </ul>
                 </div>
@@ -36,10 +28,11 @@ import axios from '../../../public/js/user';
                         Menù
                     </button>
                     <div class="dropdown-content">
+
                         <router-link :to="{name: 'home'}" class="dropdown-item">Home</router-link>
                         <router-link :to="{name: 'advsearch'}" class="dropdown-item">Ricerca Avanzata</router-link>
-                        <a href="http://localhost:8000/user" class="dropdown-item">Login</a>
-                        <a href="http://localhost:8000/register" class="dropdown-item">Register</a>
+                        <a href="http://localhost:8000/user" class="dropdown-item">Area Riservata</a>
+                        
                     </div>
                 </div>
             </div>
