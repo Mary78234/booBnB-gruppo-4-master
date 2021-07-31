@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Service;
-/* use Grimzy\LaravelMysqlSpatial\Eloquent\Builder; */
 use HousesTableSeeder;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Http\Request;

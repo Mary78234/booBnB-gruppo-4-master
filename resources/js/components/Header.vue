@@ -19,14 +19,8 @@ import axios from '../../../public/js/user';
                             <router-link :to="{name: 'advsearch'}">Ricerca Avanzata</router-link>
                         </li>
                         <li>
-                            <div class="dropdown-menu">
-                                <button class="dropdown-btn">
-                                    Account
-                                </button>
-                                <div class="dropdown-content">
-                                    <a href="http://localhost:8000/user" class="dropdown-item">Area riservata</a>
-                                </div>
-                            </div>
+                            <a href="http://localhost:8000/user">Area riservata</a>
+                            
                         </li>
                     </ul>
                 </div>

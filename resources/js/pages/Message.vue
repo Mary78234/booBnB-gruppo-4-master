@@ -15,10 +15,7 @@
 <script>
 
 export default {
-  name: 'Message',
-  components: {
-    Loader
-  },
+  name: 'Message'
  
 }
 </script>
