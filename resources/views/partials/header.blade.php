@@ -10,8 +10,13 @@
             </div>
             <div class="menu container col-12">
                 <ul class="row">
-                    <li class="col-offset-2 col-2">
+                    <li>
                         <a href="{{ url('/') }}">{{ __('Home') }}</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('user.home') }}">
+                            Dashboard
+                        </a>
                     </li>
                     <li>
                         <a href="{{ route('user.house.create') }}">

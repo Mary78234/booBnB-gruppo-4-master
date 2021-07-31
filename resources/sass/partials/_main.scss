@@ -24,6 +24,10 @@
   /* background-color: $boolblue; */
 }
 
+main.main-content{
+  min-height: calc(100vh - 425px);
+}
+
 .divider {
   width: 100%;
   height: 100px;
@@ -77,3 +81,4 @@
     }
   }
 }
+
