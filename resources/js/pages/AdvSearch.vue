@@ -181,10 +181,13 @@ export default {
         /* dati TomTom */
         apiKey: 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf',
         mymap: null,
+        marker: null,
+        LngLat: null,
         otherLocation : {lng: -122.47483, lat: 37.80776},
         /* Axios dove salvo i dati che mi arrivano */
-        firstData : []
-
+        firstData : [],
+        /* array posizioni lat e long */
+        houseLocation : null,
     }
   },
   methods:{
@@ -200,9 +203,11 @@ export default {
           })
           if(this.location || this.advSearch){
             this.initPointView(obj);
-            this.axiosCall(obj);
-          }
+            this.axiosCall(obj); 
+          };
         },
+
+      /* ---------------------------- Ricerca Punto di interesse ----------------------------------- */
 
         initPointView(pos){
             tt.services.fuzzySearch({
@@ -210,10 +215,12 @@ export default {
             query: pos
         })
          .then((response) => {this.map.setCenter(response.results[0].position)  })
-        
         },
-      /* ----------------------------Inizializzazione Mappa----------------------------------- */
 
+      /* ------------------------------ AGGIUNTA DEI MARKER --------------------------------- */
+       
+
+      
       /* ----------------------------CHIAMATA AXIOS----------------------------------- */
         /* 
         lat: house.lat,
@@ -236,7 +243,14 @@ export default {
             .then(res=>{
               this.firstData = [];
               this.firstData = res.data.houses; 
-              console.log(res.data.houses);
+              console.log(this.firstData[0]);
+               this.firstData.forEach(house => {
+                    this.houseLocation.push(
+                      [house.lat, house.long]
+                    )
+            },
+                
+            ); 
             })
             .catch(err=>{
               console.log(err);

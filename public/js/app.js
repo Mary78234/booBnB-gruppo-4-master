@@ -2416,6 +2416,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2584,7 +2586,7 @@ __webpack_require__.r(__webpack_exports__);
     location: String
   },
   data: function data() {
-    return {
+    return _defineProperty({
       /* salvo la posizione con v-model per advsearch */
       advSearch: '',
       houseLocation: [],
@@ -2600,6 +2602,8 @@ __webpack_require__.r(__webpack_exports__);
       /* dati TomTom */
       apiKey: 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf',
       mymap: null,
+      marker: null,
+      LngLat: null,
       otherLocation: {
         lng: -122.47483,
         lat: 37.80776
@@ -2607,11 +2611,13 @@ __webpack_require__.r(__webpack_exports__);
 
       /* Axios dove salvo i dati che mi arrivano */
       firstData: []
-    };
+    }, "houseLocation", null);
   },
   methods: {
     /* ----------------------------Inizializzazione Mappa----------------------------------- */
     initMap: function initMap(obj) {
+      var _this = this;
+
       this.map = tt.map({
         key: this.apiKey,
         container: 'map-div',
@@ -2623,19 +2629,26 @@ __webpack_require__.r(__webpack_exports__);
         this.initPointView(obj);
         this.axiosCall(obj);
       }
+
+      ;
+      this.then(function () {
+        new tt.Marker().setLngLat(_this.otherLocation).addTo(map);
+      });
     },
+
+    /* ---------------------------- Ricerca Punto di interesse ----------------------------------- */
     initPointView: function initPointView(pos) {
-      var _this = this;
+      var _this2 = this;
 
       tt.services.fuzzySearch({
         key: this.apiKey,
         query: pos
       }).then(function (response) {
-        _this.map.setCenter(response.results[0].position);
+        _this2.map.setCenter(response.results[0].position);
       });
     },
 
-    /* ----------------------------Inizializzazione Mappa----------------------------------- */
+    /* ------------------------------ AGGIUNTA DEI MARKER --------------------------------- */
 
     /* ----------------------------CHIAMATA AXIOS----------------------------------- */
 
@@ -2645,7 +2658,7 @@ __webpack_require__.r(__webpack_exports__);
     
     */
     axiosCall: function axiosCall(obj) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
         params: {
@@ -2656,9 +2669,13 @@ __webpack_require__.r(__webpack_exports__);
           service_name: this.checkedInput
         }
       }).then(function (res) {
-        _this2.firstData = [];
-        _this2.firstData = res.data.houses;
-        console.log(res.data.houses);
+        _this3.firstData = [];
+        _this3.firstData = res.data.houses;
+        console.log(_this3.firstData[0]);
+
+        _this3.firstData.forEach(function (house) {
+          _this3.houseLocation.push([house.lat, house["long"]]);
+        });
       })["catch"](function (err) {
         console.log(err);
       });
