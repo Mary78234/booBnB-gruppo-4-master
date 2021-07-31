@@ -1,9 +1,9 @@
 <template>
   <main>
-    
+    <!-- immagine = house.image -->
     <section class="container-fluid">
       
-      <h1>TITOLO CASA</h1>
+      <h1>{{house.title}}</h1>
 
       <div class="image-details row">
         <div class="image-left col-md-6 col-sm-12">
@@ -13,15 +13,18 @@
           <h3>Caratteristiche</h3>
           <ul>
             <li>
-              Numero di stanze: <strong>3</strong>
+              <p><strong>{{house.description}}</strong></p>
             </li>
             <li>
-              Numero di letti: <strong>8</strong>
-            <li>
-              Numero di bagni: <strong>2</strong>
+              Numero di stanze: <strong>{{house.rooms_number}}</strong>
             </li>
             <li>
-              Superficie totale: <strong>190mq</strong>
+              Numero di letti: <strong>{{house.beds}}</strong>
+            <li>
+              Numero di bagni: <strong>{{house.bathrooms}}</strong>
+            </li>
+            <li>
+              Superficie totale: <strong>{{house.square_metre}}</strong>
             </li>
           </ul>
         </div>
@@ -29,28 +32,16 @@
 
       <div class="features">
         <ul>
-          <li>
-            WiFi
-          </li>
-          <li>
-            Cucina
-          </li>
-          <li>
-            Vista Mare
-          </li>
-          <li>
-            Piscina
-          </li>
-          <li>
-            Aria Condizionata
-          </li>
+            <li v-for="service in house.services" :key="service.pivot.service_id">
+             <span class="btn btn-dark m-3">{{service.name}}</span>
+            </li>
         </ul>
       </div>
 
       <div class="address-map row">
         <div class="address-left col-md-6 col-sm-12">
           <h3>Indirizzo</h3>
-          <p>Viale Tal dei Tali, 47, Milano (MI), Italia</p>
+          <p>{{house.city}}, {{ house.address }}, {{house.house_number}}, {{house.postal_code}}, {{house.country}}</p>
         </div>
         <div class="map-right col-md-6 col-sm-12">
           
@@ -66,11 +57,70 @@
 
 <script>
 import MessageForm from '../components/MessageForm.vue';
-
+import axios from 'axios';
 export default {
   name: 'House',
   components: {
     MessageForm
+  },
+  data(){
+    return{
+        house: {},
+        houseLocation: {}
+    }
+  },
+  mounted(){
+    console.log(this.$route.params.slug);
+    axios.get('http://localhost:8000/api/houses/'+ this.$route.params.slug)
+          .then(res => {
+            console.log(res.data);
+            if(res.data.success){
+                  this.house = res.data.result;
+                  
+            }else{
+              this.$router.push({name: 'error404'})
+            };
+            this.houseLocation.push(
+                  {
+                            lat: house.lat,
+                            lng: house.long
+                  }
+            );
+          })
+          .catch(err =>{
+            console.log(err);
+          })
+
+        
+
+    
+      
+       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+       const APPLICATION_NAME = 'BoolBnB';
+       const APPLICATION_VERSION = '1.0';
+       let outerthis = this;
+       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+
+        tt.services.fuzzySearch({
+         key: apiKey,
+         query: outerthis.houseLocation
+       })
+
+       .then(function(response) {
+                let mymap = tt.map({
+                key: apiKey,
+                container: 'map-div',
+                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+                center: response.results[0].position,
+                zoom: 15
+              });
+                
+                new tt.Marker().setLngLat(outerthis.houseLocation).addTo(mymap);
+              
+       })
+       
+        
+     
   }
 }
 
