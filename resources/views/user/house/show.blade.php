@@ -1,65 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container bg-light">
+<div class="house_container container col-xs-12 offset-md-2 col-md-8">
+    <div class="row">
     
-    <h1>DETTAGLI CASA: {{ $house->title }}</h1>
+        <h1 class="title col-12">{{ $house->title }}</h1>
+        <div class="image col-md-12 col-lg-6">
+            @if ($house->image === null)
+                <div class="img-area" style="background-image: url('{{ asset('storage/placeholder/house.svg') }}')">
+                </div> 
+            @else
+
+                <div class="img-area" style="background-image: url('{{ asset('storage/' . $house->image) }}')">
+                    <!-- <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}" class="img-fluid"> -->
+                </div>
+                
+            @endif   
+        </div>
     
-    <div>
-        @if ($house->image)
+    
+        <div class="details col-sm-12 col-md-6 col-lg-3">
+            <h3>Dettagli</h3>
+            <ul class="text-left">
+                <li>Stanze: {{ $house->rooms_number }}</li>
+                <li>Letti: {{ $house->beds }}</li>
+                <li>Bagni: {{ $house->bathrooms }}</li>
+                <li>Superficie: {{ $house->square_metre }}mq</li>
+                @if ($house->visibility)
+                <li>Visibile</li>
+                @else
+                <li>NON Visibile</li>  
+                @endif
+            </ul>
+        </div>
 
-            <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
-        
-        @endif        
-    </div>
-    <h2 class="mt-4">Descrizione</h2>
-    <p class="mt-2">{{ $house->description }}</p>
-
-    <h2>Caratteristiche:</h2>
-    <ul>
-        <li>Numero di stanze: {{ $house->rooms_number }}</li>
-        <li>Numero letti: {{ $house->beds }}</li>
-        <li>Bagni: {{ $house->bathrooms }}</li>
-        <li>Dimensione: {{ $house->square_metre }} metri quadri</li>
-        <li>Nazione: {{ $house->country }}</li>
-        <li>Regione: {{ $house->region }}</li>
-        <li>Città: {{ $house->city }}</li>
-        <li>Indirizzo: {{ $house->address }} {{ $house->house_number }}</li>
-        <li>Codice Postale: {{ $house->postal_code }}</li>
-        <li>Latitudine: {{ $house->lat }}</li>
-        <li>Longitudine: {{ $house->long }}</li>
-        @if ($house->visibility)
-        <li>Visibile: SI</li>
+        @if (count($house->services) === 0)
+        <div class="col-sm-12 col-md-6 col-lg-3">
+            <h2>Non ci sono servizi</h2>  
+        </div> 
         @else
-        <li>Visibile: NO</li>  
+        <div class="col-sm-12 col-md-6 col-lg-3">
+            <h2>Servizi</h2>
+            <ul>
+                @foreach ($house->services as $service)
+                    <li>{{ $service->name }}</li>
+                @endforeach
+            </ul>
+        </div> 
         @endif
 
-    </ul>
-    <h3>Servizi:</h3>
-    <ul>
-        @foreach ($house->services as $service)
-            <li>{{ $service->name }}</li>
-        @endforeach
-    </ul>
-    <h3>MAPPA</h3>
-    {{-------------------------MAPPA----------------------}}
-    <div style="width:75%; height: 75vh; margin: 0 auto;" id='map-div'></div>
-    {{-------------------------MAPPA----------------------}}
+        <!-- <div class="col-sm-12 col-md-6 col-lg-3">
+            <h3>Indirizzo</h3>
+            <ul>
+                <li>{{ $house->address }} {{ $house->house_number }}</li>
+                <li>{{ $house->city }} - {{ $house->postal_code }}</li>
+                <li>{{ $house->region }}</li>
+                <li>{{ $house->country }}</li>
+            </ul>
+        </div> -->
 
-
-    <div>
-        <a class="btn btn-dark" href="{{ route('user.house.edit', $house) }}">Modifica</a>
+    
+        
     </div>
+    
+    <div class="address col-12">
+        <h2>Indirizzo</h2>
+        <h5>{{ $house->address }} {{ $house->house_number }}, {{ $house->city }} - {{ $house->postal_code }} ({{ $house->country }})</h5>
+    </div>
+    <!-- -------------------------MAPPA---------------------- -->
+    <div class="mb-5" style="width:100%; height: 75vh;" id='map-div'></div>
+    <!-- -------------------------MAPPA---------------------- -->
+
+
+    <div class="buttons col-12">
+        <a class="button" href="{{ route('user.house.edit', $house) }}">Modifica</a>
+        <a class="button" href="/house">Visualizza</a>
+        <a class="button">Sponsorizza</a>
+    </div>
+
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}
-    <h1>Lista Messaggi:</h1>
-    <ul>
-        @foreach ($messages as $message)
-            <li>
-                <h5>{{ $message->title }}</h5>
-                <p>{{ $message->content }}</p>
-            </li>
-        @endforeach
-    </ul>
+    <div class="mb-5">
+        @if (count($messages) === 0)
+        <div class="col-xs-12 text-center mb-5">
+            <h2>Non ci sono messaggi.</h2>  
+        </div> 
+        @else
+            <div class="col-xs-12 text-center mb-5">
+                <h2>Messaggi:</h2>
+                <ul style="list-style-type: none; padding: 0;">
+                    @foreach ($messages as $message)
+                        <li>
+                            <h5 class="text-center">{{ $message->title }}</h5>
+                            <p>{{ $message->content }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div> 
+        @endif
+
+    </div>
+
+    {{-- /SEZIONE MESSAGGI DA TERMINARE --}}
+
+        
   
 </div>
 {{-------------------------MAPPA----------------------}}
@@ -93,7 +136,6 @@
          const pos = geometry;
          let cityStoresList = document.getElementById(city);
          const marker = new tt.Marker().setLngLat(pos).setPopup(new tt.Popup({offset: 35}).setHTML(title + '<br>' + city + ' ' + address + ' ' + houseNumber)).addTo(map);
-
 
 </script> 
 

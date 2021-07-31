@@ -72,11 +72,10 @@ class HouseController extends Controller
         $new_house = new House();
         $new_house->fill($data);
         $new_house->user_id = Auth::user()->id;
-
-        $url = $data['country'] . ' ' . $data['region'] . ' ' . $data['city'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
+       
+        $url = $data['city'] . ' ' . $data['region'] . ' ' . $data['country'] . ' ' . $data['postal_code'] . ' ' . $data['address'] . $data['house_number'];
         $urlEncode = rawurlencode($url);
         $response = Http::get('https://api.tomtom.com/search/2/geocode/' . $urlEncode . '.json?key=EHA6jZsKzacvcupfIH5jId15dI3c5wGf')->json();
-        
         
         $lat= $response['results']['0']['position']['lat'];
         $long= $response['results']['0']['position']['lon'];

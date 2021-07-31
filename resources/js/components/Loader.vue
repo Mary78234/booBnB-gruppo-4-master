@@ -12,8 +12,8 @@
         <div>
             <span></span>
         </div>
-      </div>
- -->
+      </div> -->
+
       
     </div>
   </section>
@@ -29,8 +29,7 @@ export default {
 
 section.loader{
   background-color: rgb(255, 255, 255);
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
   display:flex;
   justify-content: center;
   align-items: center; 
@@ -158,7 +157,7 @@ section.loader{
     100% {
         transform: translate(32px, -8px) scale(0);
     }
-} 
+}
 
   
 </style>

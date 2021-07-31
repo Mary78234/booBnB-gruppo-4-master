@@ -1,16 +1,5 @@
+import axios from '../../../public/js/user';
 <template>
-    <!-- <header>
-        <div class="container text-center">
-
-            <h1>Questo è l header</h1>
-            <router-link class="nav-link" :to="{name: 'home'}">Torna alla home</router-link>
-            <router-link class="nav-link" :to="{name: 'results'}">Search</router-link>
-            <a href="http://localhost:8000/user">Login</a>
-            <a href="http://localhost:8000/register">Register</a>
-
-        </div>
-    </header>  -->
-
     <header>
         <nav class="navbar-container">
             <div class="navbar">
@@ -22,14 +11,14 @@
                     </h1>
                 </div>
                 <div class="menu container col-12">
-                    <ul class="row">
-                        <li class="col-offset-2 col-2">
+                    <ul>
+                        <li>
                             <router-link :to="{name: 'home'}">Home</router-link>
                         </li>
-                        <li class="col-4">
-                            <input type="text" placeholder="Cerca...">
+                        <li>
+                            <router-link :to="{name: 'advsearch'}">Ricerca Avanzata</router-link>
                         </li>
-                        <li class="col-2 col-offset-2">
+                        <li>
                             <div class="dropdown-menu">
                                 <button class="dropdown-btn">
                                     Account
@@ -42,15 +31,13 @@
                         </li>
                     </ul>
                 </div>
-                <div class="menu-search col-12">
-                    <input type="text" placeholder="Cerca...">
-                </div>
                 <div class="dropdown-menu responsive col-12 row">
                     <button class="dropdown-btn">
                         Menù
                     </button>
                     <div class="dropdown-content">
                         <router-link :to="{name: 'home'}" class="dropdown-item">Home</router-link>
+                        <router-link :to="{name: 'advsearch'}" class="dropdown-item">Ricerca Avanzata</router-link>
                         <a href="http://localhost:8000/user" class="dropdown-item">Login</a>
                         <a href="http://localhost:8000/register" class="dropdown-item">Register</a>
                     </div>
@@ -61,9 +48,25 @@
 </template>
 
 <script>
+
+
 export default {
-    name: 'Header'
+    name: 'Header',
+    components: {
+
+    },
+    data(){
+        return{
+            
+        }
+    },
+    methods:{
+       
+    },
+    created(){
+    }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -78,31 +81,36 @@ $boolgreen: #00E165;
     box-shadow: 2px 2px 5px rgba(200, 200, 200, 0.9);
     color: $boolblue;
     font-weight: 700;
-    
     .logo {
         text-align: center;
         h1 {
             a {
-                color: black;
+                color: $boolblue;
+                font-size: 48px;
             }
         }
     }
     .logo:hover {
         h1 {
             a {
-                color: $boolblue;
+                color: black;
             }
         }
     }
     .menu {
         text-align: center;
     }
-    .menu-search {
-        text-align: center;
-    }
-    a {
+    a, button.dropdown-btn, .dropdown-content a {
         text-decoration: none;
         color: $boolblue;
+        text-transform: uppercase;
+        font-size: 18px;
+    }
+    a:hover, button.dropdown-btn:hover, .dropdown-content a:hover {
+        text-decoration: none;
+        color: #04233a;
+        text-transform: uppercase;
+        font-size: 18px;
     }
     ul {
         display: flex;
@@ -116,10 +124,7 @@ $boolgreen: #00E165;
         li {
             line-height: 50px;
             height: 50px;
-            a:hover {
-                border-radius: 50px;
-                background-color: rgba(235, 233, 233, 0.9);
-            }
+            margin: 0 20px;
         }
     }
     ul.row {
@@ -137,6 +142,7 @@ $boolgreen: #00E165;
     .menu-search {
         line-height: 50px;
         margin-bottom: 20px;
+        text-align: center;
     }
     .dropdown-menu {
         position: relative;
@@ -154,7 +160,6 @@ $boolgreen: #00E165;
             background-color: white;
             font-weight: 700;
             height: 50px;
-            color: $boolblue;
             text-align: center;
             width: 100%;
             padding: 0;
@@ -168,6 +173,9 @@ $boolgreen: #00E165;
             z-index: 1;
             text-align: center;
             background-color: white;
+            a {
+                font-size: 16px;
+            }
         }
     }
     .dropdown-menu:active .dropdown-content,
@@ -176,13 +184,13 @@ $boolgreen: #00E165;
     }
 }
 
-@media (max-width: 767px) {
-    .menu.container {
+@media (max-width: 991px) {
+    .menu {
         display: none;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
     .dropdown-menu.row.responsive, .menu-search {
         display: none;
     }

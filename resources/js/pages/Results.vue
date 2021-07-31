@@ -1,52 +1,28 @@
 <template>
   <main>
     <section>
+      <Search 
+      @textToSearch = 'findLocation'
+      />
       <div class="contenedor-risultati">
         <div class="content-house-resultati row ">
           <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
             <div class="risultati">
               <ul>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
+                <li class="row"
+                   v-for="house in firstData" :key="house.id">
+                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
-                  </div>
-                </li>
-                <li class="row">
-                  <img class="col-sm-12 col-md-6 col-lg-4" src="https://via.placeholder.com/300" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>Titolo</h3>
-                    <p class="description">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati laboriosam cupiditate voluptatem, ad ab ex consequuntur ut facere soluta quibusdam voluptates laudantium maxime ullam assumenda? Iusto id, nobis labore accusamus eum asperiores? Vitae iste dicta natus optio quia veritatis quasi laboriosam, qui nobis modi rerum nemo praesentium eius suscipit fugiat.</p>
+                    <h3>{{ house.title }}</h3>
+                    <p class="description">{{house.description}}</p>
+                    
                   </div>
                 </li>
               </ul>
             </div>
           </div>
 
-          <div class="right col-sm-12 col-md-12 col-lg-6">
-            <img class="img-fluid" src="https://via.placeholder.com/600x400" alt="">
+          <div id="map" style="width: 400px; height: 400px;" class="right col-sm-12 col-md-12 col-lg-6">
           </div>
         </div>
       </div>
@@ -57,14 +33,118 @@
 
 <script>
 import Loader from '../components/Loader.vue';
-
+import Search from '../components/Search.vue';
+import axios from 'axios';
 export default {
   name: 'Results',
   components: {
-    Loader
+    Loader,
+    Search
+  },
+  data(){
+    return{
+        firstData:[],
+        houseLocation : [],
+        allData: []
+    }
+  },
+  methods:{
+
+    resetResult(){
+      this.houseLocation = []
+    },
+
+     findLocation(obj){
+       this.getLocations(obj.text);
+       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
+       const APPLICATION_NAME = 'BoolBnB';
+       const APPLICATION_VERSION = '1.0';
+       let outerthis = this;
+       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
+        
+
+
+        tt.services.fuzzySearch({
+         key: apiKey,
+         query: obj.text
+       })
+
+       .then(function(response) {
+                let mymap = tt.map({
+                key: apiKey,
+                container: 'map',
+                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
+                center: response.results[0].position,
+                zoom: 15
+              });  
+              outerthis.houseLocation.forEach(child=>{
+                 new tt.Marker().setLngLat(child).addTo(mymap);
+              })       
+       })
+       
+        
+     },
+    
+     getLocations(obj){
+       this.resetResult()
+       axios.get('http://localhost:8000/api/houses?',{
+         params:{
+           city : obj
+         }
+       })
+            .then(res=>{
+              this.firstData = res.data.houses;
+              /* console.log(this.firstData), */
+                 console.log(this.firstData);
+              this.firstData.forEach(house => {
+                    this.houseLocation.push(
+                      {
+                            lat: house.lat,
+                            lng: house.long
+                      }
+                    )
+                    
+            },
+            
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
+     },
+     
+  },
+  mounted(){
+   
+    this.findLocation(this.place);
+    
+  },
+  created(){
+
+    axios.get('http://localhost:8000/api/houses')
+            .then(res=>{
+              this.allData = res.data.houses;
+              /* console.log(this.firstData), */
+                 console.log(this.firstData);
+              this.allData.forEach(house => {
+                    this.houseLocation.push(
+                      {
+                            lat: house.lat,
+                            lng: house.long
+                      }
+                    )
+            },
+            
+            );  
+            })
+            .catch(err=>{
+              console.log(err);
+            })
   }
+  
 }
 </script>
+
 
 <style lang="scss" scoped>
  .contenedor-risultati{

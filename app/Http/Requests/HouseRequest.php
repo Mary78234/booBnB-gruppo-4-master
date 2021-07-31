@@ -32,8 +32,6 @@ class HouseRequest extends FormRequest
             'region' => 'required',
             'city' => 'required',
             'address' => 'required',
-            'postal_code' => 'required|numeric',
-            'house_number' => 'required|numeric',
             'image' => 'nullable|image|max:32000',
             'service' => 'nullable|exists:service,id',
         ];
@@ -52,8 +50,6 @@ class HouseRequest extends FormRequest
             'region.required' => 'Devi inserire una regione',
             'city.required' => 'Devi inserire la città',
             'address.required' => 'Devi inserire l\'indirizzo',
-            'postal_code.required' => 'Devi inserire il codice postale',
-            'house_number.requiredr' => 'Devi inserire un numero civico',
             'image.required' => 'Bisogna inserire un\'immagine',
             'service.exists' => 'Il servizio scelto non è presente',
             'image.image' => 'Il file caricato non è un\'immagine',
