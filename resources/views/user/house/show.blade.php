@@ -12,7 +12,6 @@
             @else
 
                 <div class="img-area" style="background-image: url('{{ asset('storage/' . $house->image) }}')">
-                    <!-- <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}" class="img-fluid"> -->
                 </div>
                 
             @endif   
