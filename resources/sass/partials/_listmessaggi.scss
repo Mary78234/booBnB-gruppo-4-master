@@ -1,0 +1,21 @@
+.list-messagi{
+  margin-top: 25px;
+  h4,h5{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #04459E;
+  }
+}
+.info{
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  li{
+    min-width: 200px;
+    color: #5597DC;
+    p{
+      text-align: justify;
+    }
+  }
+}

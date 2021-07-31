@@ -1,0 +1,44 @@
+.main-content{
+  min-height: 250px;
+}
+
+.messagio_am{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px 100px;
+  h2,h4{
+    margin-bottom: 18px;
+    color: #04459E;
+  }
+  p{
+    text-align: justify;
+    line-height: 30px;
+  }
+  div{
+    display: flex;
+    justify-content: space-between;
+    a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 160px;
+      padding: 10px;
+      border: solid lightblue 1px;
+      text-decoration: none;
+      border-radius: 50px;
+    }
+  }
+}
+
+@media (min-width: 300px) and (max-width: 751px) {
+  .messagio_am{
+    padding: 10px 30px;
+  }
+  div{
+    a{
+      padding: 5px;
+      border-radius: 25px;
+    }
+  }
+}
