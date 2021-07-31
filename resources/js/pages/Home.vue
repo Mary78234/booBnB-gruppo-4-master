@@ -7,39 +7,29 @@
         
             
             <div class="container text-center">
-                <Search @textToSearch = 'findLocation'/>
-                
-                 <!-- <div class="contenedor-risultati">
-                 <div class="content-house-resultati row ">
-                 <div class="left-risultati col-sm-12 col-md-12 col-lg-6">
-                 <div class="risultati">
-                <ul>
-                 <li class="row"
-                   v-for="house in firstData" :key="house.id">
-                  <img class="col-sm-12 col-md-6 col-lg-4" :src="'http://localhost:8000/storage/' + house.image" alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
-                    <h3>{{ house.title }}</h3>
-                    <p class="description">{{house.description}}</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-                 <div id="map-div" style="width: 400px; height: 400px;" class="right col-sm-12 col-md-12 col-lg-6">
-          </div>
-        </div>
-      </div> -->
-                <div>
+
+              <div>
 
                 <h1>Qui inizia la tua avventura!</h1>
                 <h5>Esperienze uniche in luoghi magnifici.</h5>
                 <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
 
-                </div>
-
-
-                
             </div>
+               <!--  <Search @textToSearch = 'findLocation'/> -->
+              <div class="homesearch">
+                  <input 
+                    type="text" 
+                     v-model="textToSearch"
+                    @keyup.enter="gotoAdvSearch()"
+                     placeholder="Cerca...">
+                   <button
+                      @click="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')">
+                      Cerca 
+               </button>
+            </div>
+            
+
+          </div>
 
         </section>
 
@@ -141,33 +131,10 @@ export default {
   },
   mounted(){
    
-    this.findLocation(this.place);
+   
     
   },
-  created(){
-
-    axios.get('http://localhost:8000/api/houses')
-            .then(res=>{
-              this.allData = res.data.houses;
-              /* console.log(this.firstData), */
-                 console.log(this.firstData);
-              this.allData.forEach(house => {
-                    this.houseLocation.push(
-                      {
-                            lat: house.lat,
-                            lng: house.long
-                      }
-                    )
-            },
-            
-            );  
-            })
-            .catch(err=>{
-              console.log(err);
-            })
-  }
   
-
 }
 </script>
 
@@ -190,7 +157,31 @@ section.jumbotron{
     h1 {
       margin-top: 100px;
     }
+$boolblue: #04459e;
 
+.homesearch {
+    display: flex;
+    input {
+        border: none;
+        border-bottom: 2px solid $boolblue;
+        outline: none;
+        color: $boolblue;
+        width: 70%;
+        margin: 0 0 0 10%;
+        padding: 10px 20px;
+        border-radius: 20px 0 0 20px;
+    }
+    button {
+        width: 20%;
+        margin: 0 10% 0 0;
+        background-color: white;
+        color: $boolblue;
+        border: none;
+        border-bottom: 2px solid $boolblue;
+        font-weight: bold;
+        border-radius: 0 20px 20px 0;
+    }
+}
 }
 
 </style>

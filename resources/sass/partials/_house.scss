@@ -1,0 +1,242 @@
+.house_container {
+
+  margin-top: 50px;
+
+  .row {
+    margin-bottom: 30px;
+  }
+
+  h1.title {
+    text-align: center;
+    margin: 40px auto;
+    text-transform: uppercase;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    li {
+      font-size: 16px;
+    }
+  }
+
+  .img-area {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 30px;
+  }
+
+  .details {
+    padding-left: 30px;
+  }
+
+  .buttons {
+    text-align: center;
+    margin: 80px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .button {
+      width: 150px;
+      padding: 10px 30px;
+      background-color: white;
+      color: $boolblue;
+      border: none;
+      border-bottom: 2px solid $boolblue;
+      font-weight: bold;
+      border-radius: 20px;
+    }
+    .button:hover {
+      text-decoration: none;
+      color: #04233a;
+      border-bottom: 2px solid #04233a;
+    }
+  }
+  @media (max-width: 899px) {
+    .buttons {
+      flex-direction: column;
+      justify-content: space-between;
+      height: 200px;
+    }
+  }
+
+  .address {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+}
+
+/* PER SHOW E EDIT */
+.edit-container {
+
+  margin-bottom: 100px;
+
+  h1 {
+    margin: 60px auto;
+  }
+
+  input, textarea {
+    border: none;
+    border-bottom: 2px solid $boolblue;
+    outline: none;
+    color: $boolblue;
+    width: 70%;
+    padding: 10px 20px;
+    margin-bottom: 30px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  input:focus, textarea:focus {
+    border-color: $boolblue;
+    box-shadow: none;
+  }
+
+  button, .button {
+    margin: 20px 20px 0 0;
+    background-color: white;
+    color: $boolblue;
+    border: none;
+    border-bottom: 2px solid $boolblue;
+    font-weight: bold;
+    border-radius: 20px;
+    display: inline-block;
+    min-width: 200px;
+    min-height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+
+  .button:hover, button:hover {
+    text-decoration: none;
+    color: #04233a;
+    border-bottom: 2px solid #04233a;
+  }
+
+  .danger {
+    border-bottom: 2px solid red;
+    color: red;
+  }
+
+  .danger:hover {
+    background-color: red;
+    color: white;
+  }
+
+  #title, #description, #image {
+    width: 100%;
+  }
+
+  .details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    div {
+      width: 20%;
+      margin: 0;
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  .address {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    div {
+      width: 30%;
+      margin: 0;
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  .services {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin: 10px 0;
+    span {
+      width: 170px;
+      display: flex;
+      align-items: center;
+      input {
+        width: 20px;
+      }
+    }
+  }
+
+  .visibility {
+    margin-top: 10px;
+    input {
+      width: 20px;
+      margin-bottom: 0;
+    }
+  }
+
+  h4 {
+    margin-bottom: 20px;
+  }
+
+}
+
+.index-container {
+
+  margin: 50px auto;
+
+  h3 {
+    margin-bottom: 30px;
+  }
+
+  table {
+    th, td {
+      border: none;
+    }
+    thead {
+      color: $boolblue;
+    }
+    div {
+      color: $boolblue;
+      border: 1px solid $boolblue;
+      border-radius: 5px;
+      padding: 3px;
+      font-size: 12px;
+      margin: 5px;
+      display: inline-block;
+    }
+  }
+
+  button, .button {
+    background-color: white;
+    color: $boolblue;
+    border: none;
+    border-bottom: 2px solid $boolblue;
+    font-weight: bold;
+    border-radius: 20px;
+    display: inline-block;
+    text-align: center;
+    padding: 5px 10px;
+  }
+
+  .button:hover, button:hover {
+    text-decoration: none;
+    color: #04233a;
+    border-bottom: 2px solid #04233a;
+  }
+
+}

@@ -3,7 +3,10 @@
     
     <Header />
     
-    <router-view></router-view>
+    <router-view
+    @textToSearch = 'getlocation'
+    :location = location
+    ></router-view>
                  
     <Footer />
 
@@ -23,12 +26,14 @@ export default {
   },
   data() {
         return {
-            FindLocation : ''
+        location : '',
     }
   },
     methods:{
-
-     
+      getlocation(obj){
+        this.location = obj.text;
+      }
+      
         
     },
     created(){

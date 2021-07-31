@@ -60,9 +60,6 @@
                     </li>
                 </ul>
             </div>
-            <div class="menu-search col-12">
-                <input type="text" placeholder="Cerca...">
-            </div>
             <div class="dropdown-menu responsive col-12 row">
                 <button class="dropdown-btn">
                     Menù

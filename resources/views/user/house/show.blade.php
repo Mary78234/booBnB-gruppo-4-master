@@ -1,85 +1,81 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container col-xs-12 offset-md-2 col-md-8">
+<div class="house_container container col-xs-12 offset-md-2 col-md-8">
+    <div class="row">
     
-    <h1 class="text-center mb-4">Dettagli: {{ $house->title }}</h1>
-    <div class="offset-xs-4 col-xs-4">
-        @if ($house->image === null)
-            <div class="col-xs-12 text-center mb-5">
-                <h2>Immagine non caricata.</h2>  
-            </div> 
-        @else
-
-            <div class="img-area text-center mb-5" style="width:80%; margin:0 auto; ">
-                <img style="width: 100%;" src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}">
-            </div>
-            
-        @endif   
-    </div>
-    
-    <div class="row mb-5">
-        <div class="col-xs-12 offset-lg-1 col-lg-5">
-            <h2>Caratteristiche:</h2>
-        <ul class="text-left" style="list-style-type: none; padding: 0;">
-            <li>Numero di stanze: {{ $house->rooms_number }}</li>
-            <li>Numero letti: {{ $house->beds }}</li>
-            <li>Bagni: {{ $house->bathrooms }}</li>
-            <li>Dimensione: {{ $house->square_metre }} metri quadri</li>
-            
-            {{-- <li>Latitudine: {{ $house->lat }}</li>
-            <li>Longitudine: {{ $house->long }}</li> --}}
-            @if ($house->visibility)
-            <li>Visibile: SI</li>
+        <h1 class="title col-12">{{ $house->title }}</h1>
+        <div class="image col-md-12 col-lg-6">
+            @if ($house->image === null)
+                <div class="img-area" style="background-image: url('{{ asset('storage/placeholder/house.svg') }}')">
+                </div> 
             @else
-            <li>Visibile: NO</li>  
-            @endif
-    
-        </ul>
-        </div>
 
-        <div class="col-xs-12 offset-lg-1 col-lg-5">
-            <h2>Indirizzo:</h2>
-            <ul style="list-style-type: none; padding: 0;">
-                <li>{{ $house->address }} {{ $house->house_number }}</li>
-                <li>{{ $house->postal_code }}</li>
-                <li>{{ $house->city }}</li>
-                <li>{{ $house->region }}</li>
-                <li>{{ $house->country }}</li>
+                <div class="img-area" style="background-image: url('{{ asset('storage/' . $house->image) }}')">
+                    <!-- <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}" class="img-fluid"> -->
+                </div>
                 
+            @endif   
+        </div>
+    
+    
+        <div class="details col-sm-12 col-md-6 col-lg-3">
+            <h3>Dettagli</h3>
+            <ul class="text-left">
+                <li>Stanze: {{ $house->rooms_number }}</li>
+                <li>Letti: {{ $house->beds }}</li>
+                <li>Bagni: {{ $house->bathrooms }}</li>
+                <li>Superficie: {{ $house->square_metre }}mq</li>
+                @if ($house->visibility)
+                <li>Visibile</li>
+                @else
+                <li>NON Visibile</li>  
+                @endif
             </ul>
         </div>
+
+        @if (count($house->services) === 0)
+        <div class="col-sm-12 col-md-6 col-lg-3">
+            <h2>Non ci sono servizi</h2>  
+        </div> 
+        @else
+        <div class="col-sm-12 col-md-6 col-lg-3">
+            <h2>Servizi</h2>
+            <ul>
+                @foreach ($house->services as $service)
+                    <li>{{ $service->name }}</li>
+                @endforeach
+            </ul>
+        </div> 
+        @endif
+
+        <!-- <div class="col-sm-12 col-md-6 col-lg-3">
+            <h3>Indirizzo</h3>
+            <ul>
+                <li>{{ $house->address }} {{ $house->house_number }}</li>
+                <li>{{ $house->city }} - {{ $house->postal_code }}</li>
+                <li>{{ $house->region }}</li>
+                <li>{{ $house->country }}</li>
+            </ul>
+        </div> -->
+
     
         
     </div>
     
-    {{-- conta se ci sono servizi  --}}
-    @if (count($house->services) === 0)
-    <div class="col-xs-12 text-center mb-5">
-        <h2>Non ci sono servizi</h2>  
-    </div> 
-    @else
-        <div class="col-xs-12 text-center mb-5">
-            <h2>Servizi:</h2>
-            <ul style="list-style-type: none; padding: 0;">
-                @foreach ($house->services as $service)
-                    <li class="mr-3" style=" display: inline;">{{ $service->name }}</li>
-                @endforeach
-            </ul>
-        </div> 
-    @endif
-    
-    
-    <h2 class="text-center mb-3">Posizione:</h2>
-    {{-------------------------MAPPA----------------------}}
+    <div class="address col-12">
+        <h2>Indirizzo</h2>
+        <h5>{{ $house->address }} {{ $house->house_number }}, {{ $house->city }} - {{ $house->postal_code }} ({{ $house->country }})</h5>
+    </div>
+    <!-- -------------------------MAPPA---------------------- -->
     <div class="mb-5" style="width:100%; height: 75vh;" id='map-div'></div>
-    {{-------------------------MAPPA----------------------}}
+    <!-- -------------------------MAPPA---------------------- -->
 
 
-    <div class="text-center mb-5">
-        <a class="btn btn-primary" href="{{ route('user.house.edit', $house) }}">Modifica</a>
-        <a class="btn btn-info">Visualizza</a>
-        <a class="btn btn-success">Sponsorizza</a>
+    <div class="buttons col-12">
+        <a class="button" href="{{ route('user.house.edit', $house) }}">Modifica</a>
+        <a class="button" href="/house">Visualizza</a>
+        <a class="button">Sponsorizza</a>
     </div>
 
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}
@@ -103,6 +99,7 @@
         @endif
 
     </div>
+
     {{-- /SEZIONE MESSAGGI DA TERMINARE --}}
 
         
