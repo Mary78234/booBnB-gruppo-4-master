@@ -58,6 +58,7 @@
                 <li>{{ $house->country }}</li>
             </ul>
         </div> -->
+
     
         
     </div>
@@ -98,6 +99,7 @@
         @endif
 
     </div>
+
     {{-- /SEZIONE MESSAGGI DA TERMINARE --}}
 
         

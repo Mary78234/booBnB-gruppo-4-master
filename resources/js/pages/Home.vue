@@ -34,18 +34,23 @@
         </section>
 
         <!-- slider con le sponsorizzazioni -->
-        <Slider />
+        <!-- <Slider />
+        <Error404 />
+        <MessageConfirmation /> -->
+        
 
     </main>
 </template>
 
 <script>
-import Slider from '../components/Slider.vue';
+/* import Slider from '../components/Slider.vue';
 import Loader from '../components/Loader.vue';
+import Error404 from './Error404.vue';
+import MessageConfirmation from '../components/MessageConfirmation.vue'; */
+
 import Search from '../components/Search.vue';
 import axios from 'axios';
 export default {
-    name: 'Home',
     components: {
         Slider,
         Loader,
