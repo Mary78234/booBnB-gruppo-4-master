@@ -1908,10 +1908,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_Header_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Header.vue */ "./resources/js/components/Header.vue");
-/* harmony import */ var _components_Footer_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Footer.vue */ "./resources/js/components/Footer.vue");
+/* harmony import */ var _components_Header_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/Header.vue */ "./resources/js/components/Header.vue");
+/* harmony import */ var _components_Footer_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Footer.vue */ "./resources/js/components/Footer.vue");
 //
 //
 //
@@ -1927,14 +1925,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: {
-    Header: _components_Header_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    Footer: _components_Footer_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    Header: _components_Header_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Footer: _components_Footer_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -1944,6 +1941,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getlocation: function getlocation(obj) {
       this.location = obj.text;
+      console.log(this.location);
     }
   },
   created: function created() {},
@@ -2252,6 +2250,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MessageForm",
@@ -2259,7 +2260,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       messTitle: '',
       messContent: '',
-      messMail: ''
+      messMail: '',
+      sendMessage: false
     };
   },
   props: {
@@ -2267,16 +2269,22 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     handleSubmit: function handleSubmit() {
+      var _this = this;
+
       console.log(this.messTitle, this.messContent, this.messMail, this.house_id);
       var payload = {
-        id: this.house_id,
+        house_id: this.house_id,
         mail: this.messMail,
         title: this.messTitle,
         content: this.messContent
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/messages', payload).then(function (res) {
-        console.log('messaggio inviato');
         console.log(res);
+        _this.sendMessage = true;
+        _this.messTitle = '';
+        _this.messContent = '';
+        _this.messMail = '';
+        console.log('messaggio inviato');
       })["catch"](function (err) {
         console.error(err);
       });
@@ -2561,6 +2569,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -2575,120 +2585,71 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      /* salvo la posizione con v-model per advsearch */
       advSearch: '',
-      firstData: [],
       houseLocation: [],
-      location: '',
 
       /* ricerca avanzata */
       roomsNumber: '1',
-      radius: 5,
+      radius: 20,
+
+      /* valori degli input */
       checkedInput: [],
-      beds: "1"
+      beds: "1",
+
+      /* dati TomTom */
+      apiKey: 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf',
+      mymap: null,
+      otherLocation: {
+        lng: -122.47483,
+        lat: 37.80776
+      },
+
+      /* Axios dove salvo i dati che mi arrivano */
+      firstData: []
     };
   },
   methods: {
-    addMarker: function addMarker() {
-      this.houseLocation.forEach(function (child) {
-        new tt.Marker().setLngLat(child).addTo(mymap);
-        console.log('marker');
+    /* ----------------------------Inizializzazione Mappa----------------------------------- */
+    initMap: function initMap(obj) {
+      this.map = tt.map({
+        key: this.apiKey,
+        container: 'map-div',
+        center: this.otherLocation,
+        zoom: 13
       });
-    },
 
-    /*  getRadius(){
-         this.radius = document.getElementById('range').value;
-         document.getElementById('range-value').innerHTML(this.radius);
-     },
-    */
-    saveLocation: function saveLocation(location) {
-      this.myLocation = location;
-      console.log(this.myLocation);
+      if (this.location || this.advSearch) {
+        this.initPointView(obj);
+        this.axiosCall(obj);
+      }
     },
-    resetResult: function resetResult() {
-      this.houseLocation = [];
-    },
-    findLocation: function findLocation(location) {
-      this.getLocations(location);
-      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
-      var APPLICATION_NAME = 'BoolBnB';
-      var APPLICATION_VERSION = '1.0';
-      var outerthis = this;
-      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-      tt.services.fuzzySearch({
-        key: apiKey,
-        query: location
-      }).then(function (response) {
-        console.log('creazione mappa');
-        var mymap = tt.map({
-          key: apiKey,
-          container: 'map-div',
-          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
-          center: response.results[0].position,
-          zoom: 15
-        });
-        console.log('creo marker');
-        outerthis.houseLocation.forEach(function (child) {
-          new tt.Marker().setLngLat(child).addTo(mymap);
-          console.log('aggiunto marker');
-          console.log(child);
-        });
-      });
-    },
-    getLocations: function getLocations(obj) {
+    initPointView: function initPointView(pos) {
       var _this = this;
 
-      this.resetResult();
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses?', {
-        params: {
-          city: obj
-        }
-      }).then(function (res) {
-        _this.firstData = res.data.houses;
-        /* console.log(this.firstData), */
-
-        _this.firstData.forEach(function (house) {
-          _this.houseLocation.push({
-            lat: house.lat,
-            lng: house["long"]
-          });
-        });
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    },
-
-    /* RICERCA AVANZATA */
-    advFinder: function advFinder(AdvSearch) {
-      this.advLocation(AdvSearch);
-      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
-      var APPLICATION_NAME = 'BoolBnB';
-      var APPLICATION_VERSION = '1.0';
-      var outerthis = this;
-      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
       tt.services.fuzzySearch({
-        key: apiKey,
-        query: AdvSearch
+        key: this.apiKey,
+        query: pos
       }).then(function (response) {
-        var mymap = tt.map({
-          key: apiKey,
-          container: 'map-div',
-          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
-          center: response.results[0].position,
-          zoom: 15
-        });
-        outerthis.houseLocation.forEach(function (child) {
-          new tt.Marker().setLngLat(child).addTo(mymap);
-          console.log('marker');
-        });
+        _this.map.setCenter(response.results[0].position);
       });
     },
-    advLocation: function advLocation(AdvSearch) {
+
+    /* ----------------------------Inizializzazione Mappa----------------------------------- */
+
+    /* ----------------------------CHIAMATA AXIOS----------------------------------- */
+
+    /* 
+    lat: house.lat,
+    lng: house.long
+    
+    */
+    axiosCall: function axiosCall(obj) {
       var _this2 = this;
 
-      this.resetResult();
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
         params: {
-          city: AdvSearch,
+          city: obj,
           radius: this.radius,
           beds: this.beds,
           rooms_number: this.roomsNumber,
@@ -2697,31 +2658,18 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (res) {
         _this2.firstData = [];
         _this2.firstData = res.data.houses;
-        /* console.log(this.firstData), */
-
-        console.log(_this2.firstData);
-
-        _this2.firstData.forEach(function (house) {
-          _this2.houseLocation.push({
-            lat: house.lat,
-            lng: house["long"]
-          });
-        });
+        console.log(res.data.houses);
       })["catch"](function (err) {
         console.log(err);
       });
     }
   },
   mounted: function mounted() {
-    this.saveLocation(location);
-    this.findLocation(this.location);
+    /* ---------- Avvio Mappa tramite props -------- */
+    this.initMap(this.location);
   },
   created: function created() {},
-  computed: {
-    total: function total() {
-      return this.value * 10;
-    }
-  }
+  computed: {}
 });
 
 /***/ }),
@@ -2821,64 +2769,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      firstData: [],
-      houseLocation: [],
-      allData: []
+      textToSearch: ''
     };
-  },
-  methods: {
-    resetResult: function resetResult() {
-      this.houseLocation = [];
-    },
-    findLocation: function findLocation(obj) {
-      this.getLocations(obj.text);
-      var apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
-      var APPLICATION_NAME = 'BoolBnB';
-      var APPLICATION_VERSION = '1.0';
-      var outerthis = this;
-      tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-      tt.services.fuzzySearch({
-        key: apiKey,
-        query: obj.text
-      }).then(function (response) {
-        var mymap = tt.map({
-          key: apiKey,
-          container: 'map-div',
-          style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
-          center: response.results[0].position,
-          zoom: 15
-        });
-        outerthis.houseLocation.forEach(function (child) {
-          new tt.Marker().setLngLat(child).addTo(mymap);
-        });
-      });
-    },
-    getLocations: function getLocations(obj) {
-      var _this = this;
-
-      this.resetResult();
-      axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('http://localhost:8000/api/houses?', {
-        params: {
-          city: obj
-        }
-      }).then(function (res) {
-        _this.firstData = res.data.houses;
-        /* console.log(this.firstData), */
-
-        console.log(_this.firstData);
-
-        _this.firstData.forEach(function (house) {
-          _this.houseLocation.push({
-            lat: house.lat,
-            lng: house["long"]
-          });
-        });
-      })["catch"](function (err) {
-        console.log(err);
-      });
-    }
-  },
-  mounted: function mounted() {}
+  }
 });
 
 /***/ }),
@@ -5162,7 +5055,15 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "message-form" }, [
     _c("div", { staticClass: "container mb-5" }, [
+      _vm.sendMessage
+        ? _c("h3", { staticStyle: { color: "lightgreen" } }, [
+            _vm._v("Il messaggio è stato inviato")
+          ])
+        : _vm._e(),
+      _vm._v(" "),
       _c("h1", { staticClass: "mb-3" }, [_vm._v("Invia un messaggio")]),
+      _vm._v(" "),
+      _c("a", { attrs: { id: "top" } }),
       _vm._v(" "),
       _c(
         "form",
@@ -5271,26 +5172,22 @@ var render = function() {
           _vm._v(" "),
           _c("h1", [_vm._v(_vm._s(_vm.id))]),
           _vm._v(" "),
-          _c("div", { staticClass: "form-group" }, [
-            _c(
-              "button",
-              {
-                attrs: { type: "submit" },
-                on: {
-                  click: function($event) {
-                    return _vm.$router.push("/home")
-                  }
-                }
-              },
-              [_vm._v("Invia")]
-            )
-          ])
+          _vm._m(0)
         ]
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("button", { attrs: { type: "submit" } }, [_vm._v("Invia")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -5514,7 +5411,7 @@ var render = function() {
             {
               on: {
                 click: function($event) {
-                  return _vm.advFinder(_vm.advSearch)
+                  return _vm.initMap(_vm.advSearch)
                 }
               }
             },
@@ -6352,7 +6249,8 @@ var render = function() {
                   ) {
                     return null
                   }
-                  return _vm.gotoAdvSearch()
+                  _vm.$emit("textToSearch", { text: _vm.textToSearch }),
+                    _vm.$router.push("/advsearch")
                 },
                 input: function($event) {
                   if ($event.target.composing) {

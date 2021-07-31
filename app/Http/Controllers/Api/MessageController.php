@@ -16,11 +16,13 @@ class MessageController extends Controller
         $new_message = new Message;
         
         $data = $request->all();
+        
+        
         $new_message->house_id = $request->input('house_id');
         $new_message->title = $request->input('title');
         $new_message->content = $request->input('content');
         $new_message->mail = $request->input('mail');
-        dd($new_message);
+        
         $new_message->save();
         
         
