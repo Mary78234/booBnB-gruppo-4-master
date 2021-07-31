@@ -68,18 +68,28 @@
     </div>
 
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}
-    <div class="mb-5">
+    <div class="mb-5 messagi-house">
         @if (count($messages) === 0)
         <div class="col-xs-12 text-center mb-5">
             <h2>Non ci sono messaggi.</h2>  
         </div> 
         @else
+<<<<<<< HEAD
             <div class="col-xs-12 mb-5">
                 <h2 class="text-uppercase">Messaggi</h2>
                 <ul style="list-style-type: none; padding: 0;">
                     @foreach ($messages as $message)
                         <li>
                             <h5 class="mt-3">{{ $message->title }}</h5>
+=======
+            <div class="col-xs-12 mb-5 messagi-casa">
+                <h2>Messaggi:</h2>
+                <ul style="list-style-type: none; padding: 0;">
+                    @foreach ($messages as $message)
+                        <li>
+                            <h5 class="text-center">{{ $message->title }}</h5>
+                            <h5>Enviato da {{$message->mail}}</h5>
+>>>>>>> alejandro
                             <p>{{ $message->content }}</p>
                         </li>
                     @endforeach

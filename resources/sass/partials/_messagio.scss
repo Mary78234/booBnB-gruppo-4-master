@@ -1,10 +1,14 @@
+.main-content{
+  min-height: 250px;
+}
+
 .messagio_am{
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 10px 100px;
   h2,h4{
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     color: #04459E;
   }
   p{

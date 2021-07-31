@@ -67,6 +67,28 @@
     margin-bottom: 30px;
   }
 
+
+  /* parti messagi */
+  .messagi-house{
+    .messagi-casa{
+      h2{
+        color: $boolblue;
+        margin-bottom: 10px;
+      }
+      ul{
+        li{
+          margin-bottom: 15px;
+          h5{
+            color: $boolblue;
+            margin-bottom: 20px;
+          }
+          p{
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
 }
 
 /* PER SHOW E EDIT */
