@@ -2616,8 +2616,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     /* ----------------------------Inizializzazione Mappa----------------------------------- */
     initMap: function initMap(obj) {
-      var _this = this;
-
       this.map = tt.map({
         key: this.apiKey,
         container: 'map-div',
@@ -2631,20 +2629,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       ;
-      this.then(function () {
-        new tt.Marker().setLngLat(_this.otherLocation).addTo(map);
-      });
     },
 
     /* ---------------------------- Ricerca Punto di interesse ----------------------------------- */
     initPointView: function initPointView(pos) {
-      var _this2 = this;
+      var _this = this;
 
       tt.services.fuzzySearch({
         key: this.apiKey,
         query: pos
       }).then(function (response) {
-        _this2.map.setCenter(response.results[0].position);
+        _this.map.setCenter(response.results[0].position);
       });
     },
 
@@ -2658,7 +2653,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     
     */
     axiosCall: function axiosCall(obj) {
-      var _this3 = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
         params: {
@@ -2669,12 +2664,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           service_name: this.checkedInput
         }
       }).then(function (res) {
-        _this3.firstData = [];
-        _this3.firstData = res.data.houses;
-        console.log(_this3.firstData[0]);
+        _this2.firstData = [];
+        _this2.firstData = res.data.houses;
+        console.log(_this2.firstData[0]);
 
-        _this3.firstData.forEach(function (house) {
-          _this3.houseLocation.push([house.lat, house["long"]]);
+        _this2.firstData.forEach(function (house) {
+          _this2.houseLocation.push([house.lat, house["long"]]);
         });
       })["catch"](function (err) {
         console.log(err);
