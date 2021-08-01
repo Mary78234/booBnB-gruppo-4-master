@@ -3253,7 +3253,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section.error[data-v-5b59ccb9] {\n  background-color: white;\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\nsection.error .error-container[data-v-5b59ccb9] {\n  border: 3px solid #04449e94;\n  padding: 20px;\n  border-radius: 10px;\n  color: #04459e;\n}\nsection.error .error-container h3[data-v-5b59ccb9] {\n  font-size: 2rem;\n}", ""]);
+exports.push([module.i, "section.error[data-v-5b59ccb9] {\n  background-color: lightgray;\n  min-height: calc(100vh - 390px);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\nsection.error .error-container[data-v-5b59ccb9] {\n  border: 3px solid #04449e94;\n  padding: 20px;\n  border-radius: 10px;\n  color: #04459e;\n}\nsection.error .error-container h3[data-v-5b59ccb9] {\n  font-size: 2rem;\n}", ""]);
 
 // exports
 
