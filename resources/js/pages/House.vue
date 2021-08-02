@@ -6,22 +6,32 @@
       <h1>{{house.title}}</h1>
 
       <div class="image-details row">
-        <div class="image-left col-md-6 col-sm-12">
-          
+        <div
+          v-if="house.image === null"
+          class="image-left placeholder col-md-6 col-sm-12"
+          style="background-image: url('http://localhost:8000/storage/placeholder/house.jpg')" 
+          alt="house-placeholder">
+          <h3>
+            Immagini non presenti
+          </h3>
+        </div>
+        <div
+          v-else
+          class="image-left col-md-6 col-sm-12"
+          :style="{ 'background-image': 'url(' + house.image + ')' }"
+          alt="">
         </div>
         <div class="details-right col-md-6 col-sm-12">
-          <h3>Caratteristiche</h3>
+          <h3>Descrizione</h3>
           <ul>
             <li>
-              <p><strong>{{house.description}}</strong></p>
+              Stanze: <strong>{{house.rooms_number}}</strong>
             </li>
             <li>
-              Numero di stanze: <strong>{{house.rooms_number}}</strong>
+              Letti: <strong>{{house.beds}}</strong>
             </li>
             <li>
-              Numero di letti: <strong>{{house.beds}}</strong>
-            <li>
-              Numero di bagni: <strong>{{house.bathrooms}}</strong>
+              Bagni: <strong>{{house.bathrooms}}</strong>
             </li>
             <li>
               Superficie totale: <strong>{{house.square_metre}}</strong>
@@ -30,10 +40,19 @@
         </div>
       </div>
 
-      <div class="features">
+      <div
+        v-if="house.features === empty"
+        class="features">
+        <h3>
+          Nessun servizio aggiuntivo
+        </h3>
+      </div>
+      <div
+        v-else
+        class="features">
         <ul>
             <li v-for="service in house.services" :key="service.pivot.service_id">
-             <span class="btn btn-dark m-3">{{service.name}}</span>
+              <span class="btn btn-dark m-3">{{service.name}}</span>
             </li>
         </ul>
       </div>
@@ -43,8 +62,9 @@
           <h3>Indirizzo</h3>
           <p>{{house.city}}, {{ house.address }}, {{house.house_number}}, {{house.postal_code}}, {{house.country}}</p>
         </div>
-        <div class="map-right col-md-6 col-sm-12">
-          
+        <div class="description-right col-md-6 col-sm-12">
+          <h3>Descrizione</h3>
+          <p><strong>{{house.description}}</strong></p>
         </div>
       </div>
 
@@ -136,6 +156,7 @@ $boolgreen: #00E165;
 h1 {
   margin: 50px 0;
   text-align: center;
+  text-transform: uppercase;
 }
 
 ul {
@@ -147,15 +168,25 @@ ul {
     height: 400px;
   }
   .image-left {
-    background-image: url('https://d3rn6ixv8qant7.cloudfront.net/wp-content/uploads/2018/05/luxury-contemporary-villas-in-guadalmina-baja-1-7980e48d732b6fc85c14b43b94d2aa54.jpg');
     background-size: cover;
+    background-position: center;
+  }
+  .image-left.placeholder {
+    text-align: center;
+    opacity: 0.5;
+    h3 {
+      line-height: 400px;
+      color: black;
+    }
   }
   .details-right {
     background-color: black;
     color: white;
-    padding: 50px;
-    ul li {
-      margin-bottom: 10px;
+    padding: 50px 100px;
+    ul {
+      li {
+        margin-bottom: 10px;
+      }
     }
     h3 {
       text-align: center;
@@ -166,7 +197,12 @@ ul {
 
 .features {
   width: 100%;
-  height: 100px;
+  text-align: center;
+  min-height: 100px;
+  h3 {
+    color: black;
+    line-height: 100px;
+  }
   ul {
     height: 100%;
     list-style-type: none;
@@ -178,8 +214,8 @@ ul {
 
 .address-map {
   margin-bottom: 50px;
-  .address-left, .map-right {
-    height: 400px;
+  .address-left, .description-right {
+    min-height: 200px;
   }
   .address-left {
     background-color: $boolblue;
@@ -190,9 +226,13 @@ ul {
       margin-bottom: 20px;
     }
   }
-  .map-right {
-    background-image: url('https://images.wired.it/wp-content/uploads/2019/05/13123414/milano.jpg');
-    background-size: cover;
+  .description-right {
+    padding: 50px;
+    text-align: center;
+    background-color: $boolgreen;
+    h3 {
+      margin-bottom: 20px;
+    }
   }
 }
 
