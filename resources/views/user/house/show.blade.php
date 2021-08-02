@@ -63,7 +63,7 @@
 
     <div class="buttons col-12">
         <a class="button" href="{{ route('user.house.edit', $house) }}">Modifica</a>
-        <a class="button" href="/house">Visualizza</a>
+        <a class="button" href="{{url('http://localhost:8000/house/'.$house->slug)}}">Visualizza</a>
         <a class="button">Sponsorizza</a>
     </div>
 

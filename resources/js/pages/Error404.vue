@@ -1,4 +1,5 @@
 <template>
+  <main>
     <section class="error">
     <div class="error-container text-center">
       <h3>Errore 404!</h3>
@@ -6,12 +7,12 @@
       <a href="">Torna alla Home</a>
     </div>
 
+<<<<<<< HEAD
     
   </section>
-
+>>>>>>> origin/ale-dalponte
 </template>
 
-<script>
 export default {
     name: 'Error404'
 }
@@ -36,8 +37,6 @@ section.error{
       font-size: 2rem;
     }
   }
-  
+
 }
-
-
 </style>
