@@ -2409,10 +2409,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
 //
 //
 //
@@ -2579,9 +2575,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     location: String
   },
   data: function data() {
-    return _defineProperty({
+    return {
       /* salvo la posizione con v-model per advsearch */
-      advSearch: '',
+      advSearch: this.location,
       houseLocation: [],
 
       /* ricerca avanzata */
@@ -2595,7 +2591,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       /* dati TomTom */
       apiKey: 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf',
       mymap: null,
-      marker: null,
       LngLat: null,
       otherLocation: {
         lng: -122.47483,
@@ -2604,7 +2599,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       /* Axios dove salvo i dati che mi arrivano */
       firstData: []
-    }, "houseLocation", null);
+      /* array posizioni lat e long */
+
+    };
   },
   methods: {
     /* ----------------------------Inizializzazione Mappa----------------------------------- */
@@ -2615,6 +2612,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         center: this.otherLocation,
         zoom: 13
       });
+      this.map.addControl(new tt.FullscreenControl());
+      this.map.addControl(new tt.NavigationControl());
 
       if (this.location || this.advSearch) {
         this.initPointView(obj);
@@ -2635,18 +2634,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.map.setCenter(response.results[0].position);
       });
     },
-
-    /* ------------------------------ AGGIUNTA DEI MARKER --------------------------------- */
-
-    /* ----------------------------CHIAMATA AXIOS----------------------------------- */
-
-    /* 
-    lat: house.lat,
-    lng: house.long
-    
-    */
-    axiosCall: function axiosCall(obj) {
+    addMarkers: function addMarkers() {
       var _this2 = this;
+
+      this.firstData.forEach(function (house) {
+        var title = house.title;
+        var city = house.city;
+        var address = house.address;
+        var location = [house["long"], house.lat];
+
+        _this2.createMarker('accident.colors-white.svg', location, '#c30b82', title + ', ' + city);
+
+        console.log(house);
+      });
+    },
+    createMarker: function createMarker(icon, position, color, popupText) {
+      var markerElement = document.createElement('div');
+      markerElement.className = 'marker';
+      var markerContentElement = document.createElement('div');
+      markerContentElement.className = 'marker-content';
+      markerContentElement.style.backgroundColor = color;
+      markerElement.appendChild(markerContentElement);
+      var iconElement = document.createElement('div');
+      iconElement.className = 'marker-icon';
+      iconElement.style.backgroundImage = 'url(https://api.tomtom.com/maps-sdk-for-web/cdn/static/' + icon + ')';
+      markerContentElement.appendChild(iconElement);
+      var popup = new tt.Popup({
+        offset: 30
+      }).setText(popupText); // add marker to map
+
+      var marker = new tt.Marker({
+        /* element: markerElement, */
+        anchor: 'bottom'
+      }).setLngLat(position).setPopup(popup).addTo(this.map);
+      console.log('marker---->', marker, this.map);
+    },
+    axiosCall: function axiosCall(obj) {
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
         params: {
@@ -2657,13 +2681,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           service_name: this.checkedInput
         }
       }).then(function (res) {
-        _this2.firstData = [];
-        _this2.firstData = res.data.houses;
-        console.log(_this2.firstData[0]);
+        _this3.firstData = [];
+        _this3.firstData = res.data.houses;
+        console.log(_this3.firstData);
 
-        _this2.firstData.forEach(function (house) {
-          _this2.houseLocation.push([house.lat, house["long"]]);
-        });
+        _this3.addMarkers();
       })["catch"](function (err) {
         console.log(err);
       });
@@ -2908,7 +2930,6 @@ __webpack_require__.r(__webpack_exports__);
         center: response.results[0].position,
         zoom: 15
       });
-      new tt.Marker().setLngLat(outerthis.houseLocation).addTo(mymap);
     });
   }
 });
@@ -3234,7 +3255,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 130px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}", ""]);
+exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 130px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}\n.marker-icon[data-v-3761fb82] {\n  background-position: center;\n  background-size: 22px 22px;\n  border-radius: 50%;\n  height: 22px;\n  left: 4px;\n  position: absolute;\n  text-align: center;\n  top: 3px;\n  transform: rotate(45deg);\n  width: 22px;\n}\n.marker[data-v-3761fb82] {\n  height: 30px;\n  width: 30px;\n}\n.marker-content[data-v-3761fb82] {\n  background: #c30b82;\n  border-radius: 50% 50% 50% 0;\n  height: 30px;\n  left: 50%;\n  margin: -15px 0 0 -15px;\n  position: absolute;\n  top: 50%;\n  transform: rotate(-45deg);\n  width: 30px;\n}\n.marker-content[data-v-3761fb82]::before {\n  background: #ffffff;\n  border-radius: 50%;\n  content: \"\";\n  height: 24px;\n  margin: 3px 0 0 3px;\n  position: absolute;\n  width: 24px;\n}", ""]);
 
 // exports
 
@@ -5415,7 +5436,7 @@ var render = function() {
                 expression: "advSearch"
               }
             ],
-            attrs: { type: "text", placeholder: "Cerca..." },
+            attrs: { type: "text" },
             domProps: { value: _vm.advSearch },
             on: {
               input: function($event) {
@@ -6112,10 +6133,7 @@ var render = function() {
                     return _c("li", { key: house.id, staticClass: "row" }, [
                       _c("img", {
                         staticClass: "col-sm-12 col-md-6 col-lg-4",
-                        attrs: {
-                          src: "http://localhost:8000/storage/" + house.image,
-                          alt: ""
-                        }
+                        attrs: { src: "/storage/" + house.image, alt: "" }
                       }),
                       _vm._v(" "),
                       _c(
@@ -6126,6 +6144,8 @@ var render = function() {
                         },
                         [
                           _c("h3", [_vm._v(_vm._s(house.title))]),
+                          _vm._v(" "),
+                          _c("h5", [_vm._v(_vm._s(house.city))]),
                           _vm._v(" "),
                           _c("p", { staticClass: "description" }, [
                             _vm._v(_vm._s(house.description))

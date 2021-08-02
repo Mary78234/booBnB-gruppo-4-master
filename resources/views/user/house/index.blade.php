@@ -33,7 +33,7 @@
                 <li>
                     <a class="button btn_wq" href="{{ route('user.house.show', $house) }}">DETTAGLI</a>
                     <a class="button btn_wq" href="{{ route('user.house.edit', $house) }}">Modifica</a>
-                    <a class="button btn_wq" href="{{ route('user.sponsor') }}">Sponsorizza</a>
+                    <a class="button btn_wq" href="{{ route('user.sponsor', $house) }}">Sponsorizza</a>
                 </li>
             </ul>
             @endforeach
@@ -73,10 +73,11 @@
                         </a>
                     </td>
                     <td>
-                        <a class="button" href="{{ route('user.sponsor') }}">
+                        <a class="button" href="{{ route('user.sponsor', $house) }}">
                             Sponsorizza
                         </a>
                     </td>
+                    
                 </tr>
                 @endforeach
             </tbody>

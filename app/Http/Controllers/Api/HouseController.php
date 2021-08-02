@@ -30,8 +30,8 @@ class HouseController extends Controller
         $mylat = $position['results']['0']['position']['lat'];
         $mylng = $position['results']['0']['position']['lon'];
 
-        $radius = 20000;
-        $km = 0.0065;
+        $radius = 20;
+        $km = 0.008;
 
         $maxlat = $mylat + $radius * $km;
         $minlat = $mylat - $radius * $km;
@@ -72,7 +72,7 @@ class HouseController extends Controller
         $radius= $request->input('radius');
         
        
-        $km = 0.0065;
+        $km = 0.008;
         /* Moltiplicato per 1000 perchè il valore radius si esprime in metri */
         $maxlat = $mylat + $radius * $km;
         $minlat = $mylat - $radius * $km;
@@ -112,7 +112,7 @@ class HouseController extends Controller
         };
 
    
-
+        
         
        
         $houses = $houses->get();

@@ -13,9 +13,9 @@ class SponsorsTableSeeder extends Seeder
     public function run()
     {
         $array_sponsors = [
-            ['Bronzo', 2.99, 24],
-            ['Argento', 5.99, 72],
-            ['Oro', 9.99, 144]
+            ['Bronzo', 2.99, 24, 'Se scegli Bronzo, hai diritto a 24h di sponsorizzazione' ],
+            ['Argento', 5.99, 72, 'Se scegli Argento, hai diritto a 72h di sponsorizzazione'],
+            ['Oro', 9.99, 144, 'Se scegli Oro, hai diritto a 144h di sponsorizzazione']
         ];
 
         foreach ($array_sponsors as $sponsor) {
@@ -23,6 +23,7 @@ class SponsorsTableSeeder extends Seeder
             $new_sponsor->name = $sponsor[0];
             $new_sponsor->price = $sponsor[1];
             $new_sponsor->duration = $sponsor[2];
+            $new_sponsor->description = $sponsor[3];
             $new_sponsor->save();
         }
     }

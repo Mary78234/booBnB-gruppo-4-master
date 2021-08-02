@@ -33,11 +33,11 @@
                             Messaggi
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('user.sponsor') }}">
                             Sponsorizza
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
                         <div class="dropdown-menu">
                             <button class="dropdown-btn">
@@ -88,9 +88,9 @@
                     <a class="dropdown-item" href="{{ route('user.message.index') }}">
                         Messaggi
                     </a>
-                    <a class="dropdown-item" href="{{ route('user.sponsor') }}">
+                    {{-- <a class="dropdown-item" href="{{ route('user.sponsor') }}">
                         Sponsorizza
-                    </a>
+                    </a> --}}
                     <a class="dropdown-item" id="navbarDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre href="{{ route('user.home') }}">
                         {{ Auth::user()->email }}
                     </a>
