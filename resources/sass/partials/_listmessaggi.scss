@@ -1,6 +1,8 @@
 .list-messagi{
+  margin-top: 25px;
   h4,h5{
-    margin-bottom: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     color: #04459E;
   }
 }
@@ -10,13 +12,10 @@
   justify-content: space-between;
   padding: 0;
   li{
+    min-width: 200px;
     color: #5597DC;
-    a{
-      padding: 5px 20px;
-      border: 1px solid lightblue;
-      text-decoration: none;
-      border-radius: 25px;
-      text-align: center;
+    p{
+      text-align: justify;
     }
   }
 }

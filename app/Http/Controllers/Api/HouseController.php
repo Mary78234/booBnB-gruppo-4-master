@@ -69,9 +69,7 @@ class HouseController extends Controller
         $mylng = $position['results']['0']['position']['lon'];
 
        
-        $radius= $request->input('radius');
-        
-       
+        $radius= $request->input('radius'); 
         $km = 0.0065;
         /* Moltiplicato per 1000 perchè il valore radius si esprime in metri */
 
@@ -110,6 +108,7 @@ class HouseController extends Controller
             $houses->whereHas('services',function(Builder $query) use ($tosearch){
                 $query->where('name','=',$tosearch);
             });
+    
         };
 
    
@@ -138,7 +137,8 @@ class HouseController extends Controller
     public function show($slug)
     {
        
-        $house = House::with('services')->where('slug', $slug)->get();
+        $house = House::where('slug', $slug)->with('services')->first();
+        
         if($house) {
             if($house->image){
                 $house->image = url('storage/' . $house->image);

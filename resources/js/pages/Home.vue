@@ -1,33 +1,32 @@
 <template>
     <main>
 
-        <!-- <Loader /> -->
 
         <section class="jumbotron">
         
             
             <div class="container text-center">
 
-              <div>
-
-                <h1>Qui inizia la tua avventura!</h1>
-                <h5>Esperienze uniche in luoghi magnifici.</h5>
-                <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
-
-            </div>
+              
                <!--  <Search @textToSearch = 'findLocation'/> -->
               <div class="homesearch">
                   <input 
                     type="text" 
                      v-model="textToSearch"
-                    @keyup.enter="gotoAdvSearch()"
+                    @keyup.enter="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')"
                      placeholder="Cerca...">
                    <button
                       @click="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')">
                       Cerca 
                </button>
             </div>
-            
+            <div>
+
+                <h1>Qui inizia la tua avventura!</h1>
+                <h5>Esperienze uniche in luoghi magnifici.</h5>
+                <h5 class="mb-5">Entra nel magico mondo di BoolBnB.</h5>
+
+            </div>
 
           </div>
 
@@ -43,98 +42,20 @@
 </template>
 
 <script>
-/* import Slider from '../components/Slider.vue';
-import Loader from '../components/Loader.vue';
-import Error404 from './Error404.vue';
-import MessageConfirmation from '../components/MessageConfirmation.vue'; */
 
 import Search from '../components/Search.vue';
 import axios from 'axios';
 export default {
     components: {
-        Slider,
-        Loader,
         Search
     },
      data(){
     return{
-        firstData:[],
-        houseLocation : [],
-        allData: []
+        textToSearch: '',
+      
     }
   },
-  methods:{
-
-    resetResult(){
-      this.houseLocation = []
-    },
-
-     findLocation(obj){
-       this.getLocations(obj.text);
-       const apiKey = 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf';
-       const APPLICATION_NAME = 'BoolBnB';
-       const APPLICATION_VERSION = '1.0';
-       let outerthis = this;
-       tt.setProductInfo(APPLICATION_NAME, APPLICATION_VERSION);
-        
-
-
-        tt.services.fuzzySearch({
-         key: apiKey,
-         query: obj.text
-       })
-
-       .then(function(response) {
-                let mymap = tt.map({
-                key: apiKey,
-                container: 'map-div',
-                style: 'https://api.tomtom.com/style/1/style/21.1.0-*?map=basic_main&poi=poi_main',
-                center: response.results[0].position,
-                zoom: 15
-              });  
-                outerthis.houseLocation.forEach(child=>{
-                new tt.Marker().setLngLat(child).addTo(mymap);
-              })       
-       })
-       
-        
-     },
-    
-     getLocations(obj){
-       this.resetResult()
-       axios.get('http://localhost:8000/api/houses?',{
-         params:{
-           city : obj
-         }
-       })
-            .then(res=>{
-              this.firstData = res.data.houses;
-              /* console.log(this.firstData), */
-                 console.log(this.firstData);
-              this.firstData.forEach(house => {
-                    this.houseLocation.push(
-                      {
-                            lat: house.lat,
-                            lng: house.long
-                      }
-                    )
-                    
-            },
-                
-            );  
-            })
-            .catch(err=>{
-              console.log(err);
-            })
-     },
-     
-  },
-  mounted(){
-   
-   
-    
-  },
-  
+ 
 }
 </script>
 

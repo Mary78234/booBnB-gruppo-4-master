@@ -12,7 +12,6 @@
             @else
 
                 <div class="img-area" style="background-image: url('{{ asset('storage/' . $house->image) }}')">
-                    <!-- <img src="{{ asset('storage/' . $house->image) }}" alt="{{ $house->image_original_name }}" class="img-fluid"> -->
                 </div>
                 
             @endif   
@@ -36,11 +35,12 @@
 
         @if (count($house->services) === 0)
         <div class="col-sm-12 col-md-6 col-lg-3">
-            <h2>Non ci sono servizi</h2>  
+            <h3>Servizi</h3>  
+            <ul><li>Non ci sono.</li></ul>
         </div> 
         @else
         <div class="col-sm-12 col-md-6 col-lg-3">
-            <h2>Servizi</h2>
+            <h3>Servizi</h3>
             <ul>
                 @foreach ($house->services as $service)
                     <li>{{ $service->name }}</li>
@@ -49,17 +49,6 @@
         </div> 
         @endif
 
-        <!-- <div class="col-sm-12 col-md-6 col-lg-3">
-            <h3>Indirizzo</h3>
-            <ul>
-                <li>{{ $house->address }} {{ $house->house_number }}</li>
-                <li>{{ $house->city }} - {{ $house->postal_code }}</li>
-                <li>{{ $house->region }}</li>
-                <li>{{ $house->country }}</li>
-            </ul>
-        </div> -->
-
-    
         
     </div>
     
@@ -79,18 +68,19 @@
     </div>
 
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}
-    <div class="mb-5">
+    <div class="mb-5 messagi-house">
         @if (count($messages) === 0)
         <div class="col-xs-12 text-center mb-5">
             <h2>Non ci sono messaggi.</h2>  
         </div> 
         @else
-            <div class="col-xs-12 text-center mb-5">
+            <div class="col-xs-12 mb-5 messagi-casa">
                 <h2>Messaggi:</h2>
                 <ul style="list-style-type: none; padding: 0;">
                     @foreach ($messages as $message)
                         <li>
                             <h5 class="text-center">{{ $message->title }}</h5>
+                            <h5>Enviato da {{$message->mail}}</h5>
                             <p>{{ $message->content }}</p>
                         </li>
                     @endforeach

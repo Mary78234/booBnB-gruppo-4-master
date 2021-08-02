@@ -6,7 +6,7 @@
 
     <div class="form-container col-xs-12 offset-md-2 col-md-8">
     
-        <h1 class="mb-4">Modifica: {{ $house->title }}</h1>
+        <h1 class="mb-4">Modifica {{ $house->title }}</h1>
 
         <!--  ERRORI  -->
         @if ($errors->any())

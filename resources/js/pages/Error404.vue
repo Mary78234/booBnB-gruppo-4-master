@@ -22,8 +22,8 @@ export default {
  
 
 section.error{
-  background-color: rgb(255, 255, 255);
-  min-height: 100vh;
+  background-color: lightgray;
+  min-height: calc(100vh - 390px);
   display:flex;
   justify-content: center;
   align-items: center;
