@@ -138,6 +138,7 @@
                     <p class="services">
                       Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}
                     </p>
+                    <p>{{house.city}}</p>
                     <router-link class="button" :to="{name:'house',params:{ slug:house.slug }}">
                       Vai ai Dettagli
                     </router-link>

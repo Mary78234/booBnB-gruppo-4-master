@@ -10,12 +10,14 @@
     <div  class="bottom-slider">
       <div v-for="house in sponsoredArray" :key="house.id" class="box-house text-center">
         <div class="img-area mb-4">
-          <img :src="storage/ + house.image" alt="Appartamento Uno">
+          <img :src="'http://localhost:8000/storage/' + house.image"  alt="Appartamento Uno">
         </div>
         <div class="text-area">
           <h3>{{house.title}}</h3>
           <p>{{house.city}}</p>
-          <a href="">Prenota</a>
+          <router-link class="button" :to="{name:'house',params:{ slug:house.slug }}">
+                      Vai ai Dettagli
+                    </router-link>
         </div>
 
       </div>

@@ -27,7 +27,7 @@ class SponsorController extends Controller
         if(!$house){
             abort(404);
         }
-        return view('user.house.sponsor', compact('house', 'sponsors'));
+        return view('user.house.sponsor', compact('house','sponsors'));
     }
 
 
@@ -107,7 +107,7 @@ class SponsorController extends Controller
     {
         $user = User::find(Auth::id());
         $data = $request->all();
-
+        
         $house = House::find($id);
         $sponsor = Sponsor::find($data['sponsors']);
         
@@ -129,6 +129,7 @@ class SponsorController extends Controller
         //
     }
 
+    
 
 
 

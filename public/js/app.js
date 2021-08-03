@@ -2370,6 +2370,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Slider',
@@ -2460,6 +2462,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+//
 //
 //
 //
@@ -5408,19 +5411,37 @@ var render = function() {
             _c("div", { staticClass: "img-area mb-4" }, [
               _c("img", {
                 attrs: {
-                  src: _vm.storage / +house.image,
+                  src: "http://localhost:8000/storage/" + house.image,
                   alt: "Appartamento Uno"
                 }
               })
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "text-area" }, [
-              _c("h3", [_vm._v(_vm._s(house.title))]),
-              _vm._v(" "),
-              _c("p", [_vm._v(_vm._s(house.city))]),
-              _vm._v(" "),
-              _c("a", { attrs: { href: "" } }, [_vm._v("Prenota")])
-            ])
+            _c(
+              "div",
+              { staticClass: "text-area" },
+              [
+                _c("h3", [_vm._v(_vm._s(house.title))]),
+                _vm._v(" "),
+                _c("p", [_vm._v(_vm._s(house.city))]),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "button",
+                    attrs: {
+                      to: { name: "house", params: { slug: house.slug } }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                    Vai ai Dettagli\n                  "
+                    )
+                  ]
+                )
+              ],
+              1
+            )
           ]
         )
       }),
@@ -6230,6 +6251,8 @@ var render = function() {
                                   "\n                  "
                               )
                             ]),
+                            _vm._v(" "),
+                            _c("p", [_vm._v(_vm._s(house.city))]),
                             _vm._v(" "),
                             _c(
                               "router-link",
