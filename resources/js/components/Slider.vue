@@ -6,41 +6,20 @@
       <h1 class="pt-5 text-center">Gli alloggi più popolari.</h1>
       <h4 class="pt-2 text-center">Affari speciali e Prenotazioni Last-Minute per un'esperienza irripetibile!</h4>
     </div>
-    <div class="bottom-slider">
-      <div class="box-house text-center">
+   
+    <div  class="bottom-slider">
+      <div v-for="house in sponsoredArray" :key="house.id" class="box-house text-center">
         <div class="img-area mb-4">
-          <img src="https://archello.s3.eu-central-1.amazonaws.com/images/2019/04/10/modern-house-in-moscow-1.1554930809.2534.jpg" alt="Appartamento Uno">
+          <img :src="storage/ + house.image" alt="Appartamento Uno">
         </div>
         <div class="text-area">
-          <h3>Villa Stile Liberty</h3>
-          <p>Los Angeles</p>
+          <h3>{{house.title}}</h3>
+          <p>{{house.city}}</p>
           <a href="">Prenota</a>
         </div>
-      </div>
-      <div class="box-house text-center">
-        <div class="img-area mb-4">
-          <img src="https://cdn.vox-cdn.com/thumbor/6itLJS9BZ-B5gXPjM1AB_z-ZKVI=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/65890203/iStock_1067331614.7.jpg" alt="Appartamento Due">
-        </div>
-        <div class="text-area">
-          <h3>Appartamento di lusso</h3>
-          <p>Frankfurt</p>
-          <a href="">Prenota</a>
-        </div>
-      </div>
-      
-      <div class="box-house text-center">
-        <div class="img-area mb-4">
-          <img src="https://static.dezeen.com/uploads/2020/02/house-in-the-landscape-niko-arcjitect-architecture-residential-russia-houses-khurtin_dezeen_2364_hero.jpg" alt="Appartamento Tre">
-        </div>
-        <div class="text-area">
-          <h3>Castello incantato</h3>
-          <p>Transilvania</p>
-          <a href="">Prenota</a>
-        </div>
-      </div>
 
-    </div>
-    
+      </div>
+    </div>      
     
   
 
@@ -50,22 +29,90 @@
 </template>
 
 <script>
-
-
-
-
-
-
-
-
+import axios from 'axios';
 export default {
   name: 'Slider',
   components: {
-    
-    
+  
+  },
+  data(){
+    return{
+        allHouse : [],
+        sponsoredArray : [],
+        sponsoredNow: [],
+        dateNow : null,
+    }
+  },
+  methods:{
+
+    getSponsored(){
+      this.allHouse.forEach(house => {
+        if(house.sponsors.length > 0){
+          this.sponsoredArray.push( house );
+        }
+       
+      });
+     
+    },
+
+    formatDate(){
+            let d = new Date();
+            let dy = d.getDate();
+            let m = d.getMonth() + 1;
+            let y = d.getFullYear();
+
+            if(dy < 10) dy = '0' + dy;
+            if(m < 10) m = '0' + m;
+
+            this.dateNow = `${y}/${m}/${dy}`;
+        },
+  
+    compareDate(){
+      this.sponsoredArray.forEach(house => {
+        house.sponsors.forEach(sponsor => {
+          console.log('now----->',this.dateNow);
+             console.log('end----->',sponsor.pivot.end_date);
+           if(sponsor.pivot.end_date < this.dateNow){
+             this.sponsoredNow.push(house);
+           }
+        }
+        );
+        
+      })
+      console.log(this.sponsoredNow);
+    },
 
 
-   
+
+   /*  <script type="text/javascript"language="javascript">
+      function CompareDate() {
+        var todayDate = new Date(); //Today Date.
+        var dateOne = new Date(2010, 11, 25);
+        if (todayDate > dateOne) {
+        alert("Today Date is greater than Date One.");
+      }else { */
+
+
+
+   axiosCall() {
+       axios.get('http://localhost:8000/api/houses/sponsored')
+      .then(res => {
+         this.allHouse = res.data.houses;
+         this.getSponsored();
+         this.formatDate();
+         this.compareDate();
+
+       
+                      })
+          .catch(err => { 
+         console.log(err);
+     })
+ },
+      
+
+  },
+  mounted(){
+    this.axiosCall();
   }
 
   }

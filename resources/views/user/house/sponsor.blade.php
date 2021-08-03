@@ -1,44 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div id="sponsor-container" class="container">
     
-    <h1>Scegli la sponsorizzazione che fa per te:</h1><br>
+    <h1 id="sponsor-title">Scegli la sponsorizzazione che fa per te:</h1><br>
 
 
  
-    <form action="{{route('user.sponsor.store')}}" method="post"  enctype="multipart/form-data">
+    <form  action="{{route('user.sponsor.store')}}" method="post">
         @csrf
         @method('POST')
-        
+        <input type="hidden" value="{{ $house->id }}" name="house_id">    
     @foreach ($sponsors as $sponsor)
         
-       <div class="form-check d-flex">
-
+       <div id="sponsor" class="form-check">
+            <div>
             <label class="label-control" for="sponsor{{ $loop->iteration }}">
 
                 <h1>{{$sponsor->name}}</h1>
                  <p>{{$sponsor->description}}</p>
                  <p>Euro: {{$sponsor->price}}</p>
+       
 
             </label>
-
+            </div>
             <input class="form-check-input" 
+
                 type="radio" 
-                name="sponsors[]" 
+                name="sponsor" 
                 id="sponsor{{ $loop->iteration }}" 
                 value="{{ $sponsor->id }}"
-                checked>         
+                checked> 
                 
+            
         </div>
         @endforeach 
-
-        <button type="submit" class="btn btn-primary" value="SUBMIT">Acquista</button>
+        <div class="button-div">
+            <button id="sponsor-button" type="submit" class="btn btn-primary m-5" value="SUBMIT">Acquista</button>
+        </div>
+    
         
     </form>
     
 
-    <a href="{{ route('user.home') }}">Torna alla dashboard</a>
+
 
 </div>
 

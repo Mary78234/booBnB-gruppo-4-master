@@ -2338,6 +2338,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -2368,30 +2370,79 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'Slider',
-  components: {}
+  components: {},
+  data: function data() {
+    return {
+      allHouse: [],
+      sponsoredArray: [],
+      sponsoredNow: [],
+      dateNow: null
+    };
+  },
+  methods: {
+    getSponsored: function getSponsored() {
+      var _this = this;
+
+      this.allHouse.forEach(function (house) {
+        if (house.sponsors.length > 0) {
+          _this.sponsoredArray.push(house);
+        }
+      });
+    },
+    formatDate: function formatDate() {
+      var d = new Date();
+      var dy = d.getDate();
+      var m = d.getMonth() + 1;
+      var y = d.getFullYear();
+      if (dy < 10) dy = '0' + dy;
+      if (m < 10) m = '0' + m;
+      this.dateNow = "".concat(y, "/").concat(m, "/").concat(dy);
+    },
+    compareDate: function compareDate() {
+      var _this2 = this;
+
+      this.sponsoredArray.forEach(function (house) {
+        house.sponsors.forEach(function (sponsor) {
+          console.log('now----->', _this2.dateNow);
+          console.log('end----->', sponsor.pivot.end_date);
+
+          if (sponsor.pivot.end_date < _this2.dateNow) {
+            _this2.sponsoredNow.push(house);
+          }
+        });
+      });
+      console.log(this.sponsoredNow);
+    },
+
+    /*  <script type="text/javascript"language="javascript">
+       function CompareDate() {
+         var todayDate = new Date(); //Today Date.
+         var dateOne = new Date(2010, 11, 25);
+         if (todayDate > dateOne) {
+         alert("Today Date is greater than Date One.");
+       }else { */
+    axiosCall: function axiosCall() {
+      var _this3 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://localhost:8000/api/houses/sponsored').then(function (res) {
+        _this3.allHouse = res.data.houses;
+
+        _this3.getSponsored();
+
+        _this3.formatDate();
+
+        _this3.compareDate();
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.axiosCall();
+  }
 });
 
 /***/ }),
@@ -2409,6 +2460,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Search_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Search.vue */ "./resources/js/components/Search.vue");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2672,7 +2730,7 @@ __webpack_require__.r(__webpack_exports__);
     axiosCall: function axiosCall(obj) {
       var _this3 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
+      this.houseLocation = [], axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/advsearch', {
         params: {
           city: obj,
           radius: this.radius,
@@ -2812,10 +2870,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Loader.vue */ "./resources/js/components/Loader.vue");
-/* harmony import */ var _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/MessageForm.vue */ "./resources/js/components/MessageForm.vue");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/MessageForm.vue */ "./resources/js/components/MessageForm.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 //
 //
 //
@@ -2875,14 +2932,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'House',
   components: {
-    Loader: _components_Loader_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    MessageForm: _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    MessageForm: _components_MessageForm_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
@@ -2894,7 +2969,7 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     console.log(this.$route.params.slug);
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('http://localhost:8000/api/houses/' + this.$route.params.slug).then(function (res) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default.a.get('http://localhost:8000/api/houses/' + this.$route.params.slug).then(function (res) {
       console.log(res.data);
 
       if (res.data.success) {
@@ -2930,6 +3005,7 @@ __webpack_require__.r(__webpack_exports__);
         center: response.results[0].position,
         zoom: 15
       });
+      new tt.Marker().setLngLat(outerthis.houseLocation).addTo(mymap);
     });
   }
 });
@@ -3255,7 +3331,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 130px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 10% auto;\n}\nsection .risultati li img[data-v-3761fb82] {\n  max-height: 100px;\n  max-width: 200px;\n}\nsection .risultati li p.description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n  width: 100%;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}\n.marker-icon[data-v-3761fb82] {\n  background-position: center;\n  background-size: 22px 22px;\n  border-radius: 50%;\n  height: 22px;\n  left: 4px;\n  position: absolute;\n  text-align: center;\n  top: 3px;\n  transform: rotate(45deg);\n  width: 22px;\n}\n.marker[data-v-3761fb82] {\n  height: 30px;\n  width: 30px;\n}\n.marker-content[data-v-3761fb82] {\n  background: #c30b82;\n  border-radius: 50% 50% 50% 0;\n  height: 30px;\n  left: 50%;\n  margin: -15px 0 0 -15px;\n  position: absolute;\n  top: 50%;\n  transform: rotate(-45deg);\n  width: 30px;\n}\n.marker-content[data-v-3761fb82]::before {\n  background: #ffffff;\n  border-radius: 50%;\n  content: \"\";\n  height: 24px;\n  margin: 3px 0 0 3px;\n  position: absolute;\n  width: 24px;\n}", ""]);
+exports.push([module.i, "section[data-v-3761fb82] {\n  min-height: 500px;\n  width: 100%;\n  margin-top: 15px;\n}\nsection .left[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n}\nsection .left .first-left[data-v-3761fb82] {\n  width: 100%;\n  margin-bottom: 30px;\n}\nsection .left .first-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n}\nsection .left .first-left ul li[data-v-3761fb82] {\n  width: 130px;\n  margin-bottom: 10px;\n}\nsection .left .first-left ul li select[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .first-left ul li label[data-v-3761fb82] {\n  width: 65px;\n}\nsection .left .second-left ul[data-v-3761fb82] {\n  list-style: none;\n  display: flex;\n  flex-wrap: wrap;\n  margin-top: 25px;\n}\nsection .left .second-left ul li[data-v-3761fb82] {\n  width: 200px;\n  margin-bottom: 10px;\n}\nsection .right[data-v-3761fb82] {\n  padding: 20px 60px;\n  margin-top: 30px;\n  text-align: center;\n  width: 300px;\n  height: 300px;\n  min-height: 300px;\n}\nsection .risultati li[data-v-3761fb82] {\n  width: 80%;\n  margin: 5% auto;\n  text-align: center;\n  min-height: 550px;\n}\nsection .risultati li h3[data-v-3761fb82] {\n  margin-top: 10px;\n  text-transform: uppercase;\n}\nsection .risultati li .img-area[data-v-3761fb82] {\n  height: 300px;\n  background-size: cover;\n  background-position: center;\n  margin-bottom: 30px;\n}\nsection .risultati li .img-area.placeholder[data-v-3761fb82] {\n  background-position: center;\n  opacity: 0.5;\n}\nsection .risultati li .img-area.placeholder h4[data-v-3761fb82] {\n  text-align: center;\n  margin-top: 30%;\n  color: white;\n}\nsection .risultati li p.house-description[data-v-3761fb82] {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\nsection input.input-number[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection input[data-v-3761fb82]::-webkit-outer-spin-button,\nsection input[data-v-3761fb82]::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\nsection input[type=number][data-v-3761fb82] {\n  -moz-appearance: textfield;\n}\nsection select[data-v-3761fb82] {\n  width: 100px;\n  border: 1px solid #04459e;\n  outline: none;\n  color: #04459e;\n  padding: 5px 10px;\n  border-radius: 5px;\n}\nsection ul[data-v-3761fb82] {\n  padding-left: 0;\n}\n#radius[data-v-3761fb82] {\n  border: none;\n  outline: none;\n  background: none;\n  display: inline;\n}\n.search-location[data-v-3761fb82] {\n  display: flex;\n}\n.search-location input[data-v-3761fb82] {\n  border: none;\n  border-bottom: 2px solid #04459e;\n  outline: none;\n  color: #04459e;\n  width: 70%;\n  margin: 0 0 0 10%;\n  padding: 10px 20px;\n  border-radius: 20px 0 0 20px;\n}\n.search-location button[data-v-3761fb82] {\n  width: 20%;\n  margin: 0 10% 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 0 20px 20px 0;\n}\n.button[data-v-3761fb82] {\n  margin: 20px 20px 0 0;\n  background-color: white;\n  color: #04459e;\n  border: none;\n  border-bottom: 2px solid #04459e;\n  font-weight: bold;\n  border-radius: 20px;\n  display: inline-block;\n  min-width: 200px;\n  min-height: 30px;\n  line-height: 30px;\n  text-align: center;\n}\n.button[data-v-3761fb82]:hover {\n  text-decoration: none;\n  color: #04233a;\n  border-bottom: 2px solid #04233a;\n}\n.services[data-v-3761fb82] {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: wrap;\n  justify-content: space-around;\n  align-items: center;\n  margin-top: 25px;\n}\n.baby-button[data-v-3761fb82] {\n  background-color: white;\n  margin: 5px 0;\n  color: #04459e;\n  border: none;\n  border-bottom: 1px solid #04459e;\n  border-radius: 5px;\n  display: inline-block;\n  min-width: 90px;\n  min-height: 20px;\n  line-height: 20px;\n  text-align: center;\n  font-size: 10px;\n}", ""]);
 
 // exports
 
@@ -3312,7 +3388,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "h1[data-v-40fc0132] {\n  margin: 50px 0;\n  text-align: center;\n}\nul[data-v-40fc0132] {\n  list-style-type: none;\n}\n.image-details .image-left[data-v-40fc0132], .image-details .details-right[data-v-40fc0132] {\n  height: 400px;\n}\n.image-details .image-left[data-v-40fc0132] {\n  background-image: url(\"https://d3rn6ixv8qant7.cloudfront.net/wp-content/uploads/2018/05/luxury-contemporary-villas-in-guadalmina-baja-1-7980e48d732b6fc85c14b43b94d2aa54.jpg\");\n  background-size: cover;\n}\n.image-details .details-right[data-v-40fc0132] {\n  background-color: black;\n  color: white;\n  padding: 50px;\n}\n.image-details .details-right ul li[data-v-40fc0132] {\n  margin-bottom: 10px;\n}\n.image-details .details-right h3[data-v-40fc0132] {\n  text-align: center;\n  margin-bottom: 20px;\n}\n.features[data-v-40fc0132] {\n  width: 100%;\n  height: 100px;\n}\n.features ul[data-v-40fc0132] {\n  height: 100%;\n  list-style-type: none;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n}\n.address-map[data-v-40fc0132] {\n  margin-bottom: 50px;\n}\n.address-map .address-left[data-v-40fc0132], .address-map .map-right[data-v-40fc0132] {\n  height: 400px;\n}\n.address-map .address-left[data-v-40fc0132] {\n  background-color: #04459e;\n  color: white;\n  text-align: center;\n  padding: 50px;\n}\n.address-map .address-left h3[data-v-40fc0132] {\n  margin-bottom: 20px;\n}\n.address-map .map-right[data-v-40fc0132] {\n  background-image: url(\"https://images.wired.it/wp-content/uploads/2019/05/13123414/milano.jpg\");\n  background-size: cover;\n}", ""]);
+exports.push([module.i, "h1[data-v-40fc0132] {\n  margin: 50px 0;\n  text-align: center;\n  text-transform: uppercase;\n}\nul[data-v-40fc0132] {\n  list-style-type: none;\n}\n.image-details .image-left[data-v-40fc0132], .image-details .details-right[data-v-40fc0132] {\n  height: 400px;\n}\n.image-details .image-left[data-v-40fc0132] {\n  background-size: cover;\n  background-position: center;\n}\n.image-details .image-left.placeholder[data-v-40fc0132] {\n  text-align: center;\n  opacity: 0.5;\n}\n.image-details .image-left.placeholder h3[data-v-40fc0132] {\n  line-height: 400px;\n  color: black;\n}\n.image-details .details-right[data-v-40fc0132] {\n  background-color: black;\n  color: white;\n  padding: 50px 100px;\n}\n.image-details .details-right ul li[data-v-40fc0132] {\n  margin-bottom: 10px;\n}\n.image-details .details-right h3[data-v-40fc0132] {\n  text-align: center;\n  margin-bottom: 20px;\n}\n.features[data-v-40fc0132] {\n  width: 100%;\n  text-align: center;\n  min-height: 100px;\n}\n.features h3[data-v-40fc0132] {\n  color: black;\n  line-height: 100px;\n}\n.features ul[data-v-40fc0132] {\n  height: 100%;\n  list-style-type: none;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n}\n.address-map[data-v-40fc0132] {\n  margin-bottom: 50px;\n}\n.address-map .address-left[data-v-40fc0132], .address-map .description-right[data-v-40fc0132] {\n  min-height: 200px;\n}\n.address-map .address-left[data-v-40fc0132] {\n  background-color: #04459e;\n  color: white;\n  text-align: center;\n  padding: 50px;\n}\n.address-map .address-left h3[data-v-40fc0132] {\n  margin-bottom: 20px;\n}\n.address-map .description-right[data-v-40fc0132] {\n  padding: 50px;\n  text-align: center;\n  background-color: #00E165;\n}\n.address-map .description-right h3[data-v-40fc0132] {\n  margin-bottom: 20px;\n}", ""]);
 
 // exports
 
@@ -5318,86 +5394,54 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("section", [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "bottom-slider" },
+      _vm._l(_vm.sponsoredArray, function(house) {
+        return _c(
+          "div",
+          { key: house.id, staticClass: "box-house text-center" },
+          [
+            _c("div", { staticClass: "img-area mb-4" }, [
+              _c("img", {
+                attrs: {
+                  src: _vm.storage / +house.image,
+                  alt: "Appartamento Uno"
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "text-area" }, [
+              _c("h3", [_vm._v(_vm._s(house.title))]),
+              _vm._v(" "),
+              _c("p", [_vm._v(_vm._s(house.city))]),
+              _vm._v(" "),
+              _c("a", { attrs: { href: "" } }, [_vm._v("Prenota")])
+            ])
+          ]
+        )
+      }),
+      0
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("section", [
-      _c("div", { staticClass: "top-slider mb-4" }, [
-        _c("h1", { staticClass: "pt-5 text-center" }, [
-          _vm._v("Gli alloggi più popolari.")
-        ]),
-        _vm._v(" "),
-        _c("h4", { staticClass: "pt-2 text-center" }, [
-          _vm._v(
-            "Affari speciali e Prenotazioni Last-Minute per un'esperienza irripetibile!"
-          )
-        ])
+    return _c("div", { staticClass: "top-slider mb-4" }, [
+      _c("h1", { staticClass: "pt-5 text-center" }, [
+        _vm._v("Gli alloggi più popolari.")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "bottom-slider" }, [
-        _c("div", { staticClass: "box-house text-center" }, [
-          _c("div", { staticClass: "img-area mb-4" }, [
-            _c("img", {
-              attrs: {
-                src:
-                  "https://archello.s3.eu-central-1.amazonaws.com/images/2019/04/10/modern-house-in-moscow-1.1554930809.2534.jpg",
-                alt: "Appartamento Uno"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "text-area" }, [
-            _c("h3", [_vm._v("Villa Stile Liberty")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Los Angeles")]),
-            _vm._v(" "),
-            _c("a", { attrs: { href: "" } }, [_vm._v("Prenota")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "box-house text-center" }, [
-          _c("div", { staticClass: "img-area mb-4" }, [
-            _c("img", {
-              attrs: {
-                src:
-                  "https://cdn.vox-cdn.com/thumbor/6itLJS9BZ-B5gXPjM1AB_z-ZKVI=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/65890203/iStock_1067331614.7.jpg",
-                alt: "Appartamento Due"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "text-area" }, [
-            _c("h3", [_vm._v("Appartamento di lusso")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Frankfurt")]),
-            _vm._v(" "),
-            _c("a", { attrs: { href: "" } }, [_vm._v("Prenota")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "box-house text-center" }, [
-          _c("div", { staticClass: "img-area mb-4" }, [
-            _c("img", {
-              attrs: {
-                src:
-                  "https://static.dezeen.com/uploads/2020/02/house-in-the-landscape-niko-arcjitect-architecture-residential-russia-houses-khurtin_dezeen_2364_hero.jpg",
-                alt: "Appartamento Tre"
-              }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "text-area" }, [
-            _c("h3", [_vm._v("Castello incantato")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Transilvania")]),
-            _vm._v(" "),
-            _c("a", { attrs: { href: "" } }, [_vm._v("Prenota")])
-          ])
-        ])
+      _c("h4", { staticClass: "pt-2 text-center" }, [
+        _vm._v(
+          "Affari speciali e Prenotazioni Last-Minute per un'esperienza irripetibile!"
+        )
       ])
     ])
   }
@@ -6129,70 +6173,102 @@ var render = function() {
               _c("div", { staticClass: "risultati" }, [
                 _c(
                   "ul",
+                  { staticClass: "row" },
                   _vm._l(_vm.firstData, function(house) {
-                    return _c("li", { key: house.id, staticClass: "row" }, [
-                      _c("img", {
-                        staticClass: "col-sm-12 col-md-6 col-lg-4",
-                        attrs: { src: "/storage/" + house.image, alt: "" }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass:
-                            "col-sm-12 col-md-12 col-lg-8 description"
-                        },
-                        [
-                          _c("h3", [_vm._v(_vm._s(house.title))]),
-                          _vm._v(" "),
-                          _c("h5", [_vm._v(_vm._s(house.city))]),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "description" }, [
-                            _vm._v(_vm._s(house.description))
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "inline btn btn-outline-success m-3",
-                              attrs: {
-                                to: {
-                                  name: "house",
-                                  params: { slug: house.slug }
-                                }
-                              }
-                            },
-                            [_vm._v("Vai ai Dettagli")]
-                          ),
-                          _vm._v(" "),
-                          _c("p", { staticClass: "services" }, [
-                            _vm._v(
-                              "Stanze: " +
-                                _vm._s(house.rooms_number) +
-                                " - Bagni: " +
-                                _vm._s(house.bathrooms) +
-                                " - Letti: " +
-                                _vm._s(house.beds)
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _vm._l(house.services, function(service) {
-                            return _c(
+                    return _c(
+                      "li",
+                      {
+                        key: house.id,
+                        staticClass: "row col-sm-12 col-md-6 col-lg-4"
+                      },
+                      [
+                        house.image === null
+                          ? _c(
                               "div",
-                              { key: service.id, staticClass: "btn-services" },
+                              {
+                                staticClass: "img-area col-12 placeholder",
+                                staticStyle: {
+                                  "background-image":
+                                    "url('http://localhost:8000/storage/placeholder/house.png')"
+                                },
+                                attrs: { alt: "house-placeholder" }
+                              },
                               [
-                                _c(
-                                  "span",
-                                  { staticClass: "badge m-1 badge-dark" },
-                                  [_vm._v(_vm._s(service.name))]
-                                )
+                                _c("h4", [
+                                  _vm._v(
+                                    "\n                    Nessuna immagine.\n                  "
+                                  )
+                                ])
                               ]
                             )
-                          })
-                        ],
-                        2
-                      )
-                    ])
+                          : _c("div", {
+                              staticClass: "img-area col-12",
+                              style: {
+                                "background-image":
+                                  "url(" +
+                                  "http://localhost:8000/storage/" +
+                                  house.image +
+                                  ")"
+                              },
+                              attrs: { alt: "" }
+                            }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "description col-12" },
+                          [
+                            _c("h3", [_vm._v(_vm._s(house.title))]),
+                            _vm._v(" "),
+                            _c("p", { staticClass: "services" }, [
+                              _vm._v(
+                                "\n                    Stanze: " +
+                                  _vm._s(house.rooms_number) +
+                                  " - Bagni: " +
+                                  _vm._s(house.bathrooms) +
+                                  " - Letti: " +
+                                  _vm._s(house.beds) +
+                                  "\n                  "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "router-link",
+                              {
+                                staticClass: "button",
+                                attrs: {
+                                  to: {
+                                    name: "house",
+                                    params: { slug: house.slug }
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                    Vai ai Dettagli\n                  "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "services" },
+                              _vm._l(house.services, function(service) {
+                                return _c(
+                                  "span",
+                                  {
+                                    key: service.id,
+                                    staticClass: "baby-button"
+                                  },
+                                  [_vm._v(_vm._s(service.name))]
+                                )
+                              }),
+                              0
+                            )
+                          ],
+                          1
+                        )
+                      ]
+                    )
                   }),
                   0
                 )
@@ -6372,27 +6448,45 @@ var render = function() {
         _c("h1", [_vm._v(_vm._s(_vm.house.title))]),
         _vm._v(" "),
         _c("div", { staticClass: "image-details row" }, [
-          _c("div", { staticClass: "image-left col-md-6 col-sm-12" }),
+          _vm.house.image === null
+            ? _c(
+                "div",
+                {
+                  staticClass: "image-left placeholder col-md-6 col-sm-12",
+                  staticStyle: {
+                    "background-image":
+                      "url('http://localhost:8000/storage/placeholder/house.jpg')"
+                  },
+                  attrs: { alt: "house-placeholder" }
+                },
+                [
+                  _c("h3", [
+                    _vm._v("\n          Immagini non presenti\n        ")
+                  ])
+                ]
+              )
+            : _c("div", {
+                staticClass: "image-left col-md-6 col-sm-12",
+                style: { "background-image": "url(" + _vm.house.image + ")" },
+                attrs: { alt: "" }
+              }),
           _vm._v(" "),
           _c("div", { staticClass: "details-right col-md-6 col-sm-12" }, [
-            _c("h3", [_vm._v("Caratteristiche")]),
+            _c("h3", [_vm._v("Descrizione")]),
             _vm._v(" "),
             _c("ul", [
               _c("li", [
-                _c("p", [_c("strong", [_vm._v(_vm._s(_vm.house.description))])])
-              ]),
-              _vm._v(" "),
-              _c("li", [
-                _vm._v("\n            Numero di stanze: "),
+                _vm._v("\n            Stanze: "),
                 _c("strong", [_vm._v(_vm._s(_vm.house.rooms_number))])
               ]),
               _vm._v(" "),
               _c("li", [
-                _vm._v("\n            Numero di letti: "),
+                _vm._v("\n            Letti: "),
                 _c("strong", [_vm._v(_vm._s(_vm.house.beds))])
               ]),
+              _vm._v(" "),
               _c("li", [
-                _vm._v("\n            Numero di bagni: "),
+                _vm._v("\n            Bagni: "),
                 _c("strong", [_vm._v(_vm._s(_vm.house.bathrooms))])
               ]),
               _vm._v(" "),
@@ -6404,19 +6498,23 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "features" }, [
-          _c(
-            "ul",
-            _vm._l(_vm.house.services, function(service) {
-              return _c("li", { key: service.pivot.service_id }, [
-                _c("span", { staticClass: "btn btn-dark m-3" }, [
-                  _vm._v(_vm._s(service.name))
-                ])
-              ])
-            }),
-            0
-          )
-        ]),
+        _vm.house.features === _vm.empty
+          ? _c("div", { staticClass: "features" }, [
+              _c("h3", [_vm._v("\n        Nessun servizio aggiuntivo\n      ")])
+            ])
+          : _c("div", { staticClass: "features" }, [
+              _c(
+                "ul",
+                _vm._l(_vm.house.services, function(service) {
+                  return _c("li", { key: service.pivot.service_id }, [
+                    _c("span", { staticClass: "btn btn-dark m-3" }, [
+                      _vm._v(_vm._s(service.name))
+                    ])
+                  ])
+                }),
+                0
+              )
+            ]),
         _vm._v(" "),
         _c("div", { staticClass: "address-map row" }, [
           _c("div", { staticClass: "address-left col-md-6 col-sm-12" }, [
@@ -6437,7 +6535,11 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "map-right col-md-6 col-sm-12" })
+          _c("div", { staticClass: "description-right col-md-6 col-sm-12" }, [
+            _c("h3", [_vm._v("Descrizione")]),
+            _vm._v(" "),
+            _c("p", [_c("strong", [_vm._v(_vm._s(_vm.house.description))])])
+          ])
         ]),
         _vm._v(" "),
         _c("MessageForm", { attrs: { house_id: _vm.house.id } })

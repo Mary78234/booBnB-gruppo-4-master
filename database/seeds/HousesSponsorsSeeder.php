@@ -19,6 +19,7 @@ class HousesSponsorsSeeder extends Seeder
 
             DB::table('house_sponsor')->insert([
                 'house_id' => House::inRandomOrder()->first()->id,
+                'created_at'=> $faker->date($format = 'Y-m-d', $max = 'now'),
                 'start_date'=> $faker->date($format = 'Y-m-d', $max = 'now'),
                 'end_date'=> $faker->date($format = 'Y-m-d', $max = 'now'),
                 'sponsor_id' => Sponsor::inRandomOrder()->first()->id

@@ -32,6 +32,9 @@ class CreateHouseSponsorTable extends Migration
                   ->onDelete('cascade');   
             $table->dateTime('start_date');
             $table->dateTime('end_date');
+            $table->string('status')->default('pending');
+            $table->string('transaction_id')->nullable();
+            $table->timestamps();
         });
     }
 

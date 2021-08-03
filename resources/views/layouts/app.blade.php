@@ -26,9 +26,9 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Fontawsome -->
-    <script defer src="~@fortawesome/fontawesome-free/scss/brands"></script>
+   {{--  <script defer src="~@fortawesome/fontawesome-free/scss/brands"></script>
     <script defer src="~@fortawesome/fontawesome-free/scss/solid"></script>
-    <script defer src="~@fortawesome/fontawesome-free/scss/fontawsome"></script>
+    <script defer src="~@fortawesome/fontawesome-free/scss/fontawsome"></script> --}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

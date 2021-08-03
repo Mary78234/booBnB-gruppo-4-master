@@ -16721,3 +16721,30 @@ footer .footer-bottom {
   line-height: 30px;
   text-align: center;
 }
+
+#page-success {
+  width: 100%;
+  height: calc(100vh - 380px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#sponsor-container #sponsor-title {
+  text-align: center;
+  margin: 10px;
+}
+#sponsor-container form #sponsor {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#sponsor-container form #sponsor div {
+  width: 100%;
+  margin: 20px;
+  border: 1px solid lightblue;
+  padding: 20px;
+  border-radius: 10px;
+}

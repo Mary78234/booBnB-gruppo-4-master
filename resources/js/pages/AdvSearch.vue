@@ -5,15 +5,14 @@
 
       <div class="mb-5 mt-5">
         <div class="search-location">
-        <input 
+           <input 
             type="text" 
             v-model="advSearch">
          <button
             @click="initMap(advSearch)"  >
             cerca
         </button>
-        
-    </div>
+        </div>
       </div>
 
       <div class="contenedor-risultati">
@@ -26,9 +25,6 @@
               <ul>
                 <li>
                   <label for="stanze">Stanze</label>
-                  <!-- <select id="stanze" name="rooms">
-                    <option v-for="n in 10" :key="n">{{ n }}</option>
-                  </select> -->
                   <input 
                     class="input-number" 
                     type="number" 
@@ -39,9 +35,6 @@
                 </li>
                 <li>
                   <label for="letti">Letti</label>
-                  <!-- <select id="letti" name="beds">
-                    <option v-for="n in 30" :key="n">{{ n }}</option>
-                  </select> -->
                   <input 
                     class="input-number" 
                     type="number" 
@@ -120,33 +113,47 @@
 
           <div class="left-risultati col-sm-12 col-md-12 col-lg-12">
             <div class="risultati">
-              <ul>
+              <ul class="row">
                 <li 
-                class="row"
+                class="row col-sm-12 col-md-6 col-lg-4"
                 v-for="house in firstData" :key="house.id">
-                  <img 
-                  class="col-sm-12 col-md-6 col-lg-4" 
-                  :src="'/storage/' + house.image" 
-                  alt="">
-                  <div class="col-sm-12 col-md-12 col-lg-8 description">
+                  <div
+                    v-if="house.image === null"
+                    class="img-area col-12 placeholder"
+                    style="background-image: url('http://localhost:8000/storage/placeholder/house.png')" 
+                    alt="house-placeholder">
+                    <h4>
+                      Nessuna immagine.
+                    </h4>
+                  </div>
+                  <div
+                    v-else
+                    class="img-area col-12"
+                    :style=" { 'background-image': 'url(' + 'http://localhost:8000/storage/' + house.image + ')' }"
+                    alt="">
+                  </div>
+                  <div class="description col-12">
                     <h3>{{ house.title }}</h3>
-                    <h5>{{ house.city }}</h5>
-                    <p class="description">{{house.description}}</p>
-                    <router-link class="inline btn btn-outline-success m-3" :to="{name:'house',params:{ slug:house.slug }}">Vai ai Dettagli</router-link>
-                    <p class="services">Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}</p>
-                    <div class="btn-services" v-for="service in house.services" :key="service.id">
-                        <span class="badge m-1 badge-dark">{{service.name}}</span>
+                    <!-- <p class="house-description">{{house.description}}</p> -->
+                    <p class="services">
+                      Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}
+                    </p>
+                    <router-link class="button" :to="{name:'house',params:{ slug:house.slug }}">
+                      Vai ai Dettagli
+                    </router-link>
+                    <div class="services">
+                      <span class="baby-button" v-for="service in house.services" :key="service.id">{{service.name}}</span>
                     </div>
                   </div>
                 </li>
               </ul>
-
             </div>
           </div>
 
         </div>
       </div>
-  </section>
+
+    </section>
     
   </main>
 </template>
@@ -258,6 +265,7 @@ export default {
 
 
             axiosCall(obj) {
+                this.houseLocation = [],
                 axios.get('http://localhost:8000/api/houses/advsearch', {
                         params: {
                             city: obj,
@@ -354,16 +362,32 @@ section {
   .risultati {
     li {
       width: 80%;
-      margin: 10% auto;
-      img {
-        max-height: 100px;
-        max-width: 200px;
+      margin: 5% auto;
+      text-align: center;
+      min-height: 550px;
+      h3 {
+        margin-top: 10px;
+        text-transform: uppercase;
       }
-      p.description {
+      .img-area {
+        height: 300px;
+        background-size: cover;
+        background-position: center;
+        margin-bottom: 30px;
+      }
+      .img-area.placeholder {
+        background-position: center;
+        opacity: 0.5;
+        h4 {
+          text-align: center;
+          margin-top: 30%;
+          color: white;
+        }
+      }
+      p.house-description {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: 100%;
       }
     }
   }
@@ -426,41 +450,50 @@ section {
     }
 }
 
-.marker-icon {
-            background-position: center;
-            background-size: 22px 22px;
-            border-radius: 50%;
-            height: 22px;
-            left: 4px;
-            position: absolute;
-            text-align: center;
-            top: 3px;
-            transform: rotate(45deg);
-            width: 22px;
-        }
-        .marker {
-            height: 30px;
-            width: 30px;
-        }
-        .marker-content {
-            background: #c30b82;
-            border-radius: 50% 50% 50% 0;
-            height: 30px;
-            left: 50%;
-            margin: -15px 0 0 -15px;
-            position: absolute;
-            top: 50%;
-            transform: rotate(-45deg);
-            width: 30px;
-        }
-        .marker-content::before {
-            background: #ffffff;
-            border-radius: 50%;
-            content: "";
-            height: 24px;
-            margin: 3px 0 0 3px;
-            position: absolute;
-            width: 24px;
-        }
+.button {
+    margin: 20px 20px 0 0;
+    background-color: white;
+    color: $boolblue;
+    border: none;
+    border-bottom: 2px solid $boolblue;
+    font-weight: bold;
+    border-radius: 20px;
+    display: inline-block;
+    min-width: 200px;
+    min-height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+
+  .button:hover {
+    text-decoration: none;
+    color: #04233a;
+    border-bottom: 2px solid #04233a;
+  }
+
+  .services {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 25px;
+  }
+
+  .baby-button {
+    background-color: white;
+    margin: 5px 0;
+    color: $boolblue;
+    border: none;
+    border-bottom: 1px solid $boolblue;
+    border-radius: 5px;
+    display: inline-block;
+    min-width: 90px;
+    min-height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 10px;
+  }
+
 
 </style>

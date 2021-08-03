@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\House;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HouseRequest;
+use App\Payment;
 use App\Sponsor;
 use App\User;
 use Carbon\Carbon;
@@ -20,6 +21,7 @@ class SponsorController extends Controller
      */
     public function index($id)
     {   
+
         $house = House::where('user_id', Auth::id())->findOrFail($id);
         $sponsors = Sponsor::all();
         if(!$house){
@@ -41,18 +43,35 @@ class SponsorController extends Controller
     }
 
 
-    public function store(HouseRequest $request)
+    public function store(Request $request )
     {
-        $data = $request->all();
-        $new_house = new House();
-        $new_house->fill($data);
-        $new_house->save();
 
-        if(array_key_exists('sponsors',$data)){
-            $new_house->sponsors()->attach($data['sponsors']);
+
+        $user = User::find(Auth::id());
+        $data = $request->all();
+      
+        $house = House::find($request->house_id);
+        $sponsor = Sponsor::find($data['sponsor']);
+        
+        if (array_key_exists('sponsor', $data)) {
+            $house->sponsors()->attach($data['sponsor'], ['start_date' => Carbon::now(), 'end_date' => Carbon::now()->addHours($sponsor['duration'])]);
         }
         
-        return redirect()->route('user.house.index', $new_house);
+        $user = User::find(Auth::id());
+        $data = $request->all();
+      
+        $house = House::find($request->house_id);
+        $sponsor = Sponsor::find($data['sponsor']);
+
+        $payment = new Payment();
+        $payment->house_id = $house->id;
+        $payment->sponsor_id = $sponsor->id;
+        $payment->start_date = Carbon::now();
+        $payment->end_date = Carbon::now()->addHours($sponsor['duration']);
+        $payment->save();
+
+        view('user.home', compact('user'));
+        return redirect()->route('payment', compact('payment'));
     }
 
     /**
@@ -86,7 +105,17 @@ class SponsorController extends Controller
      */
     public function update(Request $request, $id)
     {
-    
+        $user = User::find(Auth::id());
+        $data = $request->all();
+
+        $house = House::find($id);
+        $sponsor = Sponsor::find($data['sponsors']);
+        
+        if (array_key_exists('sponsors', $data)) {
+            $house->sponsors()->attach($data['sponsors'], ['start_date' => Carbon::now(), 'end_date' => Carbon::now()->addHours($sponsor['duration'])]);
+        }
+
+        return view('user.home', compact('user'));
     }
 
     /**
@@ -99,4 +128,9 @@ class SponsorController extends Controller
     {
         //
     }
+
+
+
+
+
 }

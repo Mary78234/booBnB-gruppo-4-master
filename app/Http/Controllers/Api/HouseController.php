@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\House;
 use App\Http\Controllers\Controller;
+use App\Payment;
 use App\Service;
+use Carbon\Carbon;
 use HousesTableSeeder;
 use Illuminate\Database\Schema\Builder as SchemaBuilder;
 use Illuminate\Http\Request;
@@ -121,14 +123,18 @@ class HouseController extends Controller
         
 
         }
-    public function alldata(){
-
-        $houses = House::with('services')
-             ->where('visibility', true)
-             ->get();
 
 
-        return response()->json($houses);
+
+    public function sponsored(){
+        
+        $payment = Payment::all();
+
+        $houses = House::with('sponsors')->get();
+            
+
+
+        return response()->json(compact('houses'));
 
     }
 
