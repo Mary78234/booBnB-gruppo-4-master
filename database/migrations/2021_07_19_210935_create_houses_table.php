@@ -28,6 +28,7 @@ class CreateHousesTable extends Migration
             $table->string('address', 255);
             $table->string('postal_code', 20)->nullable();
             $table->tinyInteger('house_number')->nullable();
+            $table->boolean('sponsored')->nullable();
             $table->boolean('visibility')->nullable();
             $table->float('long', 11, 8)->nullable();
             $table->float('lat', 11, 8)->nullable();

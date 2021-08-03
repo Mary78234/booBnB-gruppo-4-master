@@ -15,7 +15,7 @@ class CreateHouseSponsorTable extends Migration
     {
         Schema::create('house_sponsor', function (Blueprint $table) {
             $table->id();
-            $table->date('expire_date');
+            
 
             $table->unsignedBigInteger('house_id');
 
@@ -30,7 +30,8 @@ class CreateHouseSponsorTable extends Migration
                   ->references('id')
                   ->on('sponsors')
                   ->onDelete('cascade');   
-            
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
         });
     }
 

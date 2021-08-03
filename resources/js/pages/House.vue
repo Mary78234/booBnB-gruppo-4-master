@@ -105,7 +105,8 @@ export default {
 
         tt.services.fuzzySearch({
          key: apiKey,
-         query: outerthis.houseLocation
+         query: outerthis.houseLocation,
+
        })
 
        .then(function(response) {
@@ -117,7 +118,7 @@ export default {
                 zoom: 15
               });
                 
-                new tt.Marker().setLngLat(outerthis.houseLocation).addTo(mymap);
+              
               
        })
        

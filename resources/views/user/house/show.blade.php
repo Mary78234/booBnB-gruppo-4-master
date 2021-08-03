@@ -56,15 +56,15 @@
         <h2>Indirizzo</h2>
         <h5>{{ $house->address }} {{ $house->house_number }}, {{ $house->city }} - {{ $house->postal_code }} ({{ $house->country }})</h5>
     </div>
-    <!-- -------------------------MAPPA---------------------- -->
+    <!-- -------------------------MAPPA------------------------>
     <div class="mb-5" style="width:100%; height: 75vh;" id='map-div'></div>
-    <!-- -------------------------MAPPA---------------------- -->
+    <!-- -------------------------MAPPA------------------------>
 
 
     <div class="buttons col-12">
         <a class="button" href="{{ route('user.house.edit', $house) }}">Modifica</a>
-        <a class="button" href="/house">Visualizza</a>
-        <a class="button">Sponsorizza</a>
+        <a class="button" href="{{url('http://localhost:8000/house/'.$house->slug)}}">Visualizza</a>
+        <a class="button" href="{{ route('user.sponsor', $house) }}">Sponsorizza</a>
     </div>
 
     {{-- SEZIONE MESSAGGI DA TERMINARE --}}

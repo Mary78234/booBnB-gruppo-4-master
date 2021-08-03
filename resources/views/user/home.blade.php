@@ -30,11 +30,11 @@
                     Messaggi
                 </a>
             </div>
-            <div class="dashboard-item sponsor">
+            {{-- <div class="dashboard-item sponsor">
                 <a href="{{ route('user.sponsor') }}">
                     Sponsorizza
                 </a>
-            </div>
+            </div> --}}
         </section>
     </div>
 

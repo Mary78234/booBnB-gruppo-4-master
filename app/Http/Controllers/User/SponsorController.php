@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
+use App\House;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HouseRequest;
+use App\Sponsor;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SponsorController extends Controller
 {
@@ -12,11 +18,18 @@ class SponsorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('user.house.sponsor');
+    public function index($id)
+    {   
+        $house = House::where('user_id', Auth::id())->findOrFail($id);
+        $sponsors = Sponsor::all();
+        if(!$house){
+            abort(404);
+        }
+        return view('user.house.sponsor', compact('house', 'sponsors'));
     }
 
+
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -24,18 +37,22 @@ class SponsorController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(HouseRequest $request)
     {
-        //
+        $data = $request->all();
+        $new_house = new House();
+        $new_house->fill($data);
+        $new_house->save();
+
+        if(array_key_exists('sponsors',$data)){
+            $new_house->sponsors()->attach($data['sponsors']);
+        }
+        
+        return redirect()->route('user.house.index', $new_house);
     }
 
     /**
@@ -69,7 +86,7 @@ class SponsorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    
     }
 
     /**

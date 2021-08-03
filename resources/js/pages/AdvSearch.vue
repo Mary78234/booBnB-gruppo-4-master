@@ -7,8 +7,7 @@
         <div class="search-location">
         <input 
             type="text" 
-            v-model="advSearch"
-            placeholder="Cerca...">
+            v-model="advSearch">
          <button
             @click="initMap(advSearch)"  >
             cerca
@@ -127,14 +126,13 @@
                 v-for="house in firstData" :key="house.id">
                   <img 
                   class="col-sm-12 col-md-6 col-lg-4" 
-                  :src="'http://localhost:8000/storage/' + house.image" 
+                  :src="'/storage/' + house.image" 
                   alt="">
                   <div class="col-sm-12 col-md-12 col-lg-8 description">
                     <h3>{{ house.title }}</h3>
+                    <h5>{{ house.city }}</h5>
                     <p class="description">{{house.description}}</p>
-
                     <router-link class="inline btn btn-outline-success m-3" :to="{name:'house',params:{ slug:house.slug }}">Vai ai Dettagli</router-link>
-                   
                     <p class="services">Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}</p>
                     <div class="btn-services" v-for="service in house.services" :key="service.id">
                         <span class="badge m-1 badge-dark">{{service.name}}</span>
@@ -142,13 +140,13 @@
                   </div>
                 </li>
               </ul>
+
             </div>
           </div>
 
         </div>
       </div>
-
-    </section>
+  </section>
     
   </main>
 </template>
@@ -167,7 +165,7 @@ export default {
   data(){
     return{
       /* salvo la posizione con v-model per advsearch */
-        advSearch: '',
+        advSearch: this.location,
 
         houseLocation : [],
           /* ricerca avanzata */
@@ -179,81 +177,105 @@ export default {
         /* dati TomTom */
         apiKey: 'EHA6jZsKzacvcupfIH5jId15dI3c5wGf',
         mymap: null,
-        marker: null,
         LngLat: null,
         otherLocation : {lng: -122.47483, lat: 37.80776},
         /* Axios dove salvo i dati che mi arrivano */
         firstData : [],
         /* array posizioni lat e long */
-        houseLocation : null,
+        
+      
+        
     }
   },
   methods:{
       /* ----------------------------Inizializzazione Mappa----------------------------------- */
       
-        initMap(obj){
-          this.map = tt.map({
-            key: this.apiKey,
-            container: 'map-div',
-            center: this.otherLocation,
-            zoom: 13
-            
-          })
-          if(this.location || this.advSearch){
-            this.initPointView(obj);
-            this.axiosCall(obj); 
-          };
-        },
-
-      /* ---------------------------- Ricerca Punto di interesse ----------------------------------- */
-
-        initPointView(pos){
-            tt.services.fuzzySearch({
-            key: this.apiKey,
-            query: pos
-        })
-         .then((response) => {this.map.setCenter(response.results[0].position)  })
-        },
-
-      /* ------------------------------ AGGIUNTA DEI MARKER --------------------------------- */
-       
-
-      
-      /* ----------------------------CHIAMATA AXIOS----------------------------------- */
-        /* 
-        lat: house.lat,
-        lng: house.long
-        
-        */
-
-
-      axiosCall(obj){
-       axios.get('http://localhost:8000/api/houses/advsearch',{
-         params:{
-           city : obj,
-           radius : this.radius,
-           beds : this.beds,
-           rooms_number : this.roomsNumber,
-           service_name : this.checkedInput
-           
-         }
-       })
-            .then(res=>{
-              this.firstData = [];
-              this.firstData = res.data.houses; 
-              console.log(this.firstData[0]);
-               this.firstData.forEach(house => {
-                    this.houseLocation.push(
-                      [house.lat, house.long]
-                    )
+        initMap(obj) {
+                this.map = tt.map({
+                    key: this.apiKey,
+                    container: 'map-div',
+                    center: this.otherLocation,
+                    zoom: 13
+                })
+                this.map.addControl(new tt.FullscreenControl());
+                this.map.addControl(new tt.NavigationControl());
+                if (this.location || this.advSearch) {
+                    this.initPointView(obj);
+                    this.axiosCall(obj);
+                };
             },
-                
-            ); 
-            })
-            .catch(err=>{
-              console.log(err);
-            })
-     },
+
+            /* ---------------------------- Ricerca Punto di interesse ----------------------------------- */
+
+            initPointView(pos) {
+                tt.services.fuzzySearch({
+                        key: this.apiKey,
+                        query: pos
+                    })
+                    .then((response) => {
+                        this.map.setCenter(response.results[0].position);
+                    });
+            },
+            
+            addMarkers() {
+                this.firstData.forEach(house => {
+                     let title = house.title;
+                     let city = house.city;
+                     let address = house.address;
+                     let location = [house.long, house.lat]; 
+                     this.createMarker('accident.colors-white.svg', location, '#c30b82', title + ', ' + city )
+                     console.log(house);
+                })
+            },
+
+            createMarker(icon, position, color, popupText) {
+                var markerElement = document.createElement('div');
+                markerElement.className = 'marker';
+                var markerContentElement = document.createElement('div');
+                markerContentElement.className = 'marker-content';
+                markerContentElement.style.backgroundColor = color;
+                markerElement.appendChild(markerContentElement);
+                var iconElement = document.createElement('div');
+                iconElement.className = 'marker-icon';
+                iconElement.style.backgroundImage =
+                    'url(https://api.tomtom.com/maps-sdk-for-web/cdn/static/' + icon + ')';
+                markerContentElement.appendChild(iconElement);
+                var popup = new tt.Popup({
+                    offset: 30
+                }).setText(popupText);
+                // add marker to map
+                var marker= new tt.Marker({
+                        /* element: markerElement, */
+                        anchor: 'bottom'
+                    })
+                    .setLngLat(position)
+                    .setPopup(popup)
+                    .addTo(this.map);
+                    console.log('marker---->',marker, this.map);
+            },
+
+
+            axiosCall(obj) {
+                axios.get('http://localhost:8000/api/houses/advsearch', {
+                        params: {
+                            city: obj,
+                            radius: this.radius,
+                            beds: this.beds,
+                            rooms_number: this.roomsNumber,
+                            service_name: this.checkedInput
+
+                        }
+                    })
+                    .then(res => {
+                        this.firstData = [];
+                        this.firstData = res.data.houses;
+                        console.log(this.firstData);
+                        this.addMarkers();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+            },
 
 
 
@@ -402,5 +424,41 @@ section {
     }
 }
 
+.marker-icon {
+            background-position: center;
+            background-size: 22px 22px;
+            border-radius: 50%;
+            height: 22px;
+            left: 4px;
+            position: absolute;
+            text-align: center;
+            top: 3px;
+            transform: rotate(45deg);
+            width: 22px;
+        }
+        .marker {
+            height: 30px;
+            width: 30px;
+        }
+        .marker-content {
+            background: #c30b82;
+            border-radius: 50% 50% 50% 0;
+            height: 30px;
+            left: 50%;
+            margin: -15px 0 0 -15px;
+            position: absolute;
+            top: 50%;
+            transform: rotate(-45deg);
+            width: 30px;
+        }
+        .marker-content::before {
+            background: #ffffff;
+            border-radius: 50%;
+            content: "";
+            height: 24px;
+            margin: 3px 0 0 3px;
+            position: absolute;
+            width: 24px;
+        }
 
 </style>
