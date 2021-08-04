@@ -80,7 +80,7 @@
                     @foreach ($messages as $message)
                         <li>
                             <h5 class="text-center">{{ $message->title }}</h5>
-                            <h5>Enviato da {{$message->mail}}</h5>
+                            <h5>Inviato da: {{$message->mail}}</h5>
                             <p>{{ $message->content }}</p>
                         </li>
                     @endforeach

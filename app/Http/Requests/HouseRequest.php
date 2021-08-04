@@ -41,7 +41,7 @@ class HouseRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Il titolo è un campo obbligatorop',
+            'title.required' => 'Il titolo è un campo obbligatorio',
             'title.max' => 'Sono consentiti al massimo :max caratteri',
             'beds.required' => 'Devi specificare il numero di posti letto',
             'bathrooms.required' => 'Devi specificare il numero di bagni',
