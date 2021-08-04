@@ -1,7 +1,9 @@
 <?php
 
+use App\House;
 use App\Http\Controllers\User\MessageController;
 use App\Payment;
+use App\Sponsor;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -68,6 +70,9 @@ Route::post('/checkout/{id}', function (Request $request, $id){
         $payment->transaction_id = $transaction->id;
         $payment->status = 'paid';
         $payment->save();
+        $house = House::find($payment->house_id);
+        $house->sponsor_end_date = $payment->end_date;
+        $house->save();
             return redirect()->route('user.success');
             //return redirect('/success')->with('success_message', 'Transaction successful. The ID is:' . $transaction->id);
         } else {

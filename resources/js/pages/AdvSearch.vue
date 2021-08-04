@@ -2,6 +2,9 @@
   <main>
 
     <section class="container">
+      
+
+    
 
       <div class="mb-5 mt-5">
         <div class="search-location">
@@ -108,19 +111,20 @@
             </div>
           </div>
 
-          <div id="map-div" style="width: 400px; height: 500px;" class="right col-sm-12 col-md-12 col-lg-6">
+          <div id="map-div" style="width: 500px; height: 500px;" class="right col-xs-12 col-sm-12 col-md-12 col-lg-6">
           </div>
 
           <div class="left-risultati col-sm-12 col-md-12 col-lg-12">
             <div class="risultati">
               <ul class="row">
+                 <!----------------------- SPONSORIZZATE -------------------------->
                 <li 
-                class="row col-sm-12 col-md-6 col-lg-4"
-                v-for="house in firstData" :key="house.id">
+                   class="row col-sm-12 col-md-6 col-lg-4"
+                   v-for="house in sponsoredHouses" :key="house.id">
                   <div
                     v-if="house.image === null"
                     class="img-area col-12 placeholder"
-                    style="background-image: url('http://localhost:8000/storage/placeholder/house.png')" 
+                    style="background-image: url('/storage/placeholder/house.png')" 
                     alt="house-placeholder">
                     <h4>
                       Nessuna immagine.
@@ -129,7 +133,46 @@
                   <div
                     v-else
                     class="img-area col-12"
-                    :style=" { 'background-image': 'url(' + 'http://localhost:8000/storage/' + house.image + ')' }"
+                    :style=" { 'background-image': 'url(' + '/storage/' + house.image + ')' }"
+                    alt="">
+                  </div>
+                  
+                  <div class="description col-12">
+                    
+                    <h3>{{ house.title }}</h3>
+                   
+                    <!-- <p class="house-description">{{house.description}}</p> -->
+                    <p class="services">
+                      Stanze: {{house.rooms_number}} - Bagni: {{house.bathrooms}} - Letti: {{house.beds}}
+                    </p>
+                    <p class="badge badge-dark">Sponsorizzata</p>
+                    <p>{{house.city}}</p>
+                    <router-link class="button" :to="{name:'house',params:{ slug:house.slug }}">
+                      Vai ai Dettagli
+                    </router-link>
+                     
+                    <div class="services">
+                      <span class="baby-button" v-for="service in house.services" :key="service.id">{{service.name}}</span>
+                    </div>
+                  </div>
+                </li>
+            <!----------------------- NON SPONSORIZZATE -------------------------->
+                 <li 
+                   class="row col-sm-12 col-md-6 col-lg-4"
+                   v-for="house in unSponsoredHouses" :key="house.id">
+                  <div
+                    v-if="house.image === null"
+                    class="img-area col-12 placeholder"
+                    style="background-image: url('/storage/placeholder/house.png')" 
+                    alt="house-placeholder">
+                    <h4>
+                      Nessuna immagine.
+                    </h4>
+                  </div>
+                  <div
+                    v-else
+                    class="img-area col-12"
+                    :style=" { 'background-image': 'url(' + '/storage/' + house.image + ')' }"
                     alt="">
                   </div>
                   <div class="description col-12">
@@ -147,6 +190,7 @@
                     </div>
                   </div>
                 </li>
+
               </ul>
             </div>
           </div>
@@ -160,6 +204,7 @@
 </template>
 
 <script>
+import { DateTime } from "luxon";
 import Loader from '../components/Loader.vue';
 import Search from '../components/Search.vue';
 import axios from 'axios';
@@ -302,7 +347,23 @@ export default {
     
   },
   computed: {
-     
+
+    sponsoredHouses(){
+
+      return this.firstData.filter((house)=>{
+         return (house.sponsor_end_date && DateTime.fromSQL(house.sponsor_end_date) > DateTime.now())
+       })
+
+    },
+
+    unSponsoredHouses(){
+
+      return this.firstData.filter((house)=>{
+
+        return (!house.sponsor_end_date || DateTime.fromSQL(house.sponsor_end_date) < DateTime.now())
+
+      })
+    }
   }
   
 
@@ -495,6 +556,5 @@ section {
     text-align: center;
     font-size: 10px;
   }
-
-
+  
 </style>

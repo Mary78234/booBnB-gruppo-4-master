@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
             /* UsersTableSeeder::class,
             MessagesTableSeeder::class, */
             SponsorsTableSeeder::class,
-           /*  HousesTableSeeder::class,
+            /* HousesTableSeeder::class,
             UpdateHousesSeeder::class,
             UpdateMessagesSeeder::class,
             ViewsTableSeeder::class,
-            UpdateViewsSeeder::class,
+            UpdateViewsSeeder::class, */
             ServicesTableSeeder::class,
-            HousesServicesSeeder::class,
+            /* HousesServicesSeeder::class,
             HousesSponsorsSeeder::class */
         ]);
     }

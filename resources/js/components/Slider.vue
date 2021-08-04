@@ -14,6 +14,7 @@
         </div>
         <div class="text-area">
           <h3>{{house.title}}</h3>
+          <p class="badge badge-dark">Sponsorizzata</p>
           <p>{{house.city}}</p>
           <router-link class="button" :to="{name:'house',params:{ slug:house.slug }}">
                       Vai ai Dettagli
@@ -31,6 +32,7 @@
 </template>
 
 <script>
+import { DateTime } from "luxon";
 import axios from 'axios';
 export default {
   name: 'Slider',
@@ -56,25 +58,13 @@ export default {
       });
      
     },
-
-    formatDate(){
-            let d = new Date();
-            let dy = d.getDate();
-            let m = d.getMonth() + 1;
-            let y = d.getFullYear();
-
-            if(dy < 10) dy = '0' + dy;
-            if(m < 10) m = '0' + m;
-
-            this.dateNow = `${y}/${m}/${dy}`;
-        },
   
     compareDate(){
       this.sponsoredArray.forEach(house => {
         house.sponsors.forEach(sponsor => {
           console.log('now----->',this.dateNow);
              console.log('end----->',sponsor.pivot.end_date);
-           if(sponsor.pivot.end_date < this.dateNow){
+           if(DateTime.fromSQL(sponsor.pivot.end_dat) < DateTime.now()){
              this.sponsoredNow.push(house);
            }
         }
@@ -86,22 +76,11 @@ export default {
 
 
 
-   /*  <script type="text/javascript"language="javascript">
-      function CompareDate() {
-        var todayDate = new Date(); //Today Date.
-        var dateOne = new Date(2010, 11, 25);
-        if (todayDate > dateOne) {
-        alert("Today Date is greater than Date One.");
-      }else { */
-
-
-
    axiosCall() {
        axios.get('http://localhost:8000/api/houses/sponsored')
       .then(res => {
          this.allHouse = res.data.houses;
          this.getSponsored();
-         this.formatDate();
          this.compareDate();
 
        

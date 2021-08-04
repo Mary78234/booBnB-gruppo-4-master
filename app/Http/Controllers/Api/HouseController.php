@@ -84,6 +84,7 @@ class HouseController extends Controller
         
         
         $houses = House::with('services')
+                ->leftjoin()
                 ->whereBetween('lat', [$minlat, $maxlat])
                 ->whereBetween('long', [$minlng, $maxlng]) 
                 ->where('visibility', true)->orderBy('id','DESC');
