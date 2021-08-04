@@ -11,11 +11,11 @@
               <div class="homesearch">
                   <input 
                     type="text" 
-                     v-model="textToSearch"
-                    @keyup.enter="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')"
+                     v-model="textToSearch" 
+                    @keyup.enter="$emit('textToSearch',{text:textToSearch}), $router.push({path:'/advsearch', query:{city: textToSearch}})"
                      placeholder="Cerca...">
                    <button
-                      @click="$emit('textToSearch',{text:textToSearch}), $router.push('/advsearch')">
+                      @click="$emit('textToSearch',{text:textToSearch}), $router.push({path:'/advsearch', query:{city: textToSearch}})">
                       Cerca 
                </button>
             </div>

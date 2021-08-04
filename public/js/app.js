@@ -14898,7 +14898,10 @@ var render = function() {
                     return null
                   }
                   _vm.$emit("textToSearch", { text: _vm.textToSearch }),
-                    _vm.$router.push("/advsearch")
+                    _vm.$router.push({
+                      path: "/advsearch",
+                      query: { city: _vm.textToSearch }
+                    })
                 },
                 input: function($event) {
                   if ($event.target.composing) {
@@ -14915,7 +14918,10 @@ var render = function() {
                 on: {
                   click: function($event) {
                     _vm.$emit("textToSearch", { text: _vm.textToSearch }),
-                      _vm.$router.push("/advsearch")
+                      _vm.$router.push({
+                        path: "/advsearch",
+                        query: { city: _vm.textToSearch }
+                      })
                   }
                 }
               },
