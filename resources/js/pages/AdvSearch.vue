@@ -278,7 +278,7 @@ export default {
                      let city = house.city;
                      let address = house.address;
                      let location = [house.long, house.lat]; 
-                     this.createMarker('accident.colors-white.svg', location, '#c30b82', title + ', ' + city )
+                     this.createMarker('accident.colors-white.svg', location, '#c30b82', title + ', ' + city + ', ' + address)
                      console.log(house);
                 })
             },

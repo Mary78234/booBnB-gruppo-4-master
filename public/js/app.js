@@ -2742,7 +2742,7 @@ __webpack_require__.r(__webpack_exports__);
         var address = house.address;
         var location = [house["long"], house.lat];
 
-        _this2.createMarker('accident.colors-white.svg', location, '#c30b82', title + ', ' + city);
+        _this2.createMarker('accident.colors-white.svg', location, '#c30b82', title + ', ' + city + ', ' + address);
 
         console.log(house);
       });
